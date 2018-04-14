@@ -4,6 +4,7 @@
 #include <math.h>
 #include <iostream>
 #include <fstream>
+#include <time.h>
 
 using namespace std;
 
@@ -378,6 +379,9 @@ void Graphe::afficher_sommets(BITMAP* img)
     }
 }
 
+
+
+
 /* select_sommet : sous-programme permettant de sélectionner les sommets (le prgm est précédé d'un mouse_b&1)
 ENTREE :
     aucune
@@ -661,90 +665,195 @@ void Graphe::recalcul_parametres()
 
 
 
-
+/* afficher_arcs : sous-prgramme permettant d'afficher les arcs à afficher entre 2 sommets
+ENTREE :
+    buffer : de type BITMAP*
+SORTIE :
+    aucune
+*/
 void Graphe::afficher_arcs(BITMAP* buffer)
 {
 
     //Variables temporaires
     int X2, X3, Y2, Y3;
 
+
     //Pour tous les arcs du vecteur d'arcs
     for(int i=0; i<m_nb_arcs; i++)
     {
 
-            //SI LE BOOLEEN AFFICHER DE l'ARC EST A VRAI
-            if(m_vect_arcs[i].getAffArc())
+        //SI LE BOOLEEN AFFICHER DE l'ARC EST A VRAI
+        if(m_vect_arcs[i].getAffArc())
+        {
+
+            //INITIALISATION
+            m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX());
+            m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY());
+
+            X2 = m_vect_arcs[i].getArrowX1() - 10;
+            Y2 = m_vect_arcs[i].getArrowY1() - 10;
+
+            X3 = m_vect_arcs[i].getArrowX1() - 10;
+            Y3 = m_vect_arcs[i].getArrowY1() + 10;
+
+
+            //AJUSTEMENT
+            //TRACE DE LA FLECHE ET MODIFICATION DE LA LIGNE
+            //CAS 1
+            if(m_vect_arcs[i].getArrowX1() > m_vect_arcs[i].getS1().getCoordX() && m_vect_arcs[i].getArrowY1() > m_vect_arcs[i].getS1().getCoordY())
             {
 
-                //INITIALISATION
-                m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX());
+                m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX() + (m_vect_arcs[i].getS2().getImage()->w)/2);
                 m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY());
 
-                X2 = m_vect_arcs[i].getS2().getCoordX() - 10;
-                Y2 = m_vect_arcs[i].getS2().getCoordY() - 10;
+                m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX() + (m_vect_arcs[i].getS1().getImage()->w)/2);
+                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() + (m_vect_arcs[i].getS1().getImage()->h));
 
-                X3 = m_vect_arcs[i].getS2().getCoordX() - 10;
-                Y3 = m_vect_arcs[i].getS2().getCoordY() + 10;
+                X2 = m_vect_arcs[i].getArrowX1() - 10;
+                Y2 = m_vect_arcs[i].getArrowY1() - 20;
 
-
-                //AFFICHAGE DES FORMES
-                triangle(buffer, m_vect_arcs[i].getArrowX1(), m_vect_arcs[i].getArrowY1(), X2, Y2, X3, Y3, makecol(255,0,0));
-                line(buffer,m_vect_arcs[i].getArrowX1(),m_vect_arcs[i].getArrowY1(),m_vect_arcs[i].getS1().getCoordX(),m_vect_arcs[i].getS1().getCoordY(), makecol(255,0,0));
-
-
-/*
-
-            //TRACE DE LA LIGNE
-           // line(screen,x2,y2,x1,y1, makecol(255,0,0));
-
-
-            //On dessine une flèche dont le sommet 2 est la pointe de la flèche
-            //On dessine la point de la flèches
-            //On instancie des variables
-            int X1,X2,X3,Y1,Y2,Y3;
-
-            X1 = m_vect_arcs[i].getS2().getCoordX();
-            Y1 = m_vect_arcs[i].getS2().getCoordY()+(m_vect_arcs[i].getS2().getImage()->h)/2;
-
-
-
-            //TRACE DE LA FLECHE ET MODIFICATION DE LA LIGNE
-            //Si le bout de la flèche au S1 est situé dans les y inférieurs par rapport à S2
-            if(line_x2 > line_x1 && line_y2 < line_y1)
-            {
-
+                X3 = m_vect_arcs[i].getArrowX1() - 20;
+                Y3 = m_vect_arcs[i].getArrowY1() - 10;
 
             }
 
 
-            //Si le bout de la flèche au S1 est situé dans les y supérieurs par rapport à S2
-            if(line_x2 < line_x1 && line_y2 < line_y1)
+
+            //CAS 2
+            else if(m_vect_arcs[i].getArrowX1() < m_vect_arcs[i].getS1().getCoordX() && m_vect_arcs[i].getArrowY1() < m_vect_arcs[i].getS1().getCoordY())
             {
 
-                X1 = m_vect_arcs[i].getS2().getCoordX() + m_vect_arcs[i].getS2().getImage()->w;
-                Y1 = m_vect_arcs[i].getS2().getCoordY()+(m_vect_arcs[i].getS2().getImage()->h)/2;
+                m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX() + (m_vect_arcs[i].getS2().getImage()->w)/2);
+                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY() + (m_vect_arcs[i].getS2().getImage()->h));
 
-                X2 = m_vect_arcs[i].getS2().getCoordX() - 10;
-                Y2 = m_vect_arcs[i].getS2().getCoordY() - 10;
+                X2 = m_vect_arcs[i].getArrowX1() + 10;
+                Y2 = m_vect_arcs[i].getArrowY1() + 20;
 
-                X3 = m_vect_arcs[i].getS2().getCoordX() + 10;
-                Y3 = m_vect_arcs[i].getS2().getCoordY() + 10;
-            }
+                X3 = m_vect_arcs[i].getArrowX1() + 20;
+                Y3 = m_vect_arcs[i].getArrowY1() + 10;
 
-
-            //Si le bout de la flèche au S1 est situé dans les x inférieurs par rapport à S2
-            if(line_x1 > line_x2 && line_y1 < line_y2)
-            {
-
-            }
-
-            //Si le bout de la flèche au S1 est situé dans les x supérieurs par rapport à S2
-            if(line_x1 < line_x2 && line_y1 < line_y2)
-            {
+                m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX() + (m_vect_arcs[i].getS1().getImage()->w)/2);
+                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY());
 
             }
 
 
+
+            //CAS 3
+            else if(m_vect_arcs[i].getArrowX1() < m_vect_arcs[i].getS1().getCoordX() && m_vect_arcs[i].getArrowY1() > m_vect_arcs[i].getS1().getCoordY())
+            {
+
+                m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX() + (m_vect_arcs[i].getS2().getImage()->w)/2);
+                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY());
+
+                X2 = m_vect_arcs[i].getArrowX1() + 20;
+                Y2 = m_vect_arcs[i].getArrowY1() - 10;
+
+                X3 = m_vect_arcs[i].getArrowX1() + 10;
+                Y3 = m_vect_arcs[i].getArrowY1() - 20;
+
+                m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX() + (m_vect_arcs[i].getS1().getImage()->w)/2);
+                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() + (m_vect_arcs[i].getS1().getImage()->h));
+
+            }
+
+
+            //CAS 4
+            else if(m_vect_arcs[i].getArrowX1() > m_vect_arcs[i].getS1().getCoordX() && m_vect_arcs[i].getArrowY1() < m_vect_arcs[i].getS1().getCoordY())
+            {
+
+                m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX() + (m_vect_arcs[i].getS2().getImage()->w)/2);
+                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY() + (m_vect_arcs[i].getS2().getImage()->h));
+
+                X2 = m_vect_arcs[i].getArrowX1() - 20;
+                Y2 = m_vect_arcs[i].getArrowY1() + 10;
+
+                X3 = m_vect_arcs[i].getArrowX1() - 10;
+                Y3 = m_vect_arcs[i].getArrowY1() + 20;
+
+                m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX() + (m_vect_arcs[i].getS1().getImage()->w)/2);
+                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY());
+
+            }
+
+
+
+            //CAS 5
+            else if(m_vect_arcs[i].getArrowX1() == m_vect_arcs[i].getS1().getCoordX() && m_vect_arcs[i].getArrowY1() > m_vect_arcs[i].getS1().getCoordY())
+            {
+
+                m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX() + (m_vect_arcs[i].getS2().getImage()->w)/2);
+                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY());
+
+                X2 = m_vect_arcs[i].getArrowX1() + 10;
+                Y2 = m_vect_arcs[i].getArrowY1() - 10;
+
+                X3 = m_vect_arcs[i].getArrowX1() - 10;
+                Y3 = m_vect_arcs[i].getArrowY1() - 10;
+
+                m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX() + (m_vect_arcs[i].getS1().getImage()->w)/2);
+                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() + (m_vect_arcs[i].getS1().getImage()->h));
+
+            }
+
+
+            //CAS 6
+            else if(m_vect_arcs[i].getArrowX1() > m_vect_arcs[i].getS1().getCoordX() && m_vect_arcs[i].getArrowY1() == m_vect_arcs[i].getS1().getCoordY())
+            {
+
+                m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX());
+                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY() + (m_vect_arcs[i].getS2().getImage()->h)/2);
+
+                X2 = m_vect_arcs[i].getArrowX1() - 10;
+                Y2 = m_vect_arcs[i].getArrowY1() - 10;
+
+                X3 = m_vect_arcs[i].getArrowX1() - 10;
+                Y3 = m_vect_arcs[i].getArrowY1() + 10;
+
+                m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX() + (m_vect_arcs[i].getS1().getImage()->w));
+                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() + (m_vect_arcs[i].getS1().getImage()->h)/2);
+
+            }
+
+
+            //CAS 7
+            else if(m_vect_arcs[i].getArrowX1() == m_vect_arcs[i].getS1().getCoordX() && m_vect_arcs[i].getArrowY1() < m_vect_arcs[i].getS1().getCoordY())
+            {
+
+                m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX() + (m_vect_arcs[i].getS2().getImage()->w)/2);
+                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY() + (m_vect_arcs[i].getS2().getImage()->h));
+
+                X2 = m_vect_arcs[i].getArrowX1() - 10;
+                Y2 = m_vect_arcs[i].getArrowY1() + 10;
+
+                X3 = m_vect_arcs[i].getArrowX1() + 10;
+                Y3 = m_vect_arcs[i].getArrowY1() + 10;
+
+                m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX() + (m_vect_arcs[i].getS1().getImage()->w)/2);
+                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY());
+
+            }
+
+
+            //CAS 8
+            else if(m_vect_arcs[i].getArrowX1() < m_vect_arcs[i].getS1().getCoordX() && m_vect_arcs[i].getArrowY1() == m_vect_arcs[i].getS1().getCoordY())
+            {
+
+                m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX() + (m_vect_arcs[i].getS2().getImage()->w));
+                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY() + (m_vect_arcs[i].getS2().getImage()->h)/2);
+
+                X2 = m_vect_arcs[i].getArrowX1() + 10;
+                Y2 = m_vect_arcs[i].getArrowY1() - 10;
+
+                X3 = m_vect_arcs[i].getArrowX1() + 10;
+                Y3 = m_vect_arcs[i].getArrowY1() + 10;
+
+                m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX());
+                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() + (m_vect_arcs[i].getS1().getImage()->h)/2);
+
+            }
+
+            /*
 
             if(((((pr->x)-(pr->rayon))<0)&&((pr->depx)<0)) || ((((pr->x)+(pr->rayon))>SCREEN_W)&&((pr->depx)>0)))
             {
@@ -765,12 +874,13 @@ void Graphe::afficher_arcs(BITMAP* buffer)
             Y3 = Y3 + depY;
 
 
-            //Les coordonnées du premier sommet du triangle
+*/
+            //AFFICHAGE DES FORMES FAIRE UN RECTANGLE AU LIEU DE LIGNE
+            triangle(buffer, m_vect_arcs[i].getArrowX1(), m_vect_arcs[i].getArrowY1(), X2, Y2, X3, Y3, makecol(255,0,0));
+            line(buffer, m_vect_arcs[i].getArrowX1(), m_vect_arcs[i].getArrowY1(), m_vect_arcs[i].getLine_S1_X(), m_vect_arcs[i].getLine_S1_Y(), makecol(255,0,0));
 
 
 
-
-            triangle(screen, x1, y1, x2, y2, x3, y3, makecol(255,0,0));*/
-            }
+        }
     }
 }
