@@ -36,8 +36,10 @@ class Graphe
         void setVectSom(std::vector<Sommet> vect_som);
         void setVectArcs(std::vector<Arc> vect_arcs);
 
-        //Lecture fichiers
+        //Sous-Programmes
         void lecture_fichier(std::string f);
+        void sauvegarde_fichier(std::string f);
+        void modifier_param();
         void select_sommet();
         void effacer_sommet();
         void ajouter_sommet();

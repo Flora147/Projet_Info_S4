@@ -10,7 +10,6 @@ using namespace std;
 
 //Constructeur par défaut
 Graphe::Graphe()
-    :m_ordre(0), m_nb_arcs(0), m_vect_som(NULL), m_vect_arcs(NULL)
 {
 
 }
@@ -91,76 +90,238 @@ void Graphe::setVectArcs(std::vector<Arc> vect_arcs)
 
 void Graphe::lecture_fichier(std::string f)
 {
-
     ifstream fichier;
+    fichier.open(f);
+
+    //Initialisation des variables nécessaires à la lecture du fichier
+    BITMAP* image;
+    int ordre, nb_arcs;
+    int num, n, k, x, y;
+    int s1, s2;
+    bool b1,b2;
+    float coeff;
+    float r;
+    char *img;
+    std::string nom, nom_img;
+    std::vector<Sommet> vec_som;
+    std::vector<Arc> vec_arc;
+    k = 0;
+
+    if(fichier)
+    {
+
+        //On lit l'ordre
+        fichier >> ordre;
+        setOrdre(ordre);
+
+        for(int i = 0; i<getOrdre(); i++)
+        {
+            //Sur une même ligne on lit le nom, le numéro, le N, le r et les coordonnées d'un sommet
+            fichier>>nom;
+            fichier>>num;
+            fichier>>n;
+            fichier>>k;
+            fichier>>r;
+            fichier>>x;
+            fichier>>y;
+            fichier>>b1;
+            fichier>>b2;
+
+            nom_img = nom + ".bmp";
+            image = load_bitmap(nom_img.c_str(),NULL);
+            if (!image)
+            {
+                allegro_message("prb allocation BITMAP ");
+                allegro_exit();
+                exit(EXIT_FAILURE);
+            }
+
+            //On crée le sommet et on l'ajoute au vecteur de sommet
+            Sommet s(nom, num, n, 0, r, x, y, image, b1, b2);
+            vec_som.push_back(s);
+        }
+        //On lit le nombre d'arcs
+        fichier>>nb_arcs;
+        setNbArcs(nb_arcs);
+
+        for(int j=0; j<getNbArcs(); j++)
+        {
+            //on lit le numéro des deux sommets de l'arc
+            fichier >> s1;
+            fichier >> s2;
+
+            //On calcule le coefficient de l'arc que l'on crée ensuite
+            coeff = (float)(vec_som[s1].getN())/(vec_som[s2].getN());
+            Arc a(vec_som[s1], vec_som[s2], coeff, true);
+            //On peut à présent calculer le K des sommets du graphe
+            vec_som[s2].setK(vec_som[s2].getK() + vec_som[s1].getN()*coeff);
+            //on entre tous les arcs dans un vecteur d'arcs
+            vec_arc.push_back(a);
+
+        }
+        //On remplit les vecteurs du graphe
+        setVectSom(vec_som);
+        setVectArcs(vec_arc);
+
+        //On affiche en console le graphe
+        std::cout<<"\n\nGraphe :"<<std::endl;
+        std::cout<<"\nOrdre : "<<getOrdre()<<std::endl;
+        std::cout<<"NB Arcs : "<<getNbArcs()<<"\n"<<std::endl;
+        for(int i =0; i < getOrdre(); i++)
+        {
+            if(vec_som[i].getK()<=0)
+            {
+                vec_som[i].setK(1000);
+                setVectSom(vec_som);
+            }
+            std::cout<<((getVectSom())[i]).getName()<<" "<<((getVectSom())[i]).getN()<<" "<<((getVectSom())[i]).getK()<<" "<<((getVectSom())[i]).getR()<<" "<<((getVectSom())[i]).getCoordX()<<" "<<((getVectSom())[i]).getCoordY()<<std::endl;
+        }
+        std::cout<<"\n\n";
+        for(int i=0; i<getNbArcs(); i++)
+        {
+
+            std::cout<<"Arc "<<(i+1)<<" : "<<((getVectArcs())[i]).getS1().getNumero()<< " et "<<((getVectArcs())[i]).getS2().getNumero()<<" coeff "<<((getVectArcs())[i]).getCoef()<<std::endl;
+        }
+
+        fichier.close();
+
+    }
+    else std::cout << "Erreur ouverture fichier chargement graphe " << std::endl;
+
+}
+
+void Graphe::sauvegarde_fichier(std::string f)
+{
+    ofstream fichier;
     fichier.open(f);
 
     if(fichier)
     {
-        BITMAP* Menu = load_bitmap("Menu.bmp",NULL);
-        if (!Menu)
+        //On sauvegarde l'ordre
+        fichier << getOrdre() << std::endl;
+
+        for(int i =0; i<getOrdre(); i++)
         {
-            allegro_message("prb allocation BITMAP menu");
-            allegro_exit();
-            exit(EXIT_FAILURE);
+            //On sauvegarde dans le fichier les 2 sommets de l'arete et le poids de celle-ci
+            fichier << (getVectSom()[i]).getName();
+            fichier << " ";
+            fichier << (getVectSom()[i]).getNumero();
+            fichier << " ";
+            fichier << (getVectSom()[i]).getN();
+            fichier << " ";
+            fichier << (getVectSom()[i]).getK();
+            fichier << " ";
+            fichier << (getVectSom()[i]).getR();
+            fichier << " ";
+            fichier << (getVectSom()[i]).getCoordX();
+            fichier << " ";
+            fichier << (getVectSom()[i]).getCoordY();
+            fichier << std::endl;
+        }
+        fichier<<getNbArcs()<<std::endl;
+        for(int i = 0; i<getNbArcs(); i++)
+        {
+            fichier << (getVectArcs()[i]).getS1().getNumero();
+            fichier << " ";
+            fichier << (getVectArcs()[i]).getS2().getNumero();
+            fichier << std::endl;
         }
 
-        int ordre, nb_arcs;
+    fichier.close();
+    std::cout<<"Sauvegarde effectuée"<<std::endl;
+    }else std::cout << "Erreur fichier kruskal..." << std::endl << std::endl;
+
+
+
+}
+void Graphe::modifier_param()
+{
+    std::string choix, nouv_nom;
+    int som, nouv;
+    std::cout<<"Quel Sommet souhaitez vous modifier ? (numero) "<<std::endl;
+    std::cin>>som;
+
+    std::cout<<"Lequel de ces parametres souhaitez vous modifier ?(nom, K, R, N)"<<std::endl;
+    std::cin>>choix;
+
+    //Si on choisit de modifier K
+    //On crée un sommet avec les mêmes propriétés que celui à modier sauf K qui a été actualisé
+    //On l'intègre au vecteur de sommet
+    //De même si le choix est N, R ou nom
+    if(choix=="K")
+    {
+        std::cout<<"K actuel pour "<<(getVectSom()[som]).getName()<<" : "<<(getVectSom()[som]).getK()<<std::endl;
+        std::cout<<"Saisir nouveau K"<<std::endl;
+        std::cin>>nouv;
+        Sommet s((getVectSom()[som]).getName(), (getVectSom()[som]).getNumero(), (getVectSom()[som]).getN(), nouv, (getVectSom()[som]).getR(), (getVectSom()[som]).getCoordX(), (getVectSom()[som]).getCoordY(), (getVectSom()[som]).getImage(), (getVectSom()[som]).getAffSom(), (getVectSom()[som]).getSelect());
         std::vector<Sommet> vec_som;
-        std::vector<Arc> vec_arc;
-
-        fichier >> ordre;
-        setOrdre(ordre);
-        for(int i = 0; i<getOrdre(); i++)
+        for(int i=0; i<getOrdre(); i++)
         {
-            int num, n, k, x, y;
-            float r;
-            std::string nom;
-
-            k = 0;
-            fichier>>nom;
-            fichier>>num;
-            fichier>>n;
-            fichier>>r;
-            fichier>>x;
-            fichier>>y;
-
-            Sommet s(nom, num, n,k, r, x, y, Menu, true, false);
-            vec_som.push_back(s);
+            if (i==som) vec_som.push_back(s);
+            else vec_som.push_back(getVectSom()[i]);
         }
-        fichier >> nb_arcs;
-        setNbArcs(nb_arcs);
-        for(int i=0; i<getNbArcs(); i++)
-        {
-            int s1, s2;
-            float coeff;
-
-            fichier >> s1;
-            fichier >> s2;
-
-            coeff = (vec_som[s1].getN())/(vec_som[s2].getN());
-            Arc a(vec_som[s1], vec_som[s2], coeff, true);
-            vec_arc.push_back(a);
-        }
-
         setVectSom(vec_som);
-        setVectArcs(vec_arc);
 
-        fichier.close();
-        std::cout<<"Graphe :"<<std::endl;
-        std::cout<<"\n\nOrdre : "<<getOrdre()<<std::endl;
-        std::cout<<"\n\nNB Arcs : "<<getNbArcs()<<std::endl;
-        /*for(int i =0; i < getOrdre(); i++)
-        {
-            std::cout<<((getVectSom())[i]).getName()<<" "<<((getVectSom())[i]).getN()<<" "<<((getVectSom())[i]).getR()<<" "<<((getVectSom())[i]).getCoordX()<<" "<<((getVectSom())[i]).getCoordY()<<std::endl;
-        }
-        for(int i=0; i<getNbArcs(); i++)
-        {
-
-            std::cout<<"Arc "<<i+1<<" : "<<((getVectArcs())[i]).getS1())<< " et "<<(((getVectArcs())[i]).getS2())<<" coeff "<<((getVectArcs())[i]).getCoef()<<std::endl;
-        }*/
     }
-    else std::cout << "Erreur ouverture fichier chargement graphe kruskal" << std::endl;
+    if(choix=="N")
+    {
+        std::cout<<"N actuel pour "<<(getVectSom()[som]).getName()<<" : "<<(getVectSom()[som]).getN()<<std::endl;
+        std::cout<<"Saisir nouveau N"<<std::endl;
+        std::cin>>nouv;
+        Sommet s((getVectSom()[som]).getName(), (getVectSom()[som]).getNumero(), nouv, (getVectSom()[som]).getK(), (getVectSom()[som]).getR(), (getVectSom()[som]).getCoordX(), (getVectSom()[som]).getCoordY(), (getVectSom()[som]).getImage(), (getVectSom()[som]).getAffSom(), (getVectSom()[som]).getSelect());
+        std::vector<Sommet> vec_som;
+        for(int i=0; i<getOrdre(); i++)
+        {
+            if (i==som) vec_som.push_back(s);
+            else vec_som.push_back(getVectSom()[i]);
+        }
+        setVectSom(vec_som);
+
+    }
+    if(choix=="nom")
+    {
+        std::cout<<"Nom actuel pour "<<(getVectSom()[som]).getName()<<" : "<<(getVectSom()[som]).getName()<<std::endl;
+        std::cout<<"Saisir nouveau Nom"<<std::endl;
+        std::cin>>nouv_nom;
+        Sommet s(nouv_nom, (getVectSom()[som]).getNumero(), (getVectSom()[som]).getN(), (getVectSom()[som]).getK() , (getVectSom()[som]).getR(), (getVectSom()[som]).getCoordX(), (getVectSom()[som]).getCoordY(), (getVectSom()[som]).getImage(), (getVectSom()[som]).getAffSom(), (getVectSom()[som]).getSelect());
+        std::vector<Sommet> vec_som;
+        for(int i=0; i<getOrdre(); i++)
+        {
+            if (i==som) vec_som.push_back(s);
+            else vec_som.push_back(getVectSom()[i]);
+        }
+        setVectSom(vec_som);
+
+    }
+    if(choix=="R")
+    {
+        std::cout<<"R actuel pour "<<(getVectSom()[som]).getName()<<" : "<<(getVectSom()[som]).getR()<<std::endl;
+        std::cout<<"Saisir nouveau R"<<std::endl;
+        std::cin>>nouv;
+        Sommet s((getVectSom()[som]).getName(), (getVectSom()[som]).getNumero(), (getVectSom()[som]).getN(), (getVectSom()[som]).getK(), nouv, (getVectSom()[som]).getCoordX(), (getVectSom()[som]).getCoordY(), (getVectSom()[som]).getImage(), (getVectSom()[som]).getAffSom(), (getVectSom()[som]).getSelect());
+        std::vector<Sommet> vec_som;
+        for(int i=0; i<getOrdre(); i++)
+        {
+            if (i==som) vec_som.push_back(s);
+            else vec_som.push_back(getVectSom()[i]);
+        }
+        setVectSom(vec_som);
+
+    }
+
+    ///Affichage
+    std::cout<<"\n\nGraphe :"<<std::endl;
+    std::cout<<"\nOrdre : "<<getOrdre()<<std::endl;
+    std::cout<<"NB Arcs : \n"<<getNbArcs()<<std::endl;
+    for(int i =0; i < getOrdre(); i++)
+    {
+        std::cout<<((getVectSom())[i]).getName()<<" "<<((getVectSom())[i]).getN()<<" "<<((getVectSom())[i]).getK()<<" "<<((getVectSom())[i]).getR()<<" "<<((getVectSom())[i]).getCoordX()<<" "<<((getVectSom())[i]).getCoordY()<<std::endl;
+    }
+    std::cout<<"\n\n";
+    for(int i=0; i<getNbArcs(); i++)
+    {
+        std::cout<<"Arc "<<(i+1)<<" : "<<((getVectArcs())[i]).getS1().getNumero()<< " et "<<((getVectArcs())[i]).getS2().getNumero()<<" coeff "<<((getVectArcs())[i]).getCoef()<<std::endl;
+    }
 
 }
 

@@ -197,3 +197,88 @@
 	<iostream>
 	<fstream>
 
+1522788554 source:c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.2\graph_lib_exemple_graph\graph.cpp
+	"graph.h"
+
+1522788554 c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.2\graph_lib_exemple_graph\graph.h
+	<vector>
+	<map>
+	<string>
+	<memory>
+	"grman/grman.h"
+
+1522788556 c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.2\graph_lib_exemple_graph\grman\grman.h
+	<allegro.h>
+	<string>
+	"grman_couleurs.h"
+	"coords.h"
+	"widget.h"
+
+1522788556 c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.2\graph_lib_exemple_graph\grman\grman_couleurs.h
+
+1522788555 c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.2\graph_lib_exemple_graph\grman\coords.h
+	<cmath>
+
+1522788556 c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.2\graph_lib_exemple_graph\grman\widget.h
+	"grman.h"
+	<iostream>
+	<string>
+	<vector>
+	<algorithm>
+	<allegro.h>
+
+1522788555 source:c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.2\graph_lib_exemple_graph\grman\coords.cpp
+	"coords.h"
+
+1522788556 source:c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.2\graph_lib_exemple_graph\grman\grman.cpp
+	<cmath>
+	<unordered_map>
+	<unordered_set>
+	<utility>
+	<string>
+	<iostream>
+	<regex>
+	"grman.h"
+	<allegro.h>
+	<png.h>
+	<loadpng.h>
+	<jpgalleg.h>
+
+1522788556 source:c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.2\graph_lib_exemple_graph\grman\widget.cpp
+	"widget.h"
+
+1522792298 source:c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.2\graph_lib_exemple_graph\main.cpp
+	"grman/grman.h"
+	<iostream>
+	"graph.h"
+	"Graphe.hpp"
+
+1522790525 c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.2\graph_lib_exemple_graph\graphe.hpp
+	"Sommet.hpp"
+	"Arc.hpp"
+	<vector>
+
+1522788554 c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.2\graph_lib_exemple_graph\sommet.hpp
+	<string>
+	<allegro.h>
+
+1522788554 c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.2\graph_lib_exemple_graph\arc.hpp
+	"Sommet.hpp"
+
+1522788554 source:c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.2\graph_lib_exemple_graph\arc.cpp
+	"Arc.hpp"
+
+1522788554 source:c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.2\graph_lib_exemple_graph\sommet.cpp
+	"Sommet.hpp"
+	<stdio.h>
+	<stdlib.h>
+	<iostream>
+
+1522792908 source:c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.2\graph_lib_exemple_graph\graphe.cpp
+	"Graphe.hpp"
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<iostream>
+	<fstream>
+

@@ -1,12 +1,12 @@
 8
-Hibiscus 0 500 4 800 50 845 70
-Salade 1 500 10 490 70
-Vers 2 300 3 845 345
-Sauterelle 3 400 0.1 550 305
-Souris 4 200 3 170 70
-Grenouille 5 300 0.25 290 305 
-Faucon 6 80 36 175 575
-Moineau 7 200 3 845 575
+Hibiscus 0 500 0 4 845 70 1 0
+Salade 1 500 0 10 490 70 1 0
+Ver 2 300 0 3 845 345 1 0
+Sauterelle 3 400 0 0.1 550 305 1 0
+Souris 4 200 0 3 170 70 1 0
+Grenouille 5 150 0 0.25 290 305 1 0
+Faucon 6 80 0 36 175 575 1 0
+Moineau 7 200 0 3 845 575 1 0
 10
 0 2
 1 2
