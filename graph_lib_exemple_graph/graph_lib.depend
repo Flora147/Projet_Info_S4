@@ -282,29 +282,29 @@
 	<iostream>
 	<fstream>
 
-1522840812 source:c:\users\931700683\desktop\version 1.5\graph.cpp
+1522788556 source:c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.5\graph_lib_exemple_graph\graph.cpp
 	"graph.h"
 
-1522840812 c:\users\931700683\desktop\version 1.5\graph.h
+1522788556 c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.5\graph_lib_exemple_graph\graph.h
 	<vector>
 	<map>
 	<string>
 	<memory>
 	"grman/grman.h"
 
-1522840817 c:\users\931700683\desktop\version 1.5\grman\grman.h
+1522788558 c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.5\graph_lib_exemple_graph\grman\grman.h
 	<allegro.h>
 	<string>
 	"grman_couleurs.h"
 	"coords.h"
 	"widget.h"
 
-1522840817 c:\users\931700683\desktop\version 1.5\grman\grman_couleurs.h
+1522788558 c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.5\graph_lib_exemple_graph\grman\grman_couleurs.h
 
-1522840817 c:\users\931700683\desktop\version 1.5\grman\coords.h
+1522788556 c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.5\graph_lib_exemple_graph\grman\coords.h
 	<cmath>
 
-1522840817 c:\users\931700683\desktop\version 1.5\grman\widget.h
+1522788558 c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.5\graph_lib_exemple_graph\grman\widget.h
 	"grman.h"
 	<iostream>
 	<string>
@@ -312,10 +312,10 @@
 	<algorithm>
 	<allegro.h>
 
-1522840816 source:c:\users\931700683\desktop\version 1.5\grman\coords.cpp
+1522788556 source:c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.5\graph_lib_exemple_graph\grman\coords.cpp
 	"coords.h"
 
-1522840817 source:c:\users\931700683\desktop\version 1.5\grman\grman.cpp
+1522837498 source:c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.5\graph_lib_exemple_graph\grman\grman.cpp
 	<cmath>
 	<unordered_map>
 	<unordered_set>
@@ -329,42 +329,41 @@
 	<loadpng.h>
 	<jpgalleg.h>
 
-1522840817 source:c:\users\931700683\desktop\version 1.5\grman\widget.cpp
+1522788558 source:c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.5\graph_lib_exemple_graph\grman\widget.cpp
 	"widget.h"
 
-1522840982 source:c:\users\931700683\desktop\version 1.5\main.cpp
+1522850569 source:c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.5\graph_lib_exemple_graph\main.cpp
 	"grman/grman.h"
 	<iostream>
 	"graph.h"
 	"Graphe.hpp"
 
-1522840812 c:\users\931700683\desktop\version 1.5\graphe.hpp
+1522850112 c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.5\graph_lib_exemple_graph\graphe.hpp
 	"Sommet.hpp"
 	"Arc.hpp"
 	<vector>
 
-1522840813 c:\users\931700683\desktop\version 1.5\sommet.hpp
+1522788556 c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.5\graph_lib_exemple_graph\sommet.hpp
 	<string>
 	<allegro.h>
 
-1522840811 c:\users\931700683\desktop\version 1.5\arc.hpp
+1522840492 c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.5\graph_lib_exemple_graph\arc.hpp
 	"Sommet.hpp"
 
-1522840811 source:c:\users\931700683\desktop\version 1.5\arc.cpp
+1522840666 source:c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.5\graph_lib_exemple_graph\arc.cpp
 	"Arc.hpp"
 
-1522849435 source:c:\users\931700683\desktop\version 1.5\graphe.cpp
+1522788556 source:c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.5\graph_lib_exemple_graph\sommet.cpp
+	"Sommet.hpp"
+	<stdio.h>
+	<stdlib.h>
+	<iostream>
+
+1522850158 source:c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 1.5\graph_lib_exemple_graph\graphe.cpp
 	"Graphe.hpp"
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
 	<iostream>
 	<fstream>
-	<time.h>
-
-1522840813 source:c:\users\931700683\desktop\version 1.5\sommet.cpp
-	"Sommet.hpp"
-	<stdio.h>
-	<stdlib.h>
-	<iostream>
 

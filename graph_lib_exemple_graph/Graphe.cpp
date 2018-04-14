@@ -4,7 +4,6 @@
 #include <math.h>
 #include <iostream>
 #include <fstream>
-#include <time.h>
 
 using namespace std;
 
@@ -204,10 +203,10 @@ void Graphe::sauvegarde_fichier(std::string f)
         for(int i =0; i<getOrdre(); i++)
         {
 
-            if((getVectSom()[i]).getAffSom() == true) b1 =1;
+            if((getVectSom()[i]).getAffSom() == 1) b1 =1;
             else b1 = 0;
 
-            if((getVectSom()[i]).getSelect() == true) b2 =1;
+            if((getVectSom()[i]).getSelect() == 1) b2 =1;
             else b2 = 0;
 
             //On sauvegarde dans le fichier les 2 sommets de l'arete et le poids de celle-ci
@@ -373,22 +372,46 @@ void Graphe::afficher_sommets(BITMAP* img)
     int n;
     for(int i=0; i<getOrdre(); i++)
     {
-        draw_sprite(img, (getVectSom()[i]).getImage(),(getVectSom()[i]).getCoordX(),(getVectSom()[i]).getCoordY() );
-        n = (getVectSom()[i]).getNumero();
-        textprintf(img,font, (getVectSom()[i]).getCoordX()+20, (getVectSom()[i]).getCoordY()-20, makecol(255,255,255) ,"Sommet n° %d",n );
+        if(getVectSom()[i].getAffSom() == true)
+        {
+            draw_sprite(img, (getVectSom()[i]).getImage(),(getVectSom()[i]).getCoordX(),(getVectSom()[i]).getCoordY() );
+            n = (getVectSom()[i]).getNumero();
+            textprintf(img,font, (getVectSom()[i]).getCoordX()+20, (getVectSom()[i]).getCoordY()-20, makecol(255,255,255) ,"Sommet n° %d",n );
+            if(getVectSom()[i].getSelect()) rect(screen, getVectSom()[i].getCoordX(), getVectSom()[i].getCoordY(), getVectSom()[i].getCoordX()+ getVectSom()[i].getImage()->w,getVectSom()[i].getCoordY()+getVectSom()[i].getImage()->h, makecol(0,255,0));
+            else rect(screen, getVectSom()[i].getCoordX(), getVectSom()[i].getCoordY(), getVectSom()[i].getCoordX()+ getVectSom()[i].getImage()->w,getVectSom()[i].getCoordY()+getVectSom()[i].getImage()->h, makecol(0,0,0));
+        }
     }
 }
-
-
-
-
+void Graphe::bouger_sommet(BITMAP *img, int x, int y, int n )
+{
+    int x1,y1;
+    x1 = x;
+    y1 = y;
+    bool test = false;
+    Sommet s = (getVectSom()[n]);
+    std::vector<Sommet> vec_som;
+    s.setCoordX(x);
+    s.setCoordY(y);
+    /*for(int i=0; i<getOrdre(); i++)
+    {
+        if(x>getVectSom()[i].getCoordX() && x<getVectSom()[i].getImage)
+    }*/
+    for(int i=0; i<getOrdre(); i++)
+    {
+        if (i==n) vec_som.push_back(s);
+        else vec_som.push_back(getVectSom()[i]);
+    }
+    setVectSom(vec_som);
+    afficher_sommets(img);
+    afficher_arcs(img);
+}
 /* select_sommet : sous-programme permettant de sélectionner les sommets (le prgm est précédé d'un mouse_b&1)
 ENTREE :
     aucune
 SORTIE :
     aucune
 */
-void Graphe::select_sommet()
+void Graphe::select_sommet(int mx, int my)
 {
 
     //Pour tous les sommets
@@ -396,7 +419,7 @@ void Graphe::select_sommet()
     {
 
        //Si le clic est sur l'image du sommet
-        if (mouse_x>m_vect_som[i].getCoordX() && mouse_x<(m_vect_som[i].getCoordX()+m_vect_som[i].getImage()->w) && mouse_y>m_vect_som[i].getCoordY() && mouse_y<(m_vect_som[i].getCoordY()+m_vect_som[i].getImage()->h))
+        if (mx>m_vect_som[i].getCoordX() && mx<(m_vect_som[i].getCoordX()+m_vect_som[i].getImage()->w) && my>m_vect_som[i].getCoordY() && my<(m_vect_som[i].getCoordY()+m_vect_som[i].getImage()->h))
         {
 
             //Si le sommet n'est pas déjà sélectionné (--> SELECTION)
@@ -418,14 +441,13 @@ void Graphe::select_sommet()
 
 
             //Si le sommet est déjà sélectionné (--> DESELECTION)
-            if(m_vect_som[i].getSelect())
+            else if(m_vect_som[i].getSelect())
             {
                 //Le sommet est désélectionné
                 m_vect_som[i].setSelect(false);
 
                 //On efface le carré (on le met en blanc)
                 rect(screen, m_vect_som[i].getCoordX(), m_vect_som[i].getCoordY(), m_vect_som[i].getCoordX()+m_vect_som[i].getImage()->w, m_vect_som[i].getCoordY()+m_vect_som[i].getImage()->h, makecol(0,0,0));
-
             }
 
         }
@@ -444,24 +466,20 @@ ENTREE :
 SORTIE :
     aucune
 */
-void Graphe::effacer_sommet()
+void Graphe::effacer_sommet(BITMAP* img)
 {
 
+    std::vector<Sommet> vec_som = getVectSom();
     //Instance d'un compteur
     int compteur=0;
-
-
     //Pour tous les sommets
     for(int i=0; i<m_ordre; i++)
     {
-
         //Si le sommet est sélectionné
-        if(m_vect_som[i].getSelect())
+        if(vec_som[i].getSelect())
         {
-
             //On incrémente le compteur
             compteur++;
-
         }
     }
 
@@ -469,21 +487,22 @@ void Graphe::effacer_sommet()
     //Si le compteur est différent de 0
     if(compteur != 0)
     {
-
         //Pour tous les sommets
-        for(int i=0; i<m_ordre; i++)
+        for(int i=0; i<getOrdre(); i++)
         {
 
             //Si le sommet est sélectionné
-            if(m_vect_som[i].getSelect())
+            if(vec_som[i].getSelect())
             {
-
                 //On met son affichage à nul
-                m_vect_som[i].setAffSom(false);
-
+                vec_som[i].setAffSom(false);
+                vec_som[i].setSelect(false);
             }
         }
     }
+
+    setVectSom(vec_som);
+    afficher_sommets(img);
 
 }
 
@@ -663,8 +682,6 @@ void Graphe::recalcul_parametres()
 }
 
 
-
-
 /* afficher_arcs : sous-prgramme permettant d'afficher les arcs à afficher entre 2 sommets
 ENTREE :
     buffer : de type BITMAP*
@@ -673,7 +690,6 @@ SORTIE :
 */
 void Graphe::afficher_arcs(BITMAP* buffer)
 {
-
     //Variables temporaires
     int X2, X3, Y2, Y3;
 
