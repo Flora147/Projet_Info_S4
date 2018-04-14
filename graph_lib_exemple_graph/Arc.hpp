@@ -45,6 +45,7 @@ class Arc
         void setArrowY1(int arrow_y1);
         void setLine_S1_X(int line_s1_x);
         void setLine_S1_Y(int line_s1_y);
+        void afficher_arc(BITMAP* buffer);
 
 };
 

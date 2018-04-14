@@ -556,42 +556,6 @@ void Graphe::afficher_sommets(BITMAP* img)
     //Pour tous les sommets du graphe
     for(int i=0; i<getOrdre(); i++)
     {
-
-        //Si le sommet est affiché
-        if(getVectSom()[i].getAffSom())
-        {
-
-            //Pour tous les arcs
-            for(int j=0; j<m_nb_arcs; j++)
-            {
-
-                //Si le sommet i est égale au sommet 1 de l'arc
-                if(i == m_vect_arcs[j].getS1().getNumero())
-                {
-                    compteur[j] = compteur[j] + 1;
-                }
-
-                //Si le sommet i est égale au sommet 2 de l'arc
-                else if(i == m_vect_arcs[j].getS2().getNumero())
-                {
-                    compteur[j] = compteur[j] + 1;
-                }
-            }
-
-            //Pour tous les arcs
-            for(int j=0; j<m_nb_arcs; j++)
-            {
-
-                //Si le compteur de cet arc vaut 2
-                if(compteur[j] == 2)
-                {
-                    //Alors il est affiché
-                    m_vect_arcs[j].setAffArc(true);
-                }
-
-            }
-
-
             //On affiche sa BITMAP
             draw_sprite(img, (getVectSom()[i]).getImage(), (getVectSom()[i]).getCoordX(), (getVectSom()[i]).getCoordY());
 
@@ -607,7 +571,43 @@ void Graphe::afficher_sommets(BITMAP* img)
             //Sinon
             else rect(screen, getVectSom()[i].getCoordX(), getVectSom()[i].getCoordY(), getVectSom()[i].getCoordX()+ getVectSom()[i].getImage()->w, getVectSom()[i].getCoordY()+getVectSom()[i].getImage()->h, makecol(0,0,0));
 
-        }
+            //Si le sommet est affiché
+            if(getVectSom()[i].getAffSom())
+            {
+
+                //Pour tous les arcs
+                for(int j=0; j<m_nb_arcs; j++)
+                {
+
+                    //Si le sommet i est égale au sommet 1 de l'arc
+                    if(i == m_vect_arcs[j].getS1().getNumero())
+                    {
+                        compteur[j] = compteur[j] + 1;
+                    }
+
+                    //Si le sommet i est égale au sommet 2 de l'arc
+                    else if(i == m_vect_arcs[j].getS2().getNumero())
+                    {
+                        compteur[j] = compteur[j] + 1;
+                    }
+                }
+
+                //Pour tous les arcs
+                for(int j=0; j<m_nb_arcs; j++)
+                {
+
+                    //Si le compteur de cet arc vaut 2
+                    if(compteur[j] == 2)
+                    {
+                        //Alors il est affiché
+                        m_vect_arcs[j].setAffArc(true);
+                        m_vect_arcs[j].afficher_arc(img);
+                    }
+
+                }
+
+
+            }
 
     }
 
@@ -639,6 +639,7 @@ void Graphe::bouger_sommet(BITMAP *img, int x, int y, int n)
     s.setCoordX(x);
     s.setCoordY(y);
 
+
     // On crée un vecteur de sommets
     std::vector<Sommet> vec_som;
 
@@ -646,11 +647,12 @@ void Graphe::bouger_sommet(BITMAP *img, int x, int y, int n)
     //Si plusieurs sommets sont sélectionnés
     if(getVectSom()[n].getSelect() == true) multiple = true;
 
+
     //Pour tous les sommets du graphe
     for(int i=0; i<getOrdre(); i++)
     {
         //Si plusieurs sommets sont sélectionnés alors le premier dans l'ordre des numéros est sélectionné et les autres sont désélectionnés
-        if(multiple==true) m_vect_som[i].setSelect(0);
+        if(multiple) m_vect_som[i].setSelect(0);
 
         //On affiche les sommets
         afficher_sommets(img);
@@ -664,7 +666,7 @@ void Graphe::bouger_sommet(BITMAP *img, int x, int y, int n)
     {
 
         //Si le sommet est différent de celui sélectionné
-        if(i!=n)
+        if(i != n)
         {
 
             if((x>getVectSom()[i].getCoordX()-getVectSom()[i].getImage()->w) && (x<getVectSom()[i].getCoordX()+ getVectSom()[i].getImage()->w))
@@ -675,16 +677,16 @@ void Graphe::bouger_sommet(BITMAP *img, int x, int y, int n)
                     test = true;
                     s.setCoordX(getVectSom()[n].getCoordX());
                     s.setCoordY(getVectSom()[n].getCoordY());
-                    i =getOrdre();
+                    i = getOrdre();
                 }
             }
 
-            else if (x<125)
+            else if (x < 125)
             {
-                test ==true;
+                test = true;
                 s.setCoordX(getVectSom()[n].getCoordX());
                 s.setCoordY(getVectSom()[n].getCoordY());
-                i =getOrdre();
+                i = getOrdre();
             }
         }
     }
@@ -697,11 +699,15 @@ void Graphe::bouger_sommet(BITMAP *img, int x, int y, int n)
         else vec_som.push_back(getVectSom()[i]);
     }
 
+
+
     //On donne au vecteur de sommets du graphe les valeurs du vecteur de sommets de la fonction
     setVectSom(vec_som);
 
     //On affiche les sommets
     afficher_sommets(img);
+
+
 }
 
 
@@ -764,6 +770,7 @@ void Graphe::select_sommet(int mx, int my)
 
 
 
+
 /* effacer_sommet : sous-programme permettant d'effacer un ou plusieurs sommets
 ENTREE :
     aucune
@@ -812,7 +819,7 @@ void Graphe::effacer_sommet(BITMAP* img)
         }
     }
 
-
+/*
     //Instance d'un vecteur d'Arcs
     std::vector<Arc> vec_arc = getVectArcs();
 
@@ -825,16 +832,17 @@ void Graphe::effacer_sommet(BITMAP* img)
         //Si le sommet 2 de l'arc n'est pas affiché alors l'arc n'est pas affiché
         //if() vec_arc[i].setAffArc(false);
     }
-
+*/
 
     //Modifications des vecteurs de sommets et d'arcs du graphe
     setVectSom(vec_som);
-    setVectArcs(vec_arc);
+    //setVectArcs(vec_arc);
 
     //Affichage des sommets
     afficher_sommets(img);
 
 }
+
 
 
 
@@ -914,7 +922,7 @@ void Graphe::ajouter_sommet()
     m_vect_som[som].setAffSom(true);
 
     }
-
+/*
     std::vector<Arc> vec_arc = getVectArcs();
     for(int i=0; i<getNbArcs(); i++)
     {
@@ -922,8 +930,9 @@ void Graphe::ajouter_sommet()
         else if(m_vect_som[vec_arc[i].getS2().getNumero()].getAffSom() == true) vec_arc[i].setAffArc(true);
         else vec_arc[i].setAffArc(false);
     }
-    setVectArcs(vec_arc);
 
+    setVectArcs(vec_arc);
+*/
 }
 
 
@@ -1238,6 +1247,7 @@ void Graphe::afficher_arcs(BITMAP* buffer)
 */
 
 
+
 /// Source : https://www.geeksforgeeks.org/strongly-connected-components/
 //A appliquer à chaque graphe pour voir les composantes connexes
 /* forte_co : sous-programme permettant de trouver les composantes connexes
@@ -1317,6 +1327,9 @@ void Graphe::forte_co(Graphe g, BITMAP* img)
 }
 
 
+
+
+
 /// Source : https://www.geeksforgeeks.org/strongly-connected-components/
 /* DFS1 : sous-programme permettant d'effectuer le premier DFS
 ENTREE :
@@ -1361,6 +1374,11 @@ void Graphe::DFS1(int s, bool marq[], std::stack<int> &pile)
 }
 
 
+
+
+
+
+
 /// Source : https://www.geeksforgeeks.org/strongly-connected-components/
 /* DFS2 : sous-programme permettant d'effectuer le second DFS
 ENTREE :
@@ -1368,7 +1386,7 @@ ENTREE :
     marq[] : tableau de booleen qui contient les marquages
     col : int qui contient la couleur random
     img : BITMAP*
-   SORTIE :
+SORTIE :
     aucune
 */
 void Graphe::DFS2(int s, bool marq[], int col, Graphe g,BITMAP* img)
@@ -1385,6 +1403,7 @@ void Graphe::DFS2(int s, bool marq[], int col, Graphe g,BITMAP* img)
         {
             //On fait un affichage spécial du sommet concerné avec col
             rect(img, m_vect_som[i].getCoordX()-70, m_vect_som[i].getCoordY()-70,m_vect_som[i].getCoordX()+70,m_vect_som[i].getCoordY()+70,col);
+            std::cout << "OOK" << std::endl;
         }
     }
 
@@ -1413,5 +1432,3 @@ void Graphe::DFS2(int s, bool marq[], int col, Graphe g,BITMAP* img)
         }
     }
 }
-
-

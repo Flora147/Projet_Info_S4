@@ -95,6 +95,7 @@ int main()
 
     while(!key[KEY_ESC])
     {
+
         if(mouse_b&1)
         {
             x = mouse_x;
@@ -103,9 +104,13 @@ int main()
             if(m==false) graphe.select_sommet(x, y);
 
             c = getpixel(sous_fond, mouse_x, mouse_y);
+
             if(c==makecol(255,0,0)) graphe.effacer_sommet(Buffer);
+
             else if (c==makecol(0,0,0)) graphe.modifier_param();
+
             else if(c==makecol(0,255,0)) graphe.ajouter_sommet();
+
             else if(c==makecol(255,255,255))
             {
                 if (m==true)
@@ -116,6 +121,8 @@ int main()
                     m = false;
                 }
             }
+
+
             else if(c==makecol(0,0,255))
             {
                if (m==true)
@@ -126,6 +133,8 @@ int main()
                     m = false;
                 }
             }
+
+
             else if(c==makecol(255, 255,0 ))
             {
                 if (m==true)
@@ -136,25 +145,34 @@ int main()
                     m = false;
                 }
             }
+
+
             else if(c==makecol(0, 255, 255))
             {
                 //quitter
+                //exit(0);
+
             }
+
+
             else if(c==makecol(255,0,255))
             {
                 graphe.sauvegarde_fichier(nom);
                 actuelle = menu;
                 m = true;
             }
+
             else if(c==makecol(255,174,201))
             {
                 //K-connexité
             }
+
             else if(c==makecol(255,128,0))
             {
                 //Forte connexite
-                graphe.forte_co(graphe, buffer);
+                graphe.forte_co(graphe, Buffer);
             }
+
             else if(c==makecol(34,177,76))
             {
                 //Temps réel
@@ -163,26 +181,35 @@ int main()
             rest(1000);
         }
 
+
         if(mouse_b&2)
         {
             x = mouse_x;
             y = mouse_y;
-            for(int i=0;i<graphe.getOrdre(); i++)
+
+
+            for(int i=0; i<graphe.getOrdre(); i++)
             {
+
                 if(graphe.getVectSom()[i].getSelect()==true)
                 {
                     graphe.bouger_sommet(Buffer, x, y, i);
                 }
             }
+
             rest(1000);
         }
+
 
         if(m==false) graphe.afficher_sommets(Buffer);
         blit(Buffer,screen,0,0,0,0,1024,768);
         blit(actuelle, Buffer, 0,0,0,0,1024,768);
     }
 
+
     graphe.sauvegarde_fichier(nom);
+
     return 0;
+
 }
 END_OF_MAIN();
