@@ -49,17 +49,26 @@ class Graphe
         void afficher_sommets(BITMAP* img);
         void bouger_sommet(BITMAP* img, int x, int y, int n);
         void modifier_param();
-        void conservation_para();
         void calcul_para_post_modif(std::vector<Sommet> vec_som);
         void select_sommet(int mx, int my);
         void effacer_sommet(BITMAP* img);
         void ajouter_sommet();
         void recalcul_parametres();
         //void afficher_arcs(BITMAP* buffer);
+
+        //FORTE CONNEXITE
         void DFS1(int s, bool marq[], std::stack<int> &pile);
         void DFS2(int s, bool marq[], int col, Graphe g,BITMAP* img);
         void forte_co(Graphe g,BITMAP* img);
+
+        //TEMPS REEL
         void temps_reel(BITMAP* img, BITMAP* img2, int compt);
+        void conservation_para();
+
+        //K_CONNEXITE
+        void k_connexite(BITMAP* buffer);
+        void BFS(int sommet_initial);
+
 };
 
 #endif // GRAPHE_HPP_INCLUDED

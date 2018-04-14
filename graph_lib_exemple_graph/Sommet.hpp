@@ -20,6 +20,7 @@ class Sommet
         BITMAP* m_image;
         bool m_aff_som;
         bool m_select;
+        bool m_marque;
         bool m_veget;
 
 
@@ -27,7 +28,7 @@ class Sommet
     public :
         //Constructeur surchargé et destructeur
         Sommet();
-        Sommet(std::string _name, int _numero, int _N, int _K, float _r, int _coord_x, int _coord_y, BITMAP* _image, bool _aff_som, bool _select, int _N_temp, int _K_temp, bool _veget);
+        Sommet(std::string _name, int _numero, int _N, int _K, float _r, int _coord_x, int _coord_y, BITMAP* _image, bool _aff_som, bool _select, bool _marque,int _N_temp, int _K_temp, bool _veget);
         ~Sommet();
 
 
@@ -40,12 +41,12 @@ class Sommet
             int getK();
             int getKTemp();
             float getR();
-            float getRTemp();
             int getCoordX();
             int getCoordY();
             BITMAP* getImage();
             bool getAffSom();
             bool getSelect();
+            bool getMarque();
             bool getVeget();
 
             //setters
@@ -61,6 +62,7 @@ class Sommet
             void setImage(BITMAP* image);
             void setAffSom(bool aff_som);
             void setSelect(bool select);
+            void setMarque(bool marque);
             void setVeget(bool v);
 
 

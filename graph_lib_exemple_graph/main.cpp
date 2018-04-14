@@ -42,7 +42,7 @@ int main()
 
     //Section F : ouverture mode grapique
     set_color_depth(desktop_color_depth());
-    if(set_gfx_mode(GFX_AUTODETECT,1024,768,0,0)!=0)
+    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,1024,768,0,0)!=0)
     {
         allegro_message("probleme mode graphique");
         allegro_exit();
@@ -112,7 +112,7 @@ int main()
                 if (m==true)
                 {
                     nom ="faucon_et_hibiscus.txt";
-                    graphe.lecture_fichier("faucon_et_hibiscus.txt");
+                    graphe.lecture_fichier(nom);
                     actuelle = fond;
                     m = false;
                 }
@@ -131,7 +131,7 @@ int main()
             }
 
 
-            else if(c==makecol(255, 255,0 ))
+            else if(c==makecol(255,255,0))
             {
                 if (m==true)
                 {
@@ -143,11 +143,13 @@ int main()
             }
 
 
-            else if(c==makecol(0, 255, 255))
+            else if(c==makecol(0,255,255))
             {
-                //quitter
-                //exit(0);
-
+                if(m==true)
+                {
+                    //quitter
+                    exit(0);
+                }
             }
 
 
@@ -161,13 +163,13 @@ int main()
             else if(c==makecol(255,174,201))
             {
                 //K-connexité
+                graphe.k_connexite(Buffer);
             }
 
             else if(c==makecol(255,128,0))
             {
                 //Forte connexite
                 graphe.forte_co(graphe, actuelle);
-                compt2 = 0;
             }
 
             else if(c==makecol(34,177,76))
@@ -184,8 +186,11 @@ int main()
         {
             x = mouse_x;
             y = mouse_y;
-            for(int i=0;i<graphe.getOrdre(); i++)
+
+
+            for(int i=0; i<graphe.getOrdre(); i++)
             {
+
                 if(graphe.getVectSom()[i].getSelect()==true)
                 {
                     graphe.bouger_sommet(Buffer, x, y, i);
@@ -194,8 +199,7 @@ int main()
 
             rest(1000);
         }
-
-        if((tps_reel == true )&&(key[KEY_ENTER]))
+                if((tps_reel == true )&&(key[KEY_ENTER]))
         {
 
            while(tps_reel!= false)
@@ -211,6 +215,8 @@ int main()
                 compt++;
             }
         }
+
+
         if(m==false)
         {
             //Si on avait appyé sur forte connexité et qu'on appuie sur F, affiche la forte connexité
@@ -230,11 +236,14 @@ int main()
             }
 
         }
+
         blit(Buffer,screen,0,0,0,0,1024,768);
         blit(actuelle, Buffer, 0,0,0,0,1024,768);
     }
 
+
     graphe.sauvegarde_fichier(nom);
+
     return 0;
 
 }

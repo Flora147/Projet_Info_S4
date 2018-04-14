@@ -4,7 +4,7 @@
 
 //Construteur par défaut
 Arc::Arc()
-    :m_s1(" ",0,0,0,0,0,0,NULL,false,false, 0, 0, false), m_s2(" ",0,0,0,0,0,0,NULL,false,false,0,0, false), m_Coef(0),m_Coef_temp(0), m_aff_arc(false),m_arrow_x1(0), m_arrow_y1(0), m_line_s1_x(0), m_line_s1_y(0)
+    :m_s1(" ",0,0,0,0,0,0,NULL,false,false,false,0,0,false), m_s2(" ",0,0,0,0,0,0,NULL,false,false,false,0,0,false), m_Coef(0),m_Coef_temp(0), m_aff_arc(false),m_arrow_x1(0), m_arrow_y1(0), m_line_s1_x(0), m_line_s1_y(0)
 {
 
 }
@@ -12,7 +12,7 @@ Arc::Arc()
 
 //Constructeur surchargé
 Arc::Arc(Sommet _s1, Sommet _s2, float _Coef, bool _aff_arc, float _coef_temp)
-    :m_s1(_s1), m_s2(_s2), m_Coef(_Coef), m_aff_arc(_aff_arc),m_arrow_x1(0), m_arrow_y1(0), m_line_s1_x(0), m_line_s1_y(0), m_Coef_temp(_coef_temp)
+    :m_s1(_s1), m_s2(_s2), m_Coef(_Coef), m_Coef_temp(_coef_temp),m_aff_arc(_aff_arc),m_arrow_x1(0), m_arrow_y1(0), m_line_s1_x(0), m_line_s1_y(0)
 {
 
 }
@@ -47,11 +47,13 @@ float Arc::getCoef()
 {
     return m_Coef;
 }
+
 //getter qui retourne l'attribut "m_Coef_temp"
 float Arc::getCoefTemp()
 {
     return m_Coef_temp;
 }
+
 //getter qui retourne l'attribut "m_aff_arc"
 bool Arc::getAffArc()
 {
@@ -100,11 +102,13 @@ void Arc::setCoef(float Coef)
 {
     m_Coef=Coef;
 }
-//setter qui modifie l'attribut "m_Coef_temp"
+
+//setter qui modifie l'attribut "m_Coef"
 void Arc::setCoefTemp(float Coef_t)
 {
     m_Coef_temp=Coef_t;
 }
+
 //setter qui modifie l'attribut "m_aff_arc"
 void Arc::setAffArc(bool aff_arc)
 {
@@ -135,6 +139,9 @@ void Arc::setLine_S1_Y(int line_s1_y)
 {
     m_line_s1_y=line_s1_y;
 }
+
+
+
 
 /* afficher_arcs : sous-programme permettant d'afficher un arc à afficher entre 2 sommets
 ENTREE :
@@ -330,3 +337,4 @@ void Arc::afficher_arc(BITMAP* buffer)
 
     }
 }
+

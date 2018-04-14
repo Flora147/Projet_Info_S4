@@ -569,39 +569,39 @@
 	<stdlib.h>
 	<iostream>
 
-1522932529 source:c:\users\margot\desktop\version 2.3\graph_lib_exemple_graph\arc.cpp
+1523005288 source:c:\users\931700683\desktop\version 2.3\version 2.3\graph_lib_exemple_graph\arc.cpp
 	"Arc.hpp"
 
-1522931655 c:\users\margot\desktop\version 2.3\graph_lib_exemple_graph\arc.hpp
+1523004610 c:\users\931700683\desktop\version 2.3\version 2.3\graph_lib_exemple_graph\arc.hpp
 	"Sommet.hpp"
 
-1522931656 c:\users\margot\desktop\version 2.3\graph_lib_exemple_graph\sommet.hpp
+1523005012 c:\users\931700683\desktop\version 2.3\version 2.3\graph_lib_exemple_graph\sommet.hpp
 	<string>
 	<allegro.h>
 
-1522931796 source:c:\users\margot\desktop\version 2.3\graph_lib_exemple_graph\graph.cpp
+1522941011 source:c:\users\931700683\desktop\version 2.3\version 2.3\graph_lib_exemple_graph\graph.cpp
 	"graph.h"
 
-1522931656 c:\users\margot\desktop\version 2.3\graph_lib_exemple_graph\graph.h
+1522941011 c:\users\931700683\desktop\version 2.3\version 2.3\graph_lib_exemple_graph\graph.h
 	<vector>
 	<map>
 	<string>
 	<memory>
 	"grman/grman.h"
 
-1522931657 c:\users\margot\desktop\version 2.3\graph_lib_exemple_graph\grman\grman.h
+1522941013 c:\users\931700683\desktop\version 2.3\version 2.3\graph_lib_exemple_graph\grman\grman.h
 	<allegro.h>
 	<string>
 	"grman_couleurs.h"
 	"coords.h"
 	"widget.h"
 
-1522931657 c:\users\margot\desktop\version 2.3\graph_lib_exemple_graph\grman\grman_couleurs.h
+1522941013 c:\users\931700683\desktop\version 2.3\version 2.3\graph_lib_exemple_graph\grman\grman_couleurs.h
 
-1522931656 c:\users\margot\desktop\version 2.3\graph_lib_exemple_graph\grman\coords.h
+1522941013 c:\users\931700683\desktop\version 2.3\version 2.3\graph_lib_exemple_graph\grman\coords.h
 	<cmath>
 
-1522931657 c:\users\margot\desktop\version 2.3\graph_lib_exemple_graph\grman\widget.h
+1522941013 c:\users\931700683\desktop\version 2.3\version 2.3\graph_lib_exemple_graph\grman\widget.h
 	"grman.h"
 	<iostream>
 	<string>
@@ -609,24 +609,25 @@
 	<algorithm>
 	<allegro.h>
 
-1522936901 source:c:\users\margot\desktop\version 2.3\graph_lib_exemple_graph\graphe.cpp
+1523005905 source:c:\users\931700683\desktop\version 2.3\version 2.3\graph_lib_exemple_graph\graphe.cpp
 	"Graphe.hpp"
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
 	<iostream>
 	<fstream>
+	<queue>
 
-1522932165 c:\users\margot\desktop\version 2.3\graph_lib_exemple_graph\graphe.hpp
+1523005451 c:\users\931700683\desktop\version 2.3\version 2.3\graph_lib_exemple_graph\graphe.hpp
 	"Sommet.hpp"
 	"Arc.hpp"
 	<vector>
 	<stack>
 
-1522931656 source:c:\users\margot\desktop\version 2.3\graph_lib_exemple_graph\grman\coords.cpp
+1522941013 source:c:\users\931700683\desktop\version 2.3\version 2.3\graph_lib_exemple_graph\grman\coords.cpp
 	"coords.h"
 
-1522931657 source:c:\users\margot\desktop\version 2.3\graph_lib_exemple_graph\grman\grman.cpp
+1522941013 source:c:\users\931700683\desktop\version 2.3\version 2.3\graph_lib_exemple_graph\grman\grman.cpp
 	<cmath>
 	<unordered_map>
 	<unordered_set>
@@ -640,104 +641,18 @@
 	<loadpng.h>
 	<jpgalleg.h>
 
-1522931657 source:c:\users\margot\desktop\version 2.3\graph_lib_exemple_graph\grman\widget.cpp
+1522941013 source:c:\users\931700683\desktop\version 2.3\version 2.3\graph_lib_exemple_graph\grman\widget.cpp
 	"widget.h"
 
-1522936634 source:c:\users\margot\desktop\version 2.3\graph_lib_exemple_graph\main.cpp
+1523006093 source:c:\users\931700683\desktop\version 2.3\version 2.3\graph_lib_exemple_graph\main.cpp
 	"grman/grman.h"
 	<iostream>
 	"graph.h"
 	"Graphe.hpp"
 
-1522931656 source:c:\users\margot\desktop\version 2.3\graph_lib_exemple_graph\sommet.cpp
+1523005204 source:c:\users\931700683\desktop\version 2.3\version 2.3\graph_lib_exemple_graph\sommet.cpp
 	"Sommet.hpp"
 	<stdio.h>
 	<stdlib.h>
 	<iostream>
-
-1522962660 source:c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 2.3\version 2.3\graph_lib_exemple_graph\graph.cpp
-	"graph.h"
-
-1522962660 c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 2.3\version 2.3\graph_lib_exemple_graph\graph.h
-	<vector>
-	<map>
-	<string>
-	<memory>
-	"grman/grman.h"
-
-1522962661 c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 2.3\version 2.3\graph_lib_exemple_graph\grman\grman.h
-	<allegro.h>
-	<string>
-	"grman_couleurs.h"
-	"coords.h"
-	"widget.h"
-
-1522962661 c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 2.3\version 2.3\graph_lib_exemple_graph\grman\grman_couleurs.h
-
-1522962661 c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 2.3\version 2.3\graph_lib_exemple_graph\grman\coords.h
-	<cmath>
-
-1522962661 c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 2.3\version 2.3\graph_lib_exemple_graph\grman\widget.h
-	"grman.h"
-	<iostream>
-	<string>
-	<vector>
-	<algorithm>
-	<allegro.h>
-
-1522962661 source:c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 2.3\version 2.3\graph_lib_exemple_graph\grman\coords.cpp
-	"coords.h"
-
-1522962661 source:c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 2.3\version 2.3\graph_lib_exemple_graph\grman\grman.cpp
-	<cmath>
-	<unordered_map>
-	<unordered_set>
-	<utility>
-	<string>
-	<iostream>
-	<regex>
-	"grman.h"
-	<allegro.h>
-	<png.h>
-	<loadpng.h>
-	<jpgalleg.h>
-
-1522962661 source:c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 2.3\version 2.3\graph_lib_exemple_graph\grman\widget.cpp
-	"widget.h"
-
-1522964585 source:c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 2.3\version 2.3\graph_lib_exemple_graph\arc.cpp
-	"Arc.hpp"
-
-1522964585 c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 2.3\version 2.3\graph_lib_exemple_graph\arc.hpp
-	"Sommet.hpp"
-
-1522963218 c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 2.3\version 2.3\graph_lib_exemple_graph\sommet.hpp
-	<string>
-	<allegro.h>
-
-1522963450 source:c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 2.3\version 2.3\graph_lib_exemple_graph\sommet.cpp
-	"Sommet.hpp"
-	<stdio.h>
-	<stdlib.h>
-	<iostream>
-
-1522969042 source:c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 2.3\version 2.3\graph_lib_exemple_graph\graphe.cpp
-	"Graphe.hpp"
-	<stdio.h>
-	<stdlib.h>
-	<math.h>
-	<iostream>
-	<fstream>
-
-1522964585 c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 2.3\version 2.3\graph_lib_exemple_graph\graphe.hpp
-	"Sommet.hpp"
-	"Arc.hpp"
-	<vector>
-	<stack>
-
-1522969042 source:c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\version 2.3\version 2.3\graph_lib_exemple_graph\main.cpp
-	"grman/grman.h"
-	<iostream>
-	"graph.h"
-	"Graphe.hpp"
 

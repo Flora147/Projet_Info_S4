@@ -4,6 +4,7 @@
 #include <math.h>
 #include <iostream>
 #include <fstream>
+#include <queue>
 
 using namespace std;
 
@@ -162,7 +163,7 @@ void Graphe::lecture_fichier(std::string f)
             }
 
             //On crée le sommet et on l'ajoute au vecteur de sommet
-            Sommet s(nom, num, n, 0, r, x, y, image, b1, b2, n, 0, b3);
+            Sommet s(nom, num, n, 0, r, x, y, image, b1, b2, false, n, 0, b3);
             vec_som.push_back(s);
         }
         //On lit le nombre d'arcs
@@ -270,7 +271,11 @@ void Graphe::sauvegarde_fichier(std::string f)
             fichier << b3;
             fichier << std::endl;
         }
+
+
         fichier<<getNbArcs()<<std::endl;
+
+
         for(int i = 0; i<getNbArcs(); i++)
         {
             fichier << (getVectArcs()[i]).getS1().getNumero();
@@ -280,9 +285,16 @@ void Graphe::sauvegarde_fichier(std::string f)
         }
 
         fichier.close();
-    }else std::cout << "Erreur fichier sauvegarde..." << std::endl << std::endl;
+
+    }
+
+    else std::cout << "Erreur fichier sauvegarde..." << std::endl << std::endl;
 
 }
+
+
+
+
 
 /* modifier_param : sous-programme permettant de choisir un sommet et d'en modifier un paramètre
 ENTREE :
@@ -338,7 +350,7 @@ void Graphe::modifier_param()
         std::cin>>nouv;
 
         //On crée un sommet avec les mêmes propriétés que celui à modifier sauf K qui a été actualisé
-        Sommet s((getVectSom()[som]).getName(), (getVectSom()[som]).getNumero(), (getVectSom()[som]).getN(), nouv, (getVectSom()[som]).getR(), (getVectSom()[som]).getCoordX(), (getVectSom()[som]).getCoordY(), (getVectSom()[som]).getImage(), (getVectSom()[som]).getAffSom(), (getVectSom()[som]).getSelect(),(getVectSom()[som]).getN(),nouv,(getVectSom()[som]).getVeget() );
+        Sommet s((getVectSom()[som]).getName(), (getVectSom()[som]).getNumero(), (getVectSom()[som]).getN(), nouv, (getVectSom()[som]).getR(), (getVectSom()[som]).getCoordX(), (getVectSom()[som]).getCoordY(), (getVectSom()[som]).getImage(), (getVectSom()[som]).getAffSom(), (getVectSom()[som]).getSelect(),(getVectSom()[som]).getMarque(),(getVectSom()[som]).getN(),nouv,(getVectSom()[som]).getVeget() );
 
         //Pour tous les sommets du graphe
         for(int i=0; i<getOrdre(); i++)
@@ -360,7 +372,7 @@ void Graphe::modifier_param()
         std::cin>>nouv;
 
         //On crée un sommet avec les mêmes propriétés que celui à modifier sauf N qui a été actualisé
-        Sommet s((getVectSom()[som]).getName(), (getVectSom()[som]).getNumero(), nouv, (getVectSom()[som]).getK(), (getVectSom()[som]).getR(), (getVectSom()[som]).getCoordX(), (getVectSom()[som]).getCoordY(), (getVectSom()[som]).getImage(), (getVectSom()[som]).getAffSom(), (getVectSom()[som]).getSelect(),nouv, (getVectSom()[som]).getKTemp(),(getVectSom()[som]).getVeget());
+        Sommet s((getVectSom()[som]).getName(), (getVectSom()[som]).getNumero(), nouv, (getVectSom()[som]).getK(), (getVectSom()[som]).getR(), (getVectSom()[som]).getCoordX(), (getVectSom()[som]).getCoordY(), (getVectSom()[som]).getImage(), (getVectSom()[som]).getAffSom(), (getVectSom()[som]).getSelect(),(getVectSom()[som]).getMarque(),nouv, (getVectSom()[som]).getKTemp(),(getVectSom()[som]).getVeget());
 
         //Pour tous les sommets du graphe
         for(int i=0; i<getOrdre(); i++)
@@ -385,7 +397,7 @@ void Graphe::modifier_param()
         std::cin>>nouv;
 
         //On crée un sommet avec les mêmes propriétés que celui à modifier sauf R qui a été actualisé
-        Sommet s((getVectSom()[som]).getName(), (getVectSom()[som]).getNumero(), (getVectSom()[som]).getN(), (getVectSom()[som]).getK(), nouv, (getVectSom()[som]).getCoordX(), (getVectSom()[som]).getCoordY(), (getVectSom()[som]).getImage(), (getVectSom()[som]).getAffSom(), (getVectSom()[som]).getSelect(),(getVectSom()[som]).getN(),(getVectSom()[som]).getK(),(getVectSom()[som]).getVeget());
+        Sommet s((getVectSom()[som]).getName(), (getVectSom()[som]).getNumero(), (getVectSom()[som]).getN(), (getVectSom()[som]).getK(), nouv, (getVectSom()[som]).getCoordX(), (getVectSom()[som]).getCoordY(), (getVectSom()[som]).getImage(), (getVectSom()[som]).getAffSom(), (getVectSom()[som]).getSelect(),(getVectSom()[som]).getMarque(), (getVectSom()[som]).getN(),(getVectSom()[som]).getK(),(getVectSom()[som]).getVeget());
 
         //Pour tous les sommets du graphe
         for(int i=0; i<getOrdre(); i++)
@@ -533,6 +545,9 @@ void Graphe::afficher_console()
 
 }
 
+
+
+
 /* afficher_sommets : sous-programme permettant d'afficher à l'écran les sommets du graphe
 ENTREE :
     img : de type BITMAP*
@@ -630,7 +645,6 @@ void Graphe::afficher_sommets(BITMAP* img)
     }
 
 }
-
 
 
 
@@ -783,6 +797,10 @@ void Graphe::select_sommet(int mx, int my)
     }
 
 }
+
+
+
+
 
 
 /* effacer_sommet : sous-programme permettant d'effacer un ou plusieurs sommets
@@ -1260,6 +1278,8 @@ void Graphe::afficher_arcs(BITMAP* buffer)
 }
 */
 
+
+
 /*temps reel : sous-programme permettant d'afficher en temps reel l'evolution du réseau écologique
 ENTREE : deux images (le fond et le buffer) et un compteur (un entier)
 SORTIE : Aucune
@@ -1577,4 +1597,330 @@ void Graphe::DFS2(int s, bool marq[], int col, Graphe g,BITMAP* img)
     }
 
     std::cout << "Sortie du deuxième DFS" << std::endl;
+}
+
+
+
+void Graphe::k_connexite(BITMAP* buffer)
+{
+
+    //Instance de int
+    int nb_connexite = 0;
+    int nb_somm_eff=0;
+    int kmin = getOrdre();
+    int smin = getOrdre();
+    int tab[m_ordre];
+    std::vector<int> v_somm_a_eff;
+    std::vector<int> v_temp;
+
+    //Pour tous les sommets, on initialise le tab à 0
+    for(int i=0; i<m_ordre; i++) tab[i]=0;
+
+
+    //Pour tous les sommets
+    for(int i=0; i<m_ordre; i++)
+    {
+        //On le démarque
+        m_vect_som[i].setMarque(false);
+
+        //Si il est effacé
+        if (!m_vect_som[i].getAffSom()) tab[i]=1;
+
+        if(tab[i]==1) std::cout<<"Sommet n_"<<m_vect_som[i].getNumero()<<" est deja efface."<<std::endl;
+
+    }
+
+
+    //Pour tous les sommets
+    for(int k=0; k<m_ordre; k++)
+    {
+
+        nb_somm_eff=0;
+        nb_connexite=0;
+
+        for(int j=0; j<v_temp.size(); j++)
+        {
+            while(!v_temp.empty()) v_temp.pop_back();
+        }
+
+        //On initialise tous les sommets
+        for(int i=0; i<m_ordre; i++)
+        {
+            if(tab[i]!=1)
+            {
+                m_vect_som[i].setMarque(false);
+                m_vect_som[i].setAffSom(true);
+
+                //Pour tous les arcs
+                for(int j=0; j<m_nb_arcs; j++)
+                {
+
+                    //Si le sommet 1 correspond à i
+                    if(m_vect_arcs[j].getS1().getNumero() == i)
+                        m_vect_arcs[j].setAffArc(true);
+
+                    //Si le sommet 2 correspond à i
+                    if(m_vect_arcs[j].getS2().getNumero() == i)
+                        m_vect_arcs[j].setAffArc(true);
+
+                }
+
+            }
+
+        }
+
+
+        //Pour tous les sommets
+        for (int i=k; i<m_ordre; i++)
+        {
+
+            nb_connexite=0;
+
+            for(int j=0; j<m_ordre; j++)
+            {
+                m_vect_som[j].setMarque(false);
+            }
+
+            if(tab[i]!=1)
+            {
+
+                //Si ce sommet est affiché
+                if(m_vect_som[i].getAffSom())
+                {
+
+                    //On efface ce sommet
+                    m_vect_som[i].setAffSom(false);
+
+                    //Pour tous les arcs
+                    for(int j=0; j<m_nb_arcs; j++)
+                    {
+
+                        //Si le sommet 1 correspond à i
+                        if(m_vect_arcs[j].getS1().getNumero() == i)
+                            m_vect_arcs[j].setAffArc(false);
+
+                        //Si le sommet 2 correspond à i
+                        if(m_vect_arcs[j].getS2().getNumero() == i)
+                            m_vect_arcs[j].setAffArc(false);
+                    }
+
+                    nb_somm_eff++;
+                    v_temp.push_back(i);
+
+                    /**COMPTAGE COMPOSANTES CONNEXES**/
+                    //Pour tous les sommets
+                    for(int j=0; j<m_ordre; j++)
+                    {
+
+                        //Si le sommet est affiché et non marqué
+                        if(m_vect_som[j].getAffSom() && !m_vect_som[j].getMarque())
+                        {
+
+                            //On enregistre le sommet dans le vecteur de sommets et son indice dans le vecteur d'indices de sommets
+                            nb_connexite++;
+
+                            //On marque ce sommet et ceux adjacents à ce sommet en appelant le sous-programme BFS
+                            BFS(j);
+                        }
+
+                    }
+                    /**/
+                }
+
+            }
+
+            //Si il existe plus qu'une connexité et que kmin diminue
+            if(nb_connexite > 1 && nb_connexite <= kmin)
+            {
+                if(smin >nb_somm_eff)
+                {
+                    smin = nb_somm_eff;
+                    kmin = nb_connexite;
+
+                    for(int j=0; j<v_somm_a_eff.size(); j++)
+                    {
+                        while(v_somm_a_eff.empty()) v_somm_a_eff.pop_back();
+                    }
+
+                    v_somm_a_eff = v_temp;
+                    i=m_ordre;
+
+                }
+            }
+        }
+    }
+
+
+    //AFFICHAGE
+    std::cout<<std::endl<<std::endl<<"*** K-CONNEXITE ***"<<std::endl;
+    std::cout<<"Le graphe est "<<kmin<<"-connexes."<<std::endl;
+    std::cout<<"Il faut supprimer "<<smin<<" sommets."<<std::endl;
+
+    for(int i=0; i<m_ordre; i++)
+    {
+
+        for(int j=0; j<v_somm_a_eff.size(); j++)
+        {
+            if(i == v_somm_a_eff[j])
+            {
+                m_vect_som[i].setAffSom(false);
+                std::cout<<"Le sommet "<<i<<" doit etre efface."<<std::endl;
+            }
+            else m_vect_som[i].setAffSom(true);
+
+            if(tab[i]==1)m_vect_som[i].setAffSom(false);
+        }
+
+    }
+
+    //Instance d'un vecteur de int
+    std::vector<int>compteur;
+
+    //Initialisation du vecteur à 0
+    for(int i=0; i<m_nb_arcs; i++)
+    {
+        compteur.push_back(0);
+    }
+
+    //afficher_sommets(buffer);
+    //rest(2000);
+
+    rectfill(screen, 125, 10, 1000, 758, makecol(255,255,255));
+
+    //Pour tous les sommets du graphe
+    for(int i=0; i<getOrdre(); i++)
+    {
+        if(m_vect_som[i].getAffSom())
+        {
+
+            //On affiche sa BITMAP
+            draw_sprite(screen, (getVectSom()[i]).getImage(), (getVectSom()[i]).getCoordX(), (getVectSom()[i]).getCoordY());
+
+            //n prend la valeur du numéro du sommet
+            int n = (getVectSom()[i]).getNumero();
+
+            //On affiche le numéro du sommet au-dessus de son image
+            textprintf(screen,font, (getVectSom()[i]).getCoordX()+20, (getVectSom()[i]).getCoordY()-20, makecol(0,0,0), "Sommet n_%d", n);
+
+            //Pour tous les arcs
+            for(int j=0; j<m_nb_arcs; j++)
+            {
+
+                //Si le sommet i est égale au sommet 1 de l'arc
+                if(i == m_vect_arcs[j].getS1().getNumero())
+                {
+                    compteur[j] = compteur[j] + 1;
+                }
+
+                //Si le sommet i est égale au sommet 2 de l'arc
+                else if(i == m_vect_arcs[j].getS2().getNumero())
+                {
+                    compteur[j] = compteur[j] + 1;
+                }
+            }
+
+            //Pour tous les arcs
+            for(int j=0; j<m_nb_arcs; j++)
+            {
+
+                //Si le compteur de cet arc vaut 2
+                if(compteur[j] == 2)
+                {
+                    //Alors il est affiché
+                    m_vect_arcs[j].setAffArc(true);
+                    m_vect_arcs[j].afficher_arc(screen);
+                }
+
+            }
+
+        }
+    }
+
+    rest(2000);
+
+    for(int k=0; k<m_ordre; k++)
+    {
+        if(tab[k] != 1) m_vect_som[k].setAffSom(true);
+    }
+
+}
+
+
+
+
+
+
+
+/* BFS : sous-programme permettant de compter le nombre de composantes connexes
+ENTREE:
+    sommet_initial : de type int
+SORTIE :
+    aucune
+*/
+void Graphe::BFS(int sommet_initial)
+{
+
+    //DONNEES
+    //Une file d'attente
+    std::queue<int> file;
+
+    //INITIALISATION
+    //On "efface" le sommet de départ
+    m_vect_som[sommet_initial].setMarque(true);
+
+    //On enfile le sommet de départ
+    file.push(sommet_initial);
+
+
+
+    //BOUCLE
+    //Tant que la file n'est pas vide
+    while(!file.empty())
+    {
+
+        //On défile le premier sommet
+        int Sommet_actuel = file.front();
+        file.pop();
+
+
+        //Pour chacun des sommets
+        for(int i=0; i<m_ordre; i++)
+        {
+
+            //Si le sommet i est affiché
+            if(m_vect_som[i].getAffSom())
+            {
+
+                //Si il est non marqué
+                if(!m_vect_som[i].getMarque())
+                {
+
+                    //Pour tous les arcs
+                    for(int j=0; j<m_nb_arcs; j++)
+                    {
+
+                        //Si l'arc est affiché
+                        if(m_vect_arcs[j].getAffArc())
+                        {
+
+
+                            if(m_vect_arcs[j].getS1().getNumero() == Sommet_actuel && m_vect_arcs[j].getS2().getNumero() == i)
+                            {
+                                //m_vect_som[i].setAffSom(false);
+                                m_vect_som[i].setMarque(true);
+                                file.push(i);
+                            }
+
+                            else if(m_vect_arcs[j].getS1().getNumero() == i && m_vect_arcs[j].getS2().getNumero() == Sommet_actuel)
+                            {
+                                //m_vect_som[i].setAffSom(false);
+                                m_vect_som[i].setMarque(true);
+                                file.push(i);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
