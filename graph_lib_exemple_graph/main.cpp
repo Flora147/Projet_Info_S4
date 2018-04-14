@@ -52,7 +52,10 @@ int main()
 
     int x,y, x1, y1;
     int c;
+    int compt = 0;
+    int compt2 = 0;
     bool m = true;
+    bool tps_reel = false;
     std::string nom;
     Graphe graphe;
     BITMAP* Buffer= create_bitmap(1024,768);
@@ -83,13 +86,6 @@ int main()
 
     BITMAP* actuelle = menu;
     blit(actuelle, Buffer, 0, 0, 0,0,1024,768);
-
-   // nom ="faucon_et_hibiscus.txt";
-    //graphe.lecture_fichier("faucon_et_hibiscus.txt");
-
-    //std::cout<<"Saisir nom fichier (faucon_et_hibiscus.txt)"<<std::endl;
-    //std::cin>>nom;
-    //graphe.lecture_fichier(nom);
 
     text_mode(-1);
 
@@ -127,8 +123,8 @@ int main()
             {
                if (m==true)
                 {
-                   // nom ="faucon_et_hibiscus.txt";
-                    //graphe.lecture_fichier("faucon_et_hibiscus.txt");
+                    nom ="Tigre_et_plancton.txt";
+                    graphe.lecture_fichier(nom);
                     actuelle = fond;
                     m = false;
                 }
@@ -139,8 +135,8 @@ int main()
             {
                 if (m==true)
                 {
-                    //nom ="faucon_et_hibiscus.txt";
-                    //graphe.lecture_fichier("faucon_et_hibiscus.txt");
+                    nom ="insectes_et_foret.txt";
+                    graphe.lecture_fichier(nom);
                     actuelle = fond;
                     m = false;
                 }
@@ -171,11 +167,13 @@ int main()
             {
                 //Forte connexite
                 graphe.forte_co(graphe, actuelle);
+                compt2 = 0;
             }
 
             else if(c==makecol(34,177,76))
             {
                 //Temps réel
+                tps_reel = true;
             }
 
             rest(1000);
@@ -186,11 +184,8 @@ int main()
         {
             x = mouse_x;
             y = mouse_y;
-
-
-            for(int i=0; i<graphe.getOrdre(); i++)
+            for(int i=0;i<graphe.getOrdre(); i++)
             {
-
                 if(graphe.getVectSom()[i].getSelect()==true)
                 {
                     graphe.bouger_sommet(Buffer, x, y, i);
@@ -200,15 +195,46 @@ int main()
             rest(1000);
         }
 
+        if((tps_reel == true )&&(key[KEY_ENTER]))
+        {
 
-        if(m==false) graphe.afficher_sommets(Buffer);
+           while(tps_reel!= false)
+            {
+                graphe.temps_reel(actuelle, Buffer, compt);
+                rest(2000);
+                if (key[KEY_S])
+                {
+                    tps_reel = false;
+                    graphe.conservation_para();
+                }
+                else if((key[KEY_SPACE])) graphe.modifier_param();
+                compt++;
+            }
+        }
+        if(m==false)
+        {
+            //Si on avait appyé sur forte connexité et qu'on appuie sur F, affiche la forte connexité
+            if(key[KEY_F])
+            {
+                graphe.afficher_sommets(Buffer);
+            }
+            //Sinon affiche "normalement" les sommets
+            else
+            {
+                for(int i = 0; i<graphe.getOrdre(); i++)
+                {
+                rectfill(Buffer, graphe.getVectSom()[i].getCoordX(), graphe.getVectSom()[i].getCoordY(),graphe.getVectSom()[i].getCoordX()+ graphe.getVectSom()[i].getImage()->w,graphe.getVectSom()[i].getCoordY()+ graphe.getVectSom()[i].getImage()->h,makecol(255,255,255));
+
+                }
+                graphe.afficher_sommets(Buffer);
+            }
+
+        }
         blit(Buffer,screen,0,0,0,0,1024,768);
         blit(actuelle, Buffer, 0,0,0,0,1024,768);
     }
 
-
     graphe.sauvegarde_fichier(nom);
-
     return 0;
 
 }
