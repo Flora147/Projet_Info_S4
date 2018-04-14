@@ -18,6 +18,7 @@ class Graphe
 
     public :
         //Constructeur surchagé et destructeur
+        Graphe();
         Graphe(int _ordre, int _nb_arcs, std::vector<Sommet> _vect_som, std::vector<Arc> _vect_arcs);
         ~Graphe();
 
@@ -26,15 +27,17 @@ class Graphe
         //getters
         int getOrdre();
         int getNbArcs();
-        Sommet getVectSom();
-        Arc getVectArcs();
+        std::vector<Sommet> getVectSom();
+        std::vector<Arc> getVectArcs();
 
         //setters
         void setOrdre(int ordre);
         void setNbArcs(int nb_arcs);
         void setVectSom(std::vector<Sommet> vect_som);
-        void setVectArcs(std::vector<Arcs> vect_arcs);
+        void setVectArcs(std::vector<Arc> vect_arcs);
 
+        //Lecture fichiers
+        void lecture_fichier(std::string f);
 
 };
 

@@ -2,6 +2,9 @@
 #include <iostream>
 
 #include "graph.h"
+#include "Graphe.cpp"
+
+using namespace std;
 
 int main()
 {
@@ -15,6 +18,11 @@ int main()
     Graph g;
     g.make_example();
 
+    std::string nom;
+    Graphe graphe;
+    std::cout<<"Saisir nom fichier (faucon_et_hibiscus.txt)"<<std::endl;
+    std::cin>>nom;
+    graphe.lecture_fichier(nom);
 
     /// Vous gardez la main sur la "boucle de jeu"
     /// ( contrairement à des frameworks plus avancés )
