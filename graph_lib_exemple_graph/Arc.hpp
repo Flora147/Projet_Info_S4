@@ -17,10 +17,11 @@ class Arc
         int m_line_s1_y;
 
 
+
     public :
         //Constructeur surchargé et destructeur
         Arc();
-        Arc(Sommet _s1, Sommet _s2, float _Coef, bool _aff_arc, int _arrow_x1, int _arrow_y1, int _line_s1_x, int _line_s1_y);
+        Arc(Sommet _s1, Sommet _s2, float _Coef, bool _aff_arc);
         ~Arc();
 
 

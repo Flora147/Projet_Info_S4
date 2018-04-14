@@ -42,7 +42,7 @@ int main()
 
     //Section F : ouverture mode grapique
     set_color_depth(desktop_color_depth());
-    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,1024,768,0,0)!=0)
+    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0)!=0)
     {
         allegro_message("probleme mode graphique");
         allegro_exit();
@@ -70,25 +70,20 @@ int main()
 
     while(!key[KEY_ESC])
     {
+        graphe.afficher_sommets(Buffer);
         if(mouse_b&1)
         {
             x = mouse_x;
             y = mouse_y;
 
-            if((x<100)&&(100<y<193)) //modif para
+            if((x<122)&&(170<y<204)) //modif para
             {
                 graphe.modifier_param();
-            }
-            else if((x<100)&&(193<y<288)) //ajout sommet
-            {
-                std::cout<<"ajout";
             }
         }
         blit(Buffer,screen,0,0,0,0,1024,768);
     }
-   // graphe.sauvegarde_fichier(nom);
-
-
+    graphe.sauvegarde_fichier(nom);
     return 0;
 }
 END_OF_MAIN();

@@ -4,15 +4,15 @@
 
 //Construteur par défaut
 Arc::Arc()
-    :m_s1(" ",0,0,0,0,0,0,NULL,false,false), m_s2(" ",0,0,0,0,0,0,NULL,false,false), m_Coef(0), m_aff_arc(false), m_arrow_x1(0), m_arrow_y1(0), m_line_s1_x(0), m_line_s1_y(0)
+    :m_s1(" ",0,0,0,0,0,0,NULL,false,false), m_s2(" ",0,0,0,0,0,0,NULL,false,false), m_Coef(0), m_aff_arc(false),m_arrow_x1(0), m_arrow_y1(0), m_line_s1_x(0), m_line_s1_y(0)
 {
 
 }
 
 
 //Constructeur surchargé
-Arc::Arc(Sommet _s1, Sommet _s2, float _Coef, bool _aff_arc, int _arrow_x1, int _arrow_y1, int _line_s1_x, int _line_s1_y)
-    :m_s1(_s1), m_s2(_s2), m_Coef(_Coef), m_aff_arc(_aff_arc), m_arrow_x1(_arrow_x1), m_arrow_y1(_arrow_y1), m_line_s1_x(_line_s1_x), m_line_s1_y(_line_s1_y)
+Arc::Arc(Sommet _s1, Sommet _s2, float _Coef, bool _aff_arc)
+    :m_s1(_s1), m_s2(_s2), m_Coef(_Coef), m_aff_arc(_aff_arc),m_arrow_x1(0), m_arrow_y1(0), m_line_s1_x(0), m_line_s1_y(0)
 {
 
 }

@@ -87,7 +87,7 @@ void Graphe::setVectArcs(std::vector<Arc> vect_arcs)
 
 
 
-/*
+
 void Graphe::lecture_fichier(std::string f)
 {
     ifstream fichier;
@@ -120,7 +120,6 @@ void Graphe::lecture_fichier(std::string f)
             fichier>>nom;
             fichier>>num;
             fichier>>n;
-            fichier>>k;
             fichier>>r;
             fichier>>x;
             fichier>>y;
@@ -192,9 +191,10 @@ void Graphe::lecture_fichier(std::string f)
 
 void Graphe::sauvegarde_fichier(std::string f)
 {
+    afficher_console();
     ofstream fichier;
     fichier.open(f);
-
+    bool b1, b2;
     if(fichier)
     {
         //On sauvegarde l'ordre
@@ -202,20 +202,29 @@ void Graphe::sauvegarde_fichier(std::string f)
 
         for(int i =0; i<getOrdre(); i++)
         {
+
+            if((getVectSom()[i]).getAffSom() == true) b1 =1;
+            else b1 = 0;
+
+            if((getVectSom()[i]).getSelect() == true) b2 =1;
+            else b2 = 0;
+
             //On sauvegarde dans le fichier les 2 sommets de l'arete et le poids de celle-ci
-            fichier << (getVectSom()[i]).getName();
+            fichier << ((getVectSom())[i]).getName();
             fichier << " ";
             fichier << (getVectSom()[i]).getNumero();
             fichier << " ";
-            fichier << (getVectSom()[i]).getN();
-            fichier << " ";
-            fichier << (getVectSom()[i]).getK();
+            fichier << ((getVectSom())[i]).getN();
             fichier << " ";
             fichier << (getVectSom()[i]).getR();
             fichier << " ";
             fichier << (getVectSom()[i]).getCoordX();
             fichier << " ";
             fichier << (getVectSom()[i]).getCoordY();
+            fichier << " ";
+            fichier << b1;
+            fichier << " ";
+            fichier << b2;
             fichier << std::endl;
         }
         fichier<<getNbArcs()<<std::endl;
@@ -227,22 +236,40 @@ void Graphe::sauvegarde_fichier(std::string f)
             fichier << std::endl;
         }
 
-    fichier.close();
-    std::cout<<"Sauvegarde effectuée"<<std::endl;
-    }else std::cout << "Erreur fichier kruskal..." << std::endl << std::endl;
-
-
+        fichier.close();
+    }else std::cout << "Erreur fichier sauvegarde..." << std::endl << std::endl;
 
 }
+/*modifier_param : sous-programme permettant de choisir un sommet et d'en modifier un paramètre
+ENTREE : Aucune
+SORTIE : Aucune
+*/
+///Modification d'un paramètre d'un sommet
 void Graphe::modifier_param()
 {
     std::string choix, nouv_nom;
     int som, nouv;
+    std::vector<Sommet> vec_som;
+
+    //Saisie du sommet à modifier
     std::cout<<"Quel Sommet souhaitez vous modifier ? (numero) "<<std::endl;
     std::cin>>som;
+    //Blindage
+    while(som<0 || som>getVectSom().size())
+    {
+        std::cout<<"Mauvaise saisie du sommet à modifier. Veuillez recommencer. (numero)"<<std::endl;
+        std::cin>>som;
+    }
 
+    //Saisie du paramètre à changer
     std::cout<<"Lequel de ces parametres souhaitez vous modifier ?(nom, K, R, N)"<<std::endl;
     std::cin>>choix;
+    //Blindage
+    while(choix!="nom" && choix!= "K" && choix!="R" && choix!="N")
+    {
+        std::cout<<"Mauvaise saisie du choix. Veuillez recommencer. (K, R, N)"<<std::endl;
+        std::cin>>choix;
+    }
 
     //Si on choisit de modifier K
     //On crée un sommet avec les mêmes propriétés que celui à modier sauf K qui a été actualisé
@@ -254,14 +281,11 @@ void Graphe::modifier_param()
         std::cout<<"Saisir nouveau K"<<std::endl;
         std::cin>>nouv;
         Sommet s((getVectSom()[som]).getName(), (getVectSom()[som]).getNumero(), (getVectSom()[som]).getN(), nouv, (getVectSom()[som]).getR(), (getVectSom()[som]).getCoordX(), (getVectSom()[som]).getCoordY(), (getVectSom()[som]).getImage(), (getVectSom()[som]).getAffSom(), (getVectSom()[som]).getSelect());
-        std::vector<Sommet> vec_som;
         for(int i=0; i<getOrdre(); i++)
         {
             if (i==som) vec_som.push_back(s);
             else vec_som.push_back(getVectSom()[i]);
         }
-        setVectSom(vec_som);
-
     }
     if(choix=="N")
     {
@@ -269,28 +293,12 @@ void Graphe::modifier_param()
         std::cout<<"Saisir nouveau N"<<std::endl;
         std::cin>>nouv;
         Sommet s((getVectSom()[som]).getName(), (getVectSom()[som]).getNumero(), nouv, (getVectSom()[som]).getK(), (getVectSom()[som]).getR(), (getVectSom()[som]).getCoordX(), (getVectSom()[som]).getCoordY(), (getVectSom()[som]).getImage(), (getVectSom()[som]).getAffSom(), (getVectSom()[som]).getSelect());
-        std::vector<Sommet> vec_som;
         for(int i=0; i<getOrdre(); i++)
         {
             if (i==som) vec_som.push_back(s);
             else vec_som.push_back(getVectSom()[i]);
         }
-        setVectSom(vec_som);
-
-    }
-    if(choix=="nom")
-    {
-        std::cout<<"Nom actuel pour "<<(getVectSom()[som]).getName()<<" : "<<(getVectSom()[som]).getName()<<std::endl;
-        std::cout<<"Saisir nouveau Nom"<<std::endl;
-        std::cin>>nouv_nom;
-        Sommet s(nouv_nom, (getVectSom()[som]).getNumero(), (getVectSom()[som]).getN(), (getVectSom()[som]).getK() , (getVectSom()[som]).getR(), (getVectSom()[som]).getCoordX(), (getVectSom()[som]).getCoordY(), (getVectSom()[som]).getImage(), (getVectSom()[som]).getAffSom(), (getVectSom()[som]).getSelect());
-        std::vector<Sommet> vec_som;
-        for(int i=0; i<getOrdre(); i++)
-        {
-            if (i==som) vec_som.push_back(s);
-            else vec_som.push_back(getVectSom()[i]);
-        }
-        setVectSom(vec_som);
+        calcul_para_post_modif(vec_som);
 
     }
     if(choix=="R")
@@ -299,17 +307,48 @@ void Graphe::modifier_param()
         std::cout<<"Saisir nouveau R"<<std::endl;
         std::cin>>nouv;
         Sommet s((getVectSom()[som]).getName(), (getVectSom()[som]).getNumero(), (getVectSom()[som]).getN(), (getVectSom()[som]).getK(), nouv, (getVectSom()[som]).getCoordX(), (getVectSom()[som]).getCoordY(), (getVectSom()[som]).getImage(), (getVectSom()[som]).getAffSom(), (getVectSom()[som]).getSelect());
-        std::vector<Sommet> vec_som;
         for(int i=0; i<getOrdre(); i++)
         {
             if (i==som) vec_som.push_back(s);
             else vec_som.push_back(getVectSom()[i]);
         }
-        setVectSom(vec_som);
 
     }
+    setVectSom(vec_som);
+    afficher_console();
+}
 
-    ///Affichage
+/*calcul_para_post_modif : sous programme permettant de modifier le coefficient et le K des sommets après avoir modifier leur N
+ENTREE : un vecteur de sommet vec_som
+SORTIE : Aucune
+*/
+void Graphe::calcul_para_post_modif(std::vector<Sommet> vec_som)
+{
+    float coeff;
+    std::vector<Arc> vec_arc;
+    vec_arc = getVectArcs();
+    int s1, s2;
+    for(int i =0; i<getNbArcs(); i++)
+    {
+        s1 = getVectArcs()[i].getS1().getNumero();
+        s2 = getVectArcs()[i].getS2().getNumero();
+        //On calcule le nouveau coefficient
+        coeff = (float)(vec_som[s1].getN())/(vec_som[s2].getN());
+        //On peut à présent calculer le K des sommets du graphe
+        vec_som[s2].setK(vec_som[s2].getK() + vec_som[s1].getN()*coeff);
+        vec_arc[i].setCoef(coeff);
+    }
+    setVectArcs(vec_arc);
+    setVectSom(vec_som);
+}
+
+/*afficher console : sous programme permettant d'afficher le graphe en console
+ENTREE : Aucune
+SORTIE : Aucune
+*/
+void Graphe::afficher_console()
+{
+    ///Affichage Console des paramètre de tous les sommets
     std::cout<<"\n\nGraphe :"<<std::endl;
     std::cout<<"\nOrdre : "<<getOrdre()<<std::endl;
     std::cout<<"NB Arcs : \n"<<getNbArcs()<<std::endl;
@@ -324,10 +363,20 @@ void Graphe::modifier_param()
     }
 
 }
-
+/*afficher_sommets : sous programme permettant d'afficher à l'écran les sommets du graphe
+ENTREE : l'image de fond
+SORTIE : Aucune
 */
-
-
+void Graphe::afficher_sommets(BITMAP* img)
+{
+    int n;
+    for(int i=0; i<getOrdre(); i++)
+    {
+        draw_sprite(img, (getVectSom()[i]).getImage(),(getVectSom()[i]).getCoordX(),(getVectSom()[i]).getCoordY() );
+        n = (getVectSom()[i]).getNumero();
+        textprintf(img,font, (getVectSom()[i]).getCoordX()+20, (getVectSom()[i]).getCoordY()-20, makecol(255,255,255) ,"Sommet n° %d",n );
+    }
+}
 
 /* select_sommet : sous-programme permettant de sélectionner les sommets (le prgm est précédé d'un mouse_b&1)
 ENTREE :
