@@ -16,6 +16,8 @@ class Graphe
         int m_nb_mois_temp;
         std::vector<Sommet> m_vect_som;
         std::vector<Arc> m_vect_arcs;
+        std::vector<int> c_regen;
+        std::vector<int> c_famine;
 
 
     public :

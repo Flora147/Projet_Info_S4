@@ -602,7 +602,7 @@ void Graphe::afficher_sommets(BITMAP* img)
 
            }
             //On affiche le mois auquel on est en haut à droite de l'écran
-            textprintf(img,font, SCREEN_W - 100, 20 , makecol(0,0,0) ,"Mois n_%d",getNbMois() );
+            textprintf(img,font, SCREEN_W - 100, 20 , makecol(0,255,100) ,"Mois n_%d",getNbMois() );
 
             //Si le sommet est affiché
             if(getVectSom()[i].getAffSom())
@@ -1288,15 +1288,29 @@ void Graphe::temps_reel(BITMAP* img, BITMAP* img2, int compt)
     //On crée un vecteur de sommet et un vecteur d'arcs ainsi qu'un vecteur d'entier
     std::vector<Sommet> vec_som = getVectSom();
     std::vector<Arc> vec_arc = getVectArcs();
-    std::vector<int> vegetation;
     //On crée deux booléens
     bool s = true;
-    bool regen_veget = false;
+    std::vector<bool> regen_veget;
+    std::vector<bool> famine;
     //3 entiers;
-    int new_n, new_k, nb_mois;
+    int new_n, new_k, nb_mois, num;
     new_k = 0;
     //1 float
     float new_coef;
+
+    //Si c'est le tout premier mois, les vecteurs de famine et de regeneration sont à 0 pour tous les sommets
+    //les vecteurs de famine et de regeneration sont initialiser à 0
+    for(int i= 0; i<getOrdre(); i++)
+    {
+        if(compt==0)
+        {
+            c_regen.push_back(0);
+            c_famine.push_back(0);
+        }
+        famine.push_back(0);
+        regen_veget.push_back(0);
+
+    }
 
     //On parcourt le vecteur de sommet.
     //Si il est supprimé alors sa population devient nulle
@@ -1309,27 +1323,31 @@ void Graphe::temps_reel(BITMAP* img, BITMAP* img2, int compt)
     //On parcourt tous les sommets
     for(int i =0; i<getOrdre(); i++)
     {
+        std::vector<int> vegetation;
+        std::vector<int> nourriture;
+
         //Si l'espèce n'est pas disparue
         if(vec_som[i].getN()!=0)
-            {
+        {
             //On calcule une partie de sa population à t+1 ( Nt+1 = Nt + Nt*r(1- N/K)
             new_n = vec_som[i].getN() +(int)((vec_som[i].getN() * vec_som[i].getR())*(1 - (vec_som[i].getN() / vec_som[i].getK())));
             //On parcourt les arcs
             for(int j =0; j<getNbArcs(); j++)
             {
-                // si le sommet actuel est un végétal, on entre le numéro de l'arc dans son vecteur végétation
+                num = vec_som[i].getNumero();
+                // si le sommet actuel est un végétal, on entre le numéro de l'arc donc c'est la proie dans son vecteur végétation
                 if(vec_som[i].getVeget()==true)
                 {
-                    if(i == vec_arc[j].getS1().getNumero())  vegetation.push_back(vec_arc[j].getS2().getNumero());
+                    if(vec_arc[j].getS1().getNumero() == num)  vegetation.push_back(vec_arc[j].getS2().getNumero());
                 }
+                //sinon c'est un annimal, on entre le numero de l'arc dont c'est le chasseur dans son vecteur nourriture
+                else if(vec_arc[j].getS2().getNumero() == num) nourriture.push_back(vec_arc[j].getS1().getNumero());
 
-                //on termine le calcul de la population à t+1 selon si ses prédecesseurs et ses successeurs
-                if(i == vec_arc[j].getS2().getNumero() && vec_arc[j].getS1().getN() != 0) new_n = new_n + (vec_arc[j].getCoef() * vec_arc[j].getS1().getN());
-                else if(i == vec_arc[j].getS1().getNumero() && vec_arc[j].getS2().getN() != 0)
-                {
-                    new_n = new_n - (vec_arc[j].getCoef() * vec_arc[j].getS2().getN());
-                }
+                 //on termine le calcul de la population à t+1 selon si ses prédecesseurs et ses successeurs
+                if(i == vec_arc[j].getS2().getNumero() && vec_arc[j].getS1().getN() != 0) new_n = new_n + (vec_arc[j].getCoef() * vec_som[vec_arc[j].getS1().getNumero()].getN());
+                else if((vec_arc[j].getS1().getNumero()==num )&& (vec_arc[j].getS2().getN() > 0)) new_n = new_n - (vec_arc[j].getCoef() * vec_som[vec_arc[j].getS2().getNumero()].getN());
             }
+            std::cout<<"\n";
             //Si la nouvelle population d'une espèce est nulle alors on ne l'affiche plus
             if(new_n<=0)
             {
@@ -1337,28 +1355,78 @@ void Graphe::temps_reel(BITMAP* img, BITMAP* img2, int compt)
                 vec_som[i].setAffSom(false);
             }
             else vec_som[i].setAffSom(true);
-        }
 
-        //Si l'espèce est un végétal, que ce n'est pas le premier mois et que sa population est inférieure ou égale à 0
-        if((vec_som[i].getVeget()==true) && (compt> 0)&&(vec_som[i].getN()<=0))
-        {
+
             //On parcourt son vecteur de végétation
             // Si tous leur k est supérieure d'au moins 100 à leur population alors la regen_veget devient vrai
             for(int k = 0; k<vegetation.size(); k++)
             {
-                if(vec_som[vegetation[k]].getN() >= vec_som[vegetation[k]].getK()) regen_veget = false;
-                else regen_veget = true;
+                if(vec_som[i].getN()<=0)
+                {
+                    if(vec_som[vegetation[k]].getN() >= vec_som[vegetation[k]].getK()-100)
+                    {
+                        regen_veget[i] = false;
+                        k = vegetation.size();
+                    }
+                    else regen_veget[i] = true;
+                }
             }
-            //Si finalement après avoir regardé tous les successeurs, la regen_veget est vraie alors sa population passe à 1000
-            if (regen_veget == true)
+            //On parcourt son vecteur de proie
+            // Si toutes leurs proies sont disparues alors la famine devient vraie
+            for(int k = 0; k<nourriture.size(); k++)
             {
-                vec_som[i].setN(100);
-                vec_som[i].setAffSom(true);
+                if(vec_som[i].getN()>0)
+                {
+                    if(vec_som[nourriture[k]].getN() > 0 )
+                    {
+                        famine[i] = false;
+                        k = nourriture.size();
+                    }
+                    else famine[i] = true;
+                }
             }
-            //else vec_som[i].setN(new_n);
+            //Si on est pas en situation de famine ou de regeneration les vecteurs correspondanst passent à 0
+            if (famine[i] == false) c_famine[i] = 0;
+            if (regen_veget[i] == false) c_regen[i] = 0;
+
+            //Si l'espèce est un végétal, que ce n'est pas le premier mois et que sa population est inférieure ou égale à 0 et que ses prédateurs sont peu nombreux
+            if((regen_veget[i] == true))
+            {
+                c_regen[i]++;
+                if(c_regen[i]==2)
+                {
+                    vec_som[i].setN(100);
+                    vec_som[i].setAffSom(true);
+                    c_regen[i] =0;
+                }
+            }
+            //Sinon c'est un animal, si sa population est non nulle et qu'il est en période de famine
+            else if((famine[i]==true))
+            {
+                c_famine[i]++;
+                //Si la famine dure depuis 2 mois, la population passe à 1à, ensuite à 5(cannibalisme), etc jusqu'à 0
+                if(c_famine[i]==2) vec_som[i].setN(10);
+                if(c_famine[i] == 3) vec_som[i].setN(5);
+                if (c_famine[i] == 4) vec_som[i].setN(3);
+                if (c_famine[i] == 5) vec_som[i].setN(1);
+                if (c_famine[i] == 6)
+                {
+                    vec_som[i].setN(0);
+                    c_famine[i] = 0;
+                }
+            }
+          /*  else if ((vec_som[i].getVeget()==false)&&(famine[i]==false))
+            {
+                c_famine[i] = 0;
+                vec_som[i].setN(new_n);
+            }
+            else if ((vec_som[i].getVeget()==true)&&(regen_veget[i]==false))
+            {
+                c_regen[i] = 0;
+                vec_som[i].setN(new_n);
+            }*/
+            else vec_som[i].setN(new_n);
         }
-        //Sinon
-        else vec_som[i].setN(new_n);
     }
     for(int j =0; j<getNbArcs(); j++)
     {
@@ -1965,7 +2033,6 @@ void Graphe::k_connexite(BITMAP* buffer)
     }
 
 }
-
 
 
 
