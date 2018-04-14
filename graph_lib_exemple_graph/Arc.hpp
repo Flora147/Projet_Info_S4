@@ -15,6 +15,7 @@ class Arc
 
     public :
         //Constructeur surchargé et destructeur
+        Arc();
         Arc(Sommet _s1, Sommet _s2, float _Coef, bool _aff_arc);
         ~Arc();
 

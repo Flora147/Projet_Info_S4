@@ -1,6 +1,15 @@
 #include "Arc.hpp"
 
 
+
+//Construteur par défaut
+Arc::Arc()
+    :m_s1(" ",0,0,0,0,0,0,NULL,false,false), m_s2(" ",0,0,0,0,0,0,NULL,false,false), m_Coef(0), m_aff_arc(false)
+{
+
+}
+
+
 //Constructeur surchargé
 Arc::Arc(Sommet _s1, Sommet _s2, float _Coef, bool _aff_arc)
     :m_s1(_s1), m_s2(_s2), m_Coef(_Coef), m_aff_arc(_aff_arc)

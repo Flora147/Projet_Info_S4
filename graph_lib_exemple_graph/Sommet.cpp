@@ -1,8 +1,21 @@
 #include "Sommet.hpp"
+#include <stdio.h>
+#include <stdlib.h>
+#include <iostream>
+
+
+//Constructeur par défaut
+Sommet::Sommet()
+    :m_name("zero"), m_numero(-1), m_N(0), m_K(0), m_r(0), m_coord_x(0), m_coord_y(0), m_image(NULL), m_aff_som(false), m_select(false)
+{
+
+}
+
+
 
 
 //Constructeur surchargé
-Sommet::Sommet(std::string _name, int _numero, int _N, int _K, float _r, int _coord_x, int _coord_y, BITMAP _image, bool _aff_som, bool _select)
+Sommet::Sommet(std::string _name, int _numero, int _N, int _K, float _r, int _coord_x, int _coord_y, BITMAP* _image, bool _aff_som, bool _select)
     :m_name(_name), m_numero(_numero), m_N(_N), m_K(_K), m_r(_r), m_coord_x(_coord_x), m_coord_y(_coord_y), m_image(_image), m_aff_som(_aff_som), m_select(_select)
 {
 
@@ -65,7 +78,7 @@ int Sommet::getCoordY()
 }
 
 //getter qui retourne l'attribut "m_image"
-BITMAP Sommet::getImage()
+BITMAP* Sommet::getImage()
 {
     return m_image;
 }
@@ -127,7 +140,7 @@ void Sommet::setCoordY(int coord_y)
 }
 
 //setter qui modifie l'attribut "m_image"
-void Sommet::setImage(BITMAP image)
+void Sommet::setImage(BITMAP* image)
 {
     m_image=image;
 }
@@ -139,7 +152,33 @@ void Sommet::setAffSom(bool aff_som)
 }
 
 //setter qui modifie l'attribut "m_select"
-void Sommet::getSelect(bool select)
+void Sommet::setSelect(bool select)
 {
     m_select=select;
 }
+
+
+
+
+
+
+/* afficher_infos : sous-programme permettant d'afficher les informations d'un sommet sélectionné
+ENTREE :
+    aucune
+SORTIE :
+    aucune
+*/
+void Sommet::afficher_infos()
+{
+
+    //Affichage d'une partie des attributs du sommet
+    std::cout<<"Nom : "<<m_name<<std::endl;
+    std::cout<<"Numero du sommet : "<<m_numero<<std::endl;
+    std::cout<<"Taille de la population : "<<m_N<<std::endl;
+    std::cout<<"Capacité de portage de l'environnement : "<<m_K<<std::endl;
+    std::cout<<"Rythme de croissance : "<<m_r<<std::endl<<std::endl;
+
+}
+
+
+

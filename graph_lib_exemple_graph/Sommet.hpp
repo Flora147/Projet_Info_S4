@@ -1,4 +1,5 @@
 #include <string>
+#include <allegro.h>
 #ifndef SOMMET_HPP_INCLUDED
 #define SOMMET_HPP_INCLUDED
 
@@ -14,7 +15,7 @@ class Sommet
         float m_r;
         int m_coord_x;
         int m_coord_y;
-        BITMAP m_image;
+        BITMAP* m_image;
         bool m_aff_som;
         bool m_select;
 
@@ -22,7 +23,8 @@ class Sommet
 
     public :
         //Constructeur surchargé et destructeur
-        Sommet(std::string _name, int _numero, int _N, int _K, float _r, int _coord_x, int _coord_y, BITMAP _image, bool _aff_som, bool _select);
+        Sommet();
+        Sommet(std::string _name, int _numero, int _N, int _K, float _r, int _coord_x, int _coord_y, BITMAP* _image, bool _aff_som, bool _select);
         ~Sommet();
 
 
@@ -35,7 +37,7 @@ class Sommet
             float getR();
             int getCoordX();
             int getCoordY();
-            BITMAP getImage();
+            BITMAP* getImage();
             bool getAffSom();
             bool getSelect();
 
@@ -47,9 +49,13 @@ class Sommet
             void setR(float r);
             void setCoordX(int coord_x);
             void setCoordY(int coord_y);
-            void setImage(BITMAP image);
+            void setImage(BITMAP* image);
             void setAffSom(bool aff_som);
-            void getSelect(bool select);
+            void setSelect(bool select);
+
+
+            //Méthodes
+            void afficher_infos();
 
 
 };

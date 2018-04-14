@@ -38,6 +38,10 @@ class Graphe
 
         //Lecture fichiers
         void lecture_fichier(std::string f);
+        void select_sommet();
+        void effacer_sommet();
+        void ajouter_sommet();
+        void recalcul_parametres();
 
 };
 
