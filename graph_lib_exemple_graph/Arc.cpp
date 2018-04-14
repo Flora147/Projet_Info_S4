@@ -4,7 +4,7 @@
 
 //Construteur par défaut
 Arc::Arc()
-    :m_s1(" ",0,0,0,0,0,0,NULL,false,false,false,0,0,false), m_s2(" ",0,0,0,0,0,0,NULL,false,false,false,0,0,false), m_Coef(0),m_Coef_temp(0), m_aff_arc(false),m_arrow_x1(0), m_arrow_y1(0), m_line_s1_x(0), m_line_s1_y(0)
+    :m_s1(" ",0,0,0,0,0,0,NULL,false,false,false,0,0,false, false), m_s2(" ",0,0,0,0,0,0,NULL,false,false,false,0,0,false,false), m_Coef(0),m_Coef_temp(0), m_aff_arc(false),m_arrow_x1(0), m_arrow_y1(0), m_line_s1_x(0), m_line_s1_y(0)
 {
 
 }

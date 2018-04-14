@@ -42,7 +42,7 @@ int main()
 
     //Section F : ouverture mode grapique
     set_color_depth(desktop_color_depth());
-    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,1024,768,0,0)!=0)
+    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0)!=0)
     {
         allegro_message("probleme mode graphique");
         allegro_exit();
@@ -199,19 +199,30 @@ int main()
 
             rest(1000);
         }
-                if((tps_reel == true )&&(key[KEY_ENTER]))
+        //Si On a lancé la simulation en temps réel
+        if((tps_reel == true )&&(key[KEY_ENTER]))
         {
-
+            //Tant qu'on ne l'arrete pas on continue
            while(tps_reel!= false)
             {
+                // on lance la simulation
                 graphe.temps_reel(actuelle, Buffer, compt);
-                rest(2000);
+                rest(1500);
+                //Si on arrete la simulation on décide ou non de conservaer les paramètres comme ils sont
                 if (key[KEY_S])
                 {
                     tps_reel = false;
                     graphe.conservation_para();
                 }
-                else if((key[KEY_SPACE])) graphe.modifier_param();
+                // si on demande à modifier un paramètre, on le modifie avant de reprendre
+                else if((key[KEY_P])) graphe.modifier_param();
+                //Si on fait une pause, on reprend la simulation uniquement si il y a un appui sur s;
+                else if(key[KEY_SPACE])
+                {
+                    while(!(key[KEY_R]))
+                        compt2++;
+                    compt2 = 0;
+                }
                 compt++;
             }
         }

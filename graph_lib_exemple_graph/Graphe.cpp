@@ -163,7 +163,7 @@ void Graphe::lecture_fichier(std::string f)
             }
 
             //On crée le sommet et on l'ajoute au vecteur de sommet
-            Sommet s(nom, num, n, 0, r, x, y, image, b1, b2, false, n, 0, b3);
+            Sommet s(nom, num, n, 0, r, x, y, image, b1, b2, false, n, 0,b1, b3);
             vec_som.push_back(s);
         }
         //On lit le nombre d'arcs
@@ -350,7 +350,7 @@ void Graphe::modifier_param()
         std::cin>>nouv;
 
         //On crée un sommet avec les mêmes propriétés que celui à modifier sauf K qui a été actualisé
-        Sommet s((getVectSom()[som]).getName(), (getVectSom()[som]).getNumero(), (getVectSom()[som]).getN(), nouv, (getVectSom()[som]).getR(), (getVectSom()[som]).getCoordX(), (getVectSom()[som]).getCoordY(), (getVectSom()[som]).getImage(), (getVectSom()[som]).getAffSom(), (getVectSom()[som]).getSelect(),(getVectSom()[som]).getMarque(),(getVectSom()[som]).getN(),nouv,(getVectSom()[som]).getVeget() );
+        Sommet s((getVectSom()[som]).getName(), (getVectSom()[som]).getNumero(), (getVectSom()[som]).getN(), nouv, (getVectSom()[som]).getR(), (getVectSom()[som]).getCoordX(), (getVectSom()[som]).getCoordY(), (getVectSom()[som]).getImage(), (getVectSom()[som]).getAffSom(), (getVectSom()[som]).getSelect(),(getVectSom()[som]).getMarque(),(getVectSom()[som]).getN(),nouv,(getVectSom()[som]).getAffSomTemp(),(getVectSom()[som]).getVeget() );
 
         //Pour tous les sommets du graphe
         for(int i=0; i<getOrdre(); i++)
@@ -372,7 +372,7 @@ void Graphe::modifier_param()
         std::cin>>nouv;
 
         //On crée un sommet avec les mêmes propriétés que celui à modifier sauf N qui a été actualisé
-        Sommet s((getVectSom()[som]).getName(), (getVectSom()[som]).getNumero(), nouv, (getVectSom()[som]).getK(), (getVectSom()[som]).getR(), (getVectSom()[som]).getCoordX(), (getVectSom()[som]).getCoordY(), (getVectSom()[som]).getImage(), (getVectSom()[som]).getAffSom(), (getVectSom()[som]).getSelect(),(getVectSom()[som]).getMarque(),nouv, (getVectSom()[som]).getKTemp(),(getVectSom()[som]).getVeget());
+        Sommet s((getVectSom()[som]).getName(), (getVectSom()[som]).getNumero(), nouv, (getVectSom()[som]).getK(), (getVectSom()[som]).getR(), (getVectSom()[som]).getCoordX(), (getVectSom()[som]).getCoordY(), (getVectSom()[som]).getImage(), (getVectSom()[som]).getAffSom(), (getVectSom()[som]).getSelect(),(getVectSom()[som]).getMarque(),nouv, (getVectSom()[som]).getKTemp(),(getVectSom()[som]).getAffSomTemp(),(getVectSom()[som]).getVeget());
 
         //Pour tous les sommets du graphe
         for(int i=0; i<getOrdre(); i++)
@@ -397,7 +397,7 @@ void Graphe::modifier_param()
         std::cin>>nouv;
 
         //On crée un sommet avec les mêmes propriétés que celui à modifier sauf R qui a été actualisé
-        Sommet s((getVectSom()[som]).getName(), (getVectSom()[som]).getNumero(), (getVectSom()[som]).getN(), (getVectSom()[som]).getK(), nouv, (getVectSom()[som]).getCoordX(), (getVectSom()[som]).getCoordY(), (getVectSom()[som]).getImage(), (getVectSom()[som]).getAffSom(), (getVectSom()[som]).getSelect(),(getVectSom()[som]).getMarque(), (getVectSom()[som]).getN(),(getVectSom()[som]).getK(),(getVectSom()[som]).getVeget());
+        Sommet s((getVectSom()[som]).getName(), (getVectSom()[som]).getNumero(), (getVectSom()[som]).getN(), (getVectSom()[som]).getK(), nouv, (getVectSom()[som]).getCoordX(), (getVectSom()[som]).getCoordY(), (getVectSom()[som]).getImage(), (getVectSom()[som]).getAffSom(), (getVectSom()[som]).getSelect(),(getVectSom()[som]).getMarque(), (getVectSom()[som]).getN(),(getVectSom()[som]).getK(),(getVectSom()[som]).getAffSomTemp(),(getVectSom()[som]).getVeget());
 
         //Pour tous les sommets du graphe
         for(int i=0; i<getOrdre(); i++)
@@ -1279,12 +1279,130 @@ void Graphe::afficher_arcs(BITMAP* buffer)
 */
 
 
-
 /*temps reel : sous-programme permettant d'afficher en temps reel l'evolution du réseau écologique
 ENTREE : deux images (le fond et le buffer) et un compteur (un entier)
 SORTIE : Aucune
 */
 void Graphe::temps_reel(BITMAP* img, BITMAP* img2, int compt)
+{
+    //On crée un vecteur de sommet et un vecteur d'arcs ainsi qu'un vecteur d'entier
+    std::vector<Sommet> vec_som = getVectSom();
+    std::vector<Arc> vec_arc = getVectArcs();
+    std::vector<int> vegetation;
+    //On crée deux booléens
+    bool s = true;
+    bool regen_veget = false;
+    //3 entiers;
+    int new_n, new_k, nb_mois;
+    new_k = 0;
+    //1 float
+    float new_coef;
+
+    //On parcourt le vecteur de sommet.
+    //Si il est supprimé alors sa population devient nulle
+    for(int i =0; i<getOrdre(); i++)
+    {
+        if(vec_som[i].getAffSom()==false) vec_som[i].setN(0);
+        if(vec_som[i].getN() == 0) vec_som[i].setAffSom(false);
+        else vec_som[i].setAffSom(true);
+    }
+    //On parcourt tous les sommets
+    for(int i =0; i<getOrdre(); i++)
+    {
+        //Si l'espèce n'est pas disparue
+        if(vec_som[i].getN()!=0)
+            {
+            //On calcule une partie de sa population à t+1 ( Nt+1 = Nt + Nt*r(1- N/K)
+            new_n = vec_som[i].getN() +(int)((vec_som[i].getN() * vec_som[i].getR())*(1 - (vec_som[i].getN() / vec_som[i].getK())));
+            //On parcourt les arcs
+            for(int j =0; j<getNbArcs(); j++)
+            {
+                // si le sommet actuel est un végétal, on entre le numéro de l'arc dans son vecteur végétation
+                if(vec_som[i].getVeget()==true)
+                {
+                    if(i == vec_arc[j].getS1().getNumero())  vegetation.push_back(vec_arc[j].getS2().getNumero());
+                }
+
+                //on termine le calcul de la population à t+1 selon si ses prédecesseurs et ses successeurs
+                if(i == vec_arc[j].getS2().getNumero() && vec_arc[j].getS1().getN() != 0) new_n = new_n + (vec_arc[j].getCoef() * vec_arc[j].getS1().getN());
+                else if(i == vec_arc[j].getS1().getNumero() && vec_arc[j].getS2().getN() != 0)
+                {
+                    new_n = new_n - (vec_arc[j].getCoef() * vec_arc[j].getS2().getN());
+                }
+            }
+            //Si la nouvelle population d'une espèce est nulle alors on ne l'affiche plus
+            if(new_n<=0)
+            {
+                new_n = 0;
+                vec_som[i].setAffSom(false);
+            }
+            else vec_som[i].setAffSom(true);
+        }
+
+        //Si l'espèce est un végétal, que ce n'est pas le premier mois et que sa population est inférieure ou égale à 0
+        if((vec_som[i].getVeget()==true) && (compt> 0)&&(vec_som[i].getN()<=0))
+        {
+            //On parcourt son vecteur de végétation
+            // Si tous leur k est supérieure d'au moins 100 à leur population alors la regen_veget devient vrai
+            for(int k = 0; k<vegetation.size(); k++)
+            {
+                if(vec_som[vegetation[k]].getN() >= vec_som[vegetation[k]].getK()) regen_veget = false;
+                else regen_veget = true;
+            }
+            //Si finalement après avoir regardé tous les successeurs, la regen_veget est vraie alors sa population passe à 1000
+            if (regen_veget == true)
+            {
+                vec_som[i].setN(100);
+                vec_som[i].setAffSom(true);
+            }
+            //else vec_som[i].setN(new_n);
+        }
+        //Sinon
+        else vec_som[i].setN(new_n);
+    }
+    for(int j =0; j<getNbArcs(); j++)
+    {
+        new_coef = (float)(vec_arc[j].getS1().getN())/(vec_arc[j].getS2().getN());
+        new_k= (new_coef*vec_arc[j].getS2().getN() + vec_som[vec_arc[j].getS2().getNumero()].getK());
+        vec_arc[j].setCoef(new_coef);
+        vec_som[vec_arc[j].getS2().getNumero()].setK(new_k);
+
+        if(vec_som[vec_arc[j].getS1().getNumero()].getAffSom() == false && vec_som[vec_arc[j].getS1().getNumero()].getAffSom() == false) vec_arc[j].setAffArc(false);
+        else vec_arc[j].setAffArc(true);
+    }
+    for(int i=0; i<getOrdre(); i++)
+    {
+        if(vec_som[i].getK()==0) vec_som[i].setK(1000000);
+    }
+
+    //On parcourt le vecteur de sommet.
+    //Si il est supprimé alors sa population devient nulle
+    for(int i =0; i<getOrdre(); i++)
+    {
+        if(vec_som[i].getAffSom()==false) vec_som[i].setN(0);
+        if(vec_som[i].getN() == 0) vec_som[i].setAffSom(false);
+        else vec_som[i].setAffSom(true);
+    }
+
+
+    nb_mois = getNbMois();
+    setNbMois(nb_mois+1);
+    setVectSom(vec_som);
+    setVectArcs(vec_arc);
+    clear_bitmap(img2);
+    blit(img, img2, 0,0,0,0,1024,768);
+    afficher_console();
+    afficher_sommets(img2);
+    blit(img2,screen,0,0,0,0,1024,768);
+
+  //  return s;
+}
+
+/*temps reel : sous-programme permettant d'afficher en temps reel l'evolution du réseau écologique
+ENTREE : deux images (le fond et le buffer) et un compteur (un entier)
+SORTIE : Aucune
+*/
+/*void Graphe::temps_reel(BITMAP* img, BITMAP* img2, int compt)
 {
     //On crée un vecteur de sommet et un vecteur d'arcs ainsi qu'un vecteur d'entier
     std::vector<Sommet> vec_som = getVectSom();
@@ -1387,7 +1505,7 @@ void Graphe::temps_reel(BITMAP* img, BITMAP* img2, int compt)
 
   //  return s;
 }
-
+*/
 
 /// Source : https://www.geeksforgeeks.org/strongly-connected-components/
 //A appliquer à chaque graphe pour voir les composantes connexes
