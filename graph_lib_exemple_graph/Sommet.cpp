@@ -6,7 +6,7 @@
 
 //Constructeur par défaut
 Sommet::Sommet()
-    :m_name("zero"), m_numero(-1), m_N(0),m_N_temp(0), m_K(0),m_K_temp(0), m_r(0), m_coord_x(0), m_coord_y(0), m_image(NULL), m_aff_som(false), m_select(false), m_veget(false),m_aff_som_temp(false), m_marque(false), m_nourriture(0)
+    :m_name("zero"), m_numero(-1), m_N(0),m_N_temp(0), m_K(0),m_K_temp(0), m_r(0), m_coord_x(0), m_coord_y(0), m_image(NULL), m_aff_som(false), m_select(false), m_veget(false),m_aff_som_temp(false), m_marque(false), m_nourriture(0), m_col(0)
 {
 
 }
@@ -16,7 +16,7 @@ Sommet::Sommet()
 
 //Constructeur surchargé
 Sommet::Sommet(std::string _name, int _numero, int _N, int _K, float _r, int _coord_x, int _coord_y, BITMAP* _image, bool _aff_som, bool _select, bool _marque, int _N_temp, int _K_temp,bool _aff_temp, bool _veget, float _nourr)
-    :m_name(_name), m_numero(_numero), m_N(_N), m_K(_K), m_r(_r), m_coord_x(_coord_x), m_coord_y(_coord_y), m_image(_image), m_aff_som(_aff_som), m_select(_select), m_marque(_marque), m_N_temp(_N_temp), m_K_temp(_K_temp),m_aff_som_temp(_aff_temp), m_veget(_veget),m_nourriture(_nourr)
+    :m_name(_name), m_numero(_numero), m_N(_N), m_K(_K), m_r(_r), m_coord_x(_coord_x), m_coord_y(_coord_y), m_image(_image), m_aff_som(_aff_som), m_select(_select), m_marque(_marque), m_N_temp(_N_temp), m_K_temp(_K_temp),m_aff_som_temp(_aff_temp), m_veget(_veget),m_nourriture(_nourr),m_col(0)
 {
 
 }
@@ -87,6 +87,12 @@ int Sommet::getCoordX()
 int Sommet::getCoordY()
 {
     return m_coord_y;
+}
+
+//getter qui retourne l'attribut "m_coord_y"
+int Sommet::getCol()
+{
+    return m_col;
 }
 
 //getter qui retourne l'attribut "m_image"
@@ -177,6 +183,12 @@ void Sommet::setR(float r)
     m_r=r;
 }
 
+//setter qui modifie l'attribut "m_col"
+void Sommet::setCol(int c)
+{
+    m_col=c;
+}
+
 //setter qui modifie l'attribut "m_coord_x"
 void Sommet::setCoordX(int coord_x)
 {
@@ -243,6 +255,8 @@ void Sommet::afficher_infos()
     std::cout<<"Taille de la population : "<<m_N<<std::endl;
     std::cout<<"Capacite de portage de l'environnement : "<<m_K<<std::endl;
     std::cout<<"Rythme de croissance : "<<m_r<<std::endl<<std::endl;
+    if(m_veget==false)std::cout<<"Quantite de nourriture nécessaire : "<<m_nourriture<<std::endl<<std::endl;
+    else std::cout<<"Quantite d'individus des autres espèces nécessaire : "<<m_nourriture<<std::endl<<std::endl;
 
 }
 

@@ -42,7 +42,8 @@ int main()
 
     //Section F : ouverture mode grapique
     set_color_depth(desktop_color_depth());
-    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0)!=0)
+    //if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0)!=0)
+    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,1024,768,0,0)!=0)
     {
         allegro_message("probleme mode graphique");
         allegro_exit();
@@ -64,6 +65,7 @@ int main()
     std::string nom;
     Graphe graphe;
     Graphe graphe_temp;
+
     BITMAP* Buffer= create_bitmap(1024,768);
 
     BITMAP* menu = load_bitmap("Menu.bmp", NULL);
@@ -159,7 +161,7 @@ int main()
             }
 
 
-            else if(c==makecol(255,0,255))
+            else if(c==makecol(255,0,255)) //changer graphe
             {
                 graphe.sauvegarde_fichier(nom);
                 actuelle = menu;
@@ -208,7 +210,7 @@ int main()
                 graphe_temp.setNbArcs(nou_arc);
                 graphe_temp.setVectArcs(non_vis);
                 graphe_temp.setVectSom(non_d);
-                graphe_temp.forte_co(graphe_temp, actuelle, temp_x1, temp_y1, temp_x2, temp_y2);
+                graphe_temp.forte_co(graphe_temp, actuelle, temp_x1, temp_y1, temp_x2, temp_y2,false);
                 f = 1;
             }
 
@@ -248,7 +250,7 @@ int main()
                 // on lance la simulation
                 if(graphe.getNonTrop()==false) graphe.temps_reel(actuelle, Buffer, compt);
                 else graphe.temps_reel_nont(actuelle, Buffer, compt);
-                rest(1500);
+                rest(3000);
                 //Si on arrete la simulation on décide ou non de conservaer les paramètres comme ils sont
                 if (key[KEY_S])
                 {
@@ -261,7 +263,10 @@ int main()
                 else if(key[KEY_SPACE])
                 {
                     while(!(key[KEY_R]))
+                    {
                         compt2++;
+                        if((key[KEY_P])) graphe.modifier_param();
+                    }
                     compt2 = 0;
                 }
                 compt++;
@@ -271,8 +276,20 @@ int main()
 
         if(m==false)
         {
+            //on affiche le rectangle de sélection/deselection autour des sommets
+            for(int i =0; i<graphe.getOrdre();i++)
+            {
+                if (graphe.getVectSom()[i].getAffSom()==true)
+                {
+                    if(graphe.getVectSom()[i].getSelect()==true) rect(screen, graphe.getVectSom()[i].getCoordX(), graphe.getVectSom()[i].getCoordY(), graphe.getVectSom()[i].getCoordX()+ graphe.getVectSom()[i].getImage()->w, graphe.getVectSom()[i].getCoordY() + graphe.getVectSom()[i].getImage()->h, makecol(0,255,0));
+                    else rect(screen, graphe.getVectSom()[i].getCoordX(), graphe.getVectSom()[i].getCoordY(), graphe.getVectSom()[i].getCoordX()+ graphe.getVectSom()[i].getImage()->w, graphe.getVectSom()[i].getCoordY()+graphe.getVectSom()[i].getImage()->h, makecol(0,0,0));
+                }
+            }
+            //on affiche le graphe
             graphe.afficher_sommets(Buffer);
 
+
+            //forte connexite - couleurs
             if(f==1)
             {
                rest(2000);
@@ -291,7 +308,70 @@ int main()
                     graphe.afficher_sommets(Buffer);
                 }
                 //graphe.afficher_sommets(Buffer);
+                f++;
+            }
+            //forte connexite - graphe réduit
+            if (f==2)
+            {
+                 //Forte connexite
+                std::vector<Sommet> non_d;
+                std::vector<Arc> non_vis;
+                int nouv_o = 0;
+                int nou_arc = 0;
+                for(int i=0; i<graphe.getOrdre(); i++)
+                {
+                    if(graphe.getVectSom()[i].getAffSom() == true)
+                    {
+                        non_d.push_back(graphe.getVectSom()[i]);
+                        nouv_o++;
+                    }
+                }
+                for(int j = 0; j<graphe.getNbArcs();j++)
+                {
+                    if((graphe.getVectArcs()[j].getS1().getAffSom()==true) && (graphe.getVectArcs()[j].getS1().getAffSom()==true))
+                    {
+                        non_vis.push_back(graphe.getVectArcs()[j]);
+                        nou_arc++;
+                    }
+                }
+                if(nouv_o != graphe.getOrdre())
+                {
+                    for(int i = 0; i<nouv_o; i++)
+                    {
+                        non_d[i].setNumero(i);
+                    }
+                }
+                graphe_temp.setOrdre(nouv_o);
+                graphe_temp.setNbMois(graphe.getNbMois());
+                graphe_temp.setNbMoisTemp(graphe.getNbMoisTemp());
+                graphe_temp.setNbArcs(nou_arc);
+                graphe_temp.setVectArcs(non_vis);
+                graphe_temp.setVectSom(non_d);
+                graphe_temp.forte_co(graphe_temp, actuelle, temp_x1, temp_y1, temp_x2, temp_y2,true);
+
+               rest(2000);
+
+                /*blit(Buffer,screen,0,0,0,0,1024,768);
+                blit(actuelle, Buffer, 0,0,0,0,1024,768);
+                */
+                blit(Buffer,screen,0,0,0,0,1024,768);
+                blit(actuelle, Buffer, 0,0,0,0,1024,768);
+                graphe.afficher_sommets(Buffer);
+                // graphe.afficher_sommets(Buffer);
+                //On retire les rectangles
+                for(int i = 0; i<temp_x1.size(); i++)
+                {
+                    rest(500);
+                    rectfill(actuelle, temp_x1[i], temp_y1[i],temp_x1[i]+temp_x2[i],temp_y1[i]+temp_y2[i],makecol(255,255,255));
+                    rectfill(screen, 126, 5, 1019, 763, makecol(255,255,255));
+
+                   // clear(actuelle);
+                    blit(Buffer,screen,0,0,0,0,1024,768);
+                    blit(actuelle, Buffer, 0,0,0,0,1024,768);
+                    graphe.afficher_sommets(Buffer);
+                }
                 f=0;
+
             }
 
         }

@@ -173,6 +173,7 @@ void Graphe::lecture_fichier(std::string f)
             if (!image)
             {
                 allegro_message("prb allocation BITMAP ");
+                std::cout<<nom_img;
                 allegro_exit();
                 exit(EXIT_FAILURE);
             }
@@ -211,8 +212,8 @@ void Graphe::lecture_fichier(std::string f)
         {
             if(getVectSom()[i].getK()<=0)
             {
-                vec_som[i].setK(1000000);
-                vec_som[i].setKTemp(1000000);
+                vec_som[i].setK(2);
+                vec_som[i].setKTemp(2);
                 setVectSom(vec_som);
             }
             std::cout<<((getVectSom())[i]).getName()<<" "<<((getVectSom())[i]).getN()<<" "<<((getVectSom())[i]).getK()<<" "<<((getVectSom())[i]).getR()<<" "<<((getVectSom())[i]).getCoordX()<<" "<<((getVectSom())[i]).getCoordY()<<std::endl;
@@ -293,6 +294,7 @@ void Graphe::sauvegarde_fichier(std::string f)
         }
 
 
+        //on sauvegarde les arcs
         fichier<<getNbArcs()<<std::endl;
 
         //On sauvegarde les arcs
@@ -526,9 +528,11 @@ void Graphe::calcul_para_post_modif(std::vector<Sommet> vec_som)
 
         for(int i = 0; i<getOrdre(); i++)
         {
+            //pour tous les arcs
             new_k.push_back(0);
             for(int k=0; k<getNbArcs(); k++)
             {
+                //si il est affiché et que son influence est positive, on calcule le K
                 if(vec_arc[k].getS2().getNumero()== i && vec_arc[k].getInfluence()==0)
                 {
                     new_k[i] = new_k[i] + ((vec_arc[k].getCoef()) * (vec_arc[k].getS1().getN()));
@@ -536,12 +540,11 @@ void Graphe::calcul_para_post_modif(std::vector<Sommet> vec_som)
                 }
 
             }
-            if(vec_som[i].getVeget()==true && new_k[i] == 0) vec_som[i].setK(10000);
-            else if(vec_som[i].getVeget()==false && new_k[i] == 0) vec_som[i].setK(2);
+            //si le nouveau k est à 0, on le met à 100000 pour les végétaux et à 2 pour les animaux
+            if( new_k[i] == 0) vec_som[i].setK(2);
             else
             {
                 vec_som[i].setK(new_k[i]);
-                vec_som[i].setKTemp(new_k[i]);
             }
         }
 
@@ -596,6 +599,7 @@ void Graphe::conservation_para()
         setVectSom(vec_s);
         setVectArcs(vec_a);
     }
+    //si il accepte, on donne aux k, n, nb mois temporaires leur nouvelle valeur
     else
     {
         for(int i=0; i<getOrdre(); i++)
@@ -637,7 +641,10 @@ void Graphe::afficher_console()
     for(int i =0; i < getOrdre(); i++)
     {
         //Affichage des informations du sommet
-        std::cout<<((getVectSom())[i]).getName()<<" "<<((getVectSom())[i]).getN()<<" "<<((getVectSom())[i]).getK()<<" "<<((getVectSom())[i]).getR()<<" "<<((getVectSom())[i]).getCoordX()<<" "<<((getVectSom())[i]).getCoordY()<<std::endl;
+        std::cout<<((getVectSom())[i]).getName()<<" "<<((getVectSom())[i]).getN();
+        std::cout<<" "<<((getVectSom())[i]).getK()<<" "<<((getVectSom())[i]).getR();
+        std::cout<<" "<<((getVectSom())[i]).getNourriture();
+        std::cout<<" "<<((getVectSom())[i]).getCoordX()<<" "<<((getVectSom())[i]).getCoordY()<<std::endl;
     }
 
 
@@ -677,7 +684,6 @@ void Graphe::afficher_sommets(BITMAP* img)
         compteur.push_back(0);
     }
 
-
     //Pour tous les sommets du graphe
     for(int i=0; i<getOrdre(); i++)
     {
@@ -693,10 +699,9 @@ void Graphe::afficher_sommets(BITMAP* img)
                 //r prend la valeur de son R arrondie à l'entier
                 r = int(getVectSom()[i].getR());
 
-                //On affiche ses paramètres K, R et N
+                //On affiche ses paramètres  N et nourriture
                 textprintf(img,font, (getVectSom()[i]).getCoordX()+20, (getVectSom()[i]).getCoordY()+ getVectSom()[i].getImage()->h, makecol(0,0,0) ,"Population %d",getVectSom()[i].getN() );
-                textprintf(img,font, (getVectSom()[i]).getCoordX()+20, (getVectSom()[i]).getCoordY()+ getVectSom()[i].getImage()->h + 20, makecol(0,0,0) ,"K : %d",getVectSom()[i].getK() );
-                textprintf(img,font, (getVectSom()[i]).getCoordX()+20, (getVectSom()[i]).getCoordY()+ getVectSom()[i].getImage()->h + 40, makecol(0,0,0) ,"R : %d",r );
+                (textprintf(img,font, (getVectSom()[i]).getCoordX()+20, (getVectSom()[i]).getCoordY()+ getVectSom()[i].getImage()->h + 20, makecol(0,0,0) ,"Consommation : %1.2f",getVectSom()[i].getNourriture() ));
 
                 //On affiche le numéro du sommet au-dessus de son image
                 textprintf(img,font, (getVectSom()[i]).getCoordX()+20, (getVectSom()[i]).getCoordY()-20, makecol(0,0,0), "Sommet n_%d", n);
@@ -709,7 +714,7 @@ void Graphe::afficher_sommets(BITMAP* img)
 
 
            }
-            //On affiche le mois auquel on est en haut à droite de l'écran
+            //On affiche l'année auquel on est en haut à droite de l'écran
             textprintf(img,font, SCREEN_W - 100, 20 , makecol(0,255,100) ,"Mois n_%d",getNbMois() );
 
             //Si le sommet est affiché
@@ -1203,214 +1208,6 @@ void Graphe::ajouter_sommet()
 }
 
 
-
-
-
-/* afficher_arcs : sous-programme permettant d'afficher les arcs à afficher entre 2 sommets
-ENTREE :
-    buffer : de type BITMAP*
-SORTIE :
-    aucune
-*/
-/*
-void Graphe::afficher_arcs(BITMAP* buffer)
-{
-    //Variables temporaires
-    int X2, X3, Y2, Y3;
-
-
-    //Pour tous les arcs du vecteur d'arcs
-    for(int i=0; i<m_nb_arcs; i++)
-    {
-
-        //SI LE BOOLEEN AFFICHER DE l'ARC EST A VRAI
-        if(m_vect_arcs[i].getAffArc())
-        {
-
-            //Instance d'une variable coeff
-            float coeff = m_vect_arcs[i].getCoef();
-
-            //INITIALISATION
-            m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX());
-            m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY());
-
-            X2 = m_vect_arcs[i].getArrowX1() - 10;
-            Y2 = m_vect_arcs[i].getArrowY1() - 10;
-
-            X3 = m_vect_arcs[i].getArrowX1() - 10;
-            Y3 = m_vect_arcs[i].getArrowY1() + 10;
-
-
-            //AJUSTEMENT
-            //TRACE DE LA FLECHE ET MODIFICATION DE LA LIGNE
-            //CAS 1
-            if(m_vect_arcs[i].getArrowX1() > m_vect_arcs[i].getS1().getCoordX() && m_vect_arcs[i].getArrowY1() > m_vect_arcs[i].getS1().getCoordY())
-            {
-
-                m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX() + (m_vect_arcs[i].getS2().getImage()->w)/2);
-                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY() - 25);
-
-                m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX() + (m_vect_arcs[i].getS1().getImage()->w)/2);
-                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() + (m_vect_arcs[i].getS1().getImage()->h));
-
-                X2 = m_vect_arcs[i].getArrowX1() - 10;
-                Y2 = m_vect_arcs[i].getArrowY1() - 20;
-
-                X3 = m_vect_arcs[i].getArrowX1() - 20;
-                Y3 = m_vect_arcs[i].getArrowY1() - 10;
-
-            }
-
-
-
-            //CAS 2
-            else if(m_vect_arcs[i].getArrowX1() < m_vect_arcs[i].getS1().getCoordX() && m_vect_arcs[i].getArrowY1() < m_vect_arcs[i].getS1().getCoordY())
-            {
-
-                m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX() + (m_vect_arcs[i].getS2().getImage()->w)/2);
-                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY() + (m_vect_arcs[i].getS2().getImage()->h));
-
-                X2 = m_vect_arcs[i].getArrowX1() + 10;
-                Y2 = m_vect_arcs[i].getArrowY1() + 20;
-
-                X3 = m_vect_arcs[i].getArrowX1() + 20;
-                Y3 = m_vect_arcs[i].getArrowY1() + 10;
-
-                m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX() + (m_vect_arcs[i].getS1().getImage()->w)/2);
-                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() - 25);
-
-            }
-
-
-
-            //CAS 3
-            else if(m_vect_arcs[i].getArrowX1() < m_vect_arcs[i].getS1().getCoordX() && m_vect_arcs[i].getArrowY1() > m_vect_arcs[i].getS1().getCoordY())
-            {
-
-                m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX() + (m_vect_arcs[i].getS2().getImage()->w)/2);
-                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY() - 25);
-
-                X2 = m_vect_arcs[i].getArrowX1() + 20;
-                Y2 = m_vect_arcs[i].getArrowY1() - 10;
-
-                X3 = m_vect_arcs[i].getArrowX1() + 10;
-                Y3 = m_vect_arcs[i].getArrowY1() - 20;
-
-                m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX() + (m_vect_arcs[i].getS1().getImage()->w)/2);
-                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() + (m_vect_arcs[i].getS1().getImage()->h));
-
-            }
-
-
-            //CAS 4
-            else if(m_vect_arcs[i].getArrowX1() > m_vect_arcs[i].getS1().getCoordX() && m_vect_arcs[i].getArrowY1() < m_vect_arcs[i].getS1().getCoordY())
-            {
-
-                m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX() + (m_vect_arcs[i].getS2().getImage()->w)/2);
-                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY() + (m_vect_arcs[i].getS2().getImage()->h));
-
-                X2 = m_vect_arcs[i].getArrowX1() - 20;
-                Y2 = m_vect_arcs[i].getArrowY1() + 10;
-
-                X3 = m_vect_arcs[i].getArrowX1() - 10;
-                Y3 = m_vect_arcs[i].getArrowY1() + 20;
-
-                m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX() + (m_vect_arcs[i].getS1().getImage()->w)/2);
-                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() - 25);
-
-            }
-
-
-
-            //CAS 5
-            else if(m_vect_arcs[i].getArrowX1() == m_vect_arcs[i].getS1().getCoordX() && m_vect_arcs[i].getArrowY1() > m_vect_arcs[i].getS1().getCoordY())
-            {
-
-                m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX() + (m_vect_arcs[i].getS2().getImage()->w)/2);
-                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY() - 25);
-
-                X2 = m_vect_arcs[i].getArrowX1() + 10;
-                Y2 = m_vect_arcs[i].getArrowY1() - 10;
-
-                X3 = m_vect_arcs[i].getArrowX1() - 10;
-                Y3 = m_vect_arcs[i].getArrowY1() - 10;
-
-                m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX() + (m_vect_arcs[i].getS1().getImage()->w)/2);
-                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() + (m_vect_arcs[i].getS1().getImage()->h));
-
-            }
-
-
-            //CAS 6
-            else if(m_vect_arcs[i].getArrowX1() > m_vect_arcs[i].getS1().getCoordX() && m_vect_arcs[i].getArrowY1() == m_vect_arcs[i].getS1().getCoordY())
-            {
-
-                m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX());
-                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY() + (m_vect_arcs[i].getS2().getImage()->h)/2);
-
-                X2 = m_vect_arcs[i].getArrowX1() - 10;
-                Y2 = m_vect_arcs[i].getArrowY1() - 10;
-
-                X3 = m_vect_arcs[i].getArrowX1() - 10;
-                Y3 = m_vect_arcs[i].getArrowY1() + 10;
-
-                m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX() + (m_vect_arcs[i].getS1().getImage()->w));
-                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() + (m_vect_arcs[i].getS1().getImage()->h)/2);
-
-            }
-
-
-            //CAS 7
-            else if(m_vect_arcs[i].getArrowX1() == m_vect_arcs[i].getS1().getCoordX() && m_vect_arcs[i].getArrowY1() < m_vect_arcs[i].getS1().getCoordY())
-            {
-
-                m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX() + (m_vect_arcs[i].getS2().getImage()->w)/2);
-                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY() + (m_vect_arcs[i].getS2().getImage()->h));
-
-                X2 = m_vect_arcs[i].getArrowX1() - 10;
-                Y2 = m_vect_arcs[i].getArrowY1() + 10;
-
-                X3 = m_vect_arcs[i].getArrowX1() + 10;
-                Y3 = m_vect_arcs[i].getArrowY1() + 10;
-
-                m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX() + (m_vect_arcs[i].getS1().getImage()->w)/2);
-                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() - 25);
-
-            }
-
-
-            //CAS 8
-            else if(m_vect_arcs[i].getArrowX1() < m_vect_arcs[i].getS1().getCoordX() && m_vect_arcs[i].getArrowY1() == m_vect_arcs[i].getS1().getCoordY())
-            {
-
-                m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX() + (m_vect_arcs[i].getS2().getImage()->w));
-                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY() + (m_vect_arcs[i].getS2().getImage()->h)/2);
-
-                X2 = m_vect_arcs[i].getArrowX1() + 10;
-                Y2 = m_vect_arcs[i].getArrowY1() - 10;
-
-                X3 = m_vect_arcs[i].getArrowX1() + 10;
-                Y3 = m_vect_arcs[i].getArrowY1() + 10;
-
-                m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX());
-                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() + (m_vect_arcs[i].getS1().getImage()->h)/2);
-
-
-
-            }
-
-
-            //AFFICHAGE DES FORMES
-            triangle(buffer, m_vect_arcs[i].getArrowX1(), m_vect_arcs[i].getArrowY1(), X2, Y2, X3, Y3, makecol(255,0,0));
-            line(buffer, (X2+X3)/2, (Y2+Y3)/2, m_vect_arcs[i].getLine_S1_X(), m_vect_arcs[i].getLine_S1_Y(), makecol(255,0,0));
-            textprintf(buffer,font,(m_vect_arcs[i].getLine_S1_X()+m_vect_arcs[i].getArrowX1())/2 -40,(m_vect_arcs[i].getLine_S1_Y()+m_vect_arcs[i].getArrowY1())/2, makecol(100,0,255) ,"Coef=%1.2f",coeff);
-
-        }
-    }
-}
-*/
-
-
 /*temps reel : sous-programme permettant d'afficher en temps reel l'evolution du réseau écologique
 ENTREE : deux images (le fond et le buffer) et un compteur (un entier)
 SORTIE : Aucune
@@ -1479,13 +1276,18 @@ void Graphe::temps_reel(BITMAP* img, BITMAP* img2, int compt)
             }
             std::cout<<"\n";
             //Si la nouvelle population d'une espèce est nulle alors on ne l'affiche plus
-            if(new_n<=0)
+            //une population met 5 tours à disparaitre vraiment
+            if(new_n<=0 && c_regen[i]<2)
+            {
+                new_n = vec_som[i].getK();
+                vec_som[i].setAffSom(true);
+            }
+            else if(new_n<0)
             {
                 new_n = 0;
                 vec_som[i].setAffSom(false);
             }
             else vec_som[i].setAffSom(true);
-
 
             //On parcourt son vecteur de végétation
             // Si tous leur k est supérieure d'au moins 100 à leur population alors la regen_veget devient vrai
@@ -1517,22 +1319,12 @@ void Graphe::temps_reel(BITMAP* img, BITMAP* img2, int compt)
             }
             //Si on est pas en situation de famine ou de regeneration les vecteurs correspondanst passent à 0
             if (famine[i] == false) c_famine[i] = 0;
-            if (regen_veget[i] == false) c_regen[i] = 0;
-
-            //Si l'espèce est un végétal, que ce n'est pas le premier mois et que sa population est inférieure ou égale à 0 et que ses prédateurs sont peu nombreux
-            if((regen_veget[i] == true))
-            {
-                c_regen[i]++;
-                if(c_regen[i]==2)
-                {
-                    vec_som[i].setN(100);
-                    vec_som[i].setAffSom(true);
-                    c_regen[i] =0;
-                }
-            }
+            //if (regen_veget[i] == false) c_regen[i] = 0;
+            std::cout<<c_regen[i]<<" "<<c_famine[i]<<std::endl;
             //Sinon c'est un animal, si sa population est non nulle et qu'il est en période de famine
-            else if((famine[i]==true))
+            if((famine[i]==true))
             {
+
                 c_famine[i]++;
                 //Si la famine dure depuis 2 mois, la population passe à 1à, ensuite à 5(cannibalisme), etc jusqu'à 0
                 if(c_famine[i]==2) vec_som[i].setN(10);
@@ -1545,82 +1337,25 @@ void Graphe::temps_reel(BITMAP* img, BITMAP* img2, int compt)
                     c_famine[i] = 0;
                 }
             }
+            else if(new_n<0) new_n = 0;
+            else if(new_n>10000) new_n = 10000;
             else vec_som[i].setN(new_n);
         }
     }
-    //on met les nouveau sommet dans les arcs
-    Sommet so;
-    for(int i=0; i<getOrdre();i++)
-    {
-        for(int j=0; j<getOrdre(); j++)
-        {
-            if(vec_arc[j].getS1().getNumero() == i)
-            {
-                so = vec_som[i];
-                vec_arc[j].setS1(so);
-            }
-            else if(vec_arc[j].getS2().getNumero() == i)
-            {
-                so = vec_som[i];
-                vec_arc[j].setS2(so);
-            }
-        }
-    }
-    //On calcule le coefficient de l'arc que l'on crée ensuite
-        int comp = 0;
-        float coeff = (float)(1);
-        for(int k=0; k<getNbArcs(); k++)
-        {
-            for(int l = 0; l<getNbArcs(); l++)
-            {
-                if(vec_arc[k].getS1().getNumero() == vec_arc[l].getS1().getNumero()&& vec_arc[k].getS1().getN()>0 && vec_arc[k].getS2().getN()>0) comp++;
-                if(l==getNbArcs()-1 && comp>0)
-                {
-                    // std::cout<<k<<" "<<compt<<std::endl;
-                    float coeff = (float)(1)/(comp);
-                    float nourr = (float)(1)/(vec_som[vec_arc[k].getS2().getNumero()].getNourriture());
-                    coeff = (float)(coeff) *(nourr);
-                    std::cout<<k<<" "<<coeff<<std::endl;
-                    vec_arc[k].setCoef(coeff);
-                }
-                else if(comp<=0) vec_arc[k].setCoef(0);
-            }
-                //std::cout<<k<<" "<<compt<<std::endl;
-            comp = 0;
-        }
-        //On calcule le paramètre K des sommets
-        std::vector<int> new_k;
-
-        for(int i = 0; i<getOrdre(); i++)
-        {
-            new_k.push_back(0);
-            for(int k=0; k<getNbArcs(); k++)
-            {
-                if(vec_arc[k].getS2().getNumero()== i )
-                {
-                    new_k[i] = new_k[i] + ((vec_arc[k].getCoef()) * (vec_arc[k].getS1().getN()));
-                }
-
-            }
-            vec_som[i].setK(new_k[i]);
-        }
+    //on calcule les nouveaux k et coeff
+    calcul_para_post_modif(vec_som);
+    vec_som = getVectSom();
 
 
     //on parcourt tous les arcs
     for(int j =0; j<getNbArcs(); j++)
     {
-        /*//on clalcule le nouveau coefficient, le
-        new_coef = (float)(vec_arc[j].getS1().getN())/(vec_arc[j].getS2().getN());
-        new_k= (new_coef*vec_arc[j].getS2().getN() + vec_som[vec_arc[j].getS2().getNumero()].getK());
-        vec_arc[j].setCoef(new_coef);
-        vec_som[vec_arc[j].getS2().getNumero()].setK(new_k);
-*/
         if(vec_som[vec_arc[j].getS1().getNumero()].getAffSom() == false && vec_som[vec_arc[j].getS1().getNumero()].getN() == false) vec_arc[j].setAffArc(false);
         else vec_arc[j].setAffArc(true);
     }
     for(int i=0; i<getOrdre(); i++)
     {
-        if(vec_som[i].getK()==0 && vec_som[i].getVeget()==true) vec_som[i].setK(10000);
+        if(vec_som[i].getK()==0 && vec_som[i].getVeget()==true) vec_som[i].setK(100000);
         else if(vec_som[i].getK()==0) vec_som[i].setK(10);
     }
 
@@ -1633,11 +1368,13 @@ void Graphe::temps_reel(BITMAP* img, BITMAP* img2, int compt)
         else vec_som[i].setAffSom(true);
     }
 
+    //on affiche le nouveau nombre de mois
 
     nb_mois = getNbMois();
     setNbMois(nb_mois+1);
     setVectSom(vec_som);
     setVectArcs(vec_arc);
+    //on affiche l'évolution
     clear_bitmap(img2);
     blit(img, img2, 0,0,0,0,1024,768);
     afficher_console();
@@ -1663,6 +1400,17 @@ void Graphe::temps_reel_nont(BITMAP* img, BITMAP* img2, int compt)
     new_k = 0;
     //1 float
     float new_coef;
+    //
+    std::vector<bool> respire;
+
+    //Si c'est le tout premier mois, les vecteurs de famine
+    //les vecteurs de respiration sont initialiser à 0
+    for(int i= 0; i<getOrdre(); i++)
+    {
+        if(compt==0) c_famine.push_back(0);
+        respire.push_back(0);
+
+    }
 
     //On parcourt le vecteur de sommet.
     //Si il est supprimé alors sa population devient nulle
@@ -1675,6 +1423,7 @@ void Graphe::temps_reel_nont(BITMAP* img, BITMAP* img2, int compt)
     //On parcourt tous les sommets
     for(int i =0; i<getOrdre(); i++)
     {
+        std::vector<int> qui_respire;
         //Si l'espèce n'est pas disparue
         if(vec_som[i].getN()>0 && vec_som[i].getN()<10000000)
         {
@@ -1694,6 +1443,9 @@ void Graphe::temps_reel_nont(BITMAP* img, BITMAP* img2, int compt)
                         if(i==2) std::cout<<"in"<<std::endl;
                     }
                 }
+                 //si c'est un annimal, on entre le numero de l'arc dont c'est le chasseur dans son vecteur nourriture
+                if(vec_arc[j].getS2().getNumero() == num) qui_respire.push_back(vec_arc[j].getS1().getNumero());
+
 
             }
             //Si la nouvelle population d'une espèce est nulle alors on ne l'affiche plus
@@ -1704,25 +1456,43 @@ void Graphe::temps_reel_nont(BITMAP* img, BITMAP* img2, int compt)
             }
             else vec_som[i].setAffSom(true);
 
-
-
-            vec_som[i].setN(new_n);
+            //On parcourt son vecteur de proie
+            // Si toutes leurs proies sont disparues alors la famine devient vraie
+            for(int k = 0; k<qui_respire.size(); k++)
+            {
+                if(vec_som[i].getN()>0)
+                {
+                    if(vec_som[qui_respire[k]].getN() > 0 )
+                    {
+                        respire[i] = false;
+                        k = qui_respire.size();
+                    }
+                    else respire[i] = true;
+                }
+            }
+            //Si on est pas en situation de famine ou de regeneration les vecteurs correspondanst passent à 0
+            if (respire[i] == false) c_famine[i] = 0;
+            //Si c'est un animal, si sa population est non nulle et qu'il n'y a plus de quoi le faire vivre
+            if((respire[i]==true))
+            {
+                c_famine[i]++;
+                //Si ça dure depuis 2 mois, la population passe à 5, etc jusqu'à 0
+                if(c_famine[i]==2) vec_som[i].setN(5);
+                if(c_famine[i] == 3) vec_som[i].setN(2);
+                if (c_famine[i] == 4) vec_som[i].setN(1);
+                if (c_famine[i] == 5)
+                {
+                    vec_som[i].setN(0);
+                    c_famine[i] = 0;
+                }
+            }
+            //si rien de tout ça on affecte la nouvelle population
+            else vec_som[i].setN(new_n);
         }
     }
-    for(int j =0; j<getNbArcs(); j++)
-    {
-        new_coef = (float)(vec_arc[j].getS1().getN())/(vec_arc[j].getS2().getN());
-        new_k= (new_coef*vec_arc[j].getS2().getN() + vec_som[vec_arc[j].getS2().getNumero()].getK());
-        vec_arc[j].setCoef(new_coef);
-        vec_som[vec_arc[j].getS2().getNumero()].setK(new_k);
-
-        if(vec_som[vec_arc[j].getS1().getNumero()].getAffSom() == false && vec_som[vec_arc[j].getS1().getNumero()].getAffSom() == false) vec_arc[j].setAffArc(false);
-        else vec_arc[j].setAffArc(true);
-    }
-    for(int i=0; i<getOrdre(); i++)
-    {
-        if(vec_som[i].getK()==0) vec_som[i].setK(1000000);
-    }
+    //on calcule les nouveaux k et coeff
+    calcul_para_post_modif(vec_som);
+    vec_som = getVectSom();
 
     //On parcourt le vecteur de sommet.
     //Si il est supprimé alors sa population devient nulle
@@ -1734,10 +1504,12 @@ void Graphe::temps_reel_nont(BITMAP* img, BITMAP* img2, int compt)
     }
 
 
+    //on affiche le nouveau nombre de mois
     nb_mois = getNbMois();
     setNbMois(nb_mois+1);
     setVectSom(vec_som);
     setVectArcs(vec_arc);
+    //on affiche l'évolution
     clear_bitmap(img2);
     blit(img, img2, 0,0,0,0,1024,768);
     afficher_console();
@@ -1755,86 +1527,240 @@ ENTREE :
 SORTIE :
     aucune
 */
-void Graphe::forte_co(Graphe g, BITMAP* img, std::vector<int>& temp_x1, std::vector<int>& temp_y1, std::vector<int>& temp_x2, std::vector<int>& temp_y2)
+void Graphe::forte_co(Graphe g, BITMAP* img, std::vector<int>& temp_x1, std::vector<int>& temp_y1, std::vector<int>& temp_x2, std::vector<int>& temp_y2, bool reduit)
 {
-
-
-    //std::cout << "Debut forte co" << std::endl;
-    //Pile de int ou de sommet
-    std::stack<int> pile;
-
-    //On crée un tableau de booleens de taille ordre qui sert de tableau de marquage
-    bool marq[getOrdre()];
-    //On l'initialise à false pour le premier DFS
-    for(int i =0; i<getOrdre(); i++)
+    //Si on lance la forte connexité avec affichage des couleurs
+    if(reduit==false)
     {
-        //On le met à faux
-        marq[i]=false;
-    }
+        //std::cout << "Debut forte co" << std::endl;
+        //Pile de int ou de sommet
+        std::stack<int> pile;
+        int nb_connex = 0;
+        std::vector<int> col_temp;
+        std::vector<vector<int>> cpst_co;
+        int c;
 
-    //std::cout << "premiers false ok" << std::endl;
-
-    //Pour toutes les cases du tableau de marquage
-    for(int i = 0; i<getOrdre(); i++)
-    {
-        //S'il n'est pas marqué
-        if(marq[i]==false)
+        //On crée un tableau de booleens de taille ordre qui sert de tableau de marquage
+        bool marq[getOrdre()];
+        //On l'initialise à false pour le premier DFS
+        for(int i =0; i<getOrdre(); i++)
         {
-            //std::cout << "Avant entree DFS" << std::endl;
-            // On procède à un premier DFS
-            DFS1(i, marq, pile);
-            //std::cout << "premier DFS OK" << std::endl;
+            //On le met à faux
+            marq[i]=false;
         }
-    }
 
-    //On initialise un vecteur d'arcs qui va recevoir les arcs inversés
-    std::vector<Arc> vect_arc;
+        //std::cout << "premiers false ok" << std::endl;
 
-    //On inverse les sens de tous les arcs
-    for(int i= 0; i<m_vect_arcs.size(); i++)
-    {
-        //On crée un arc partiel qui reçoit le sommet 2 en guise de sommet 1 et inversement
-        Arc atemp(m_vect_arcs[i].getS2(),m_vect_arcs[i].getS1(),m_vect_arcs[i].getCoef(), m_vect_arcs[i].getAffArc(), m_vect_arcs[i].getCoefTemp(), m_vect_arcs[i].getInfluence());
-        // On met cet arc dans le vecteur d'arcs
-        vect_arc.push_back(atemp);
-    }
-
-    //On crée un graphe qui va avoir les arcs inversés
-    //Il possède les mêmes propriétés que le graphe actuel sauf que ses arcs sont inversés
-    Graphe g_inv(getOrdre(),getNbArcs(),getVectSom(),vect_arc, getNbMois(), getNonTrop());
-
-    //std::cout << "arcs inverses" << std::endl;
-
-    //On l'initialise à false pour le second DFS
-    for(int i =0; i<getOrdre(); i++)
-    {
-        //On le met à faux
-        marq[i]=false;
-    }
-
-    //Tant que la pile n'est pas vide
-    while(pile.empty() == false)
-    {
-        //On prend le sommet au dessus de la pile
-        int s = pile.top();
-        //On le retire de la pile
-        pile.pop();
-
-        //On affiche la composante fortement connexe
-        if(marq[s]==false)
+        //Pour toutes les cases du tableau de marquage
+        for(int i = 0; i<getOrdre(); i++)
         {
-            int col = makecol(rand()%256,rand()%256,rand()%256);
-            //On fait appel au deuxième DFS
-            g_inv.DFS2(s,marq,col,g, img, temp_x1, temp_y1, temp_x2, temp_y2);
-            //std::cout << "Sortie effectuée du 2eme DFS" << std::endl;
+            //S'il n'est pas marqué
+            if(marq[i]==false)
+            {
+                //std::cout << "Avant entree DFS" << std::endl;
+                // On procède à un premier DFS
+                DFS1(i, marq, pile);
+                //std::cout << "premier DFS OK" << std::endl;
+            }
         }
+
+        //On initialise un vecteur d'arcs qui va recevoir les arcs inversés
+        std::vector<Arc> vect_arc;
+
+        //On inverse les sens de tous les arcs
+        for(int i= 0; i<m_vect_arcs.size(); i++)
+        {
+            //On crée un arc partiel qui reçoit le sommet 2 en guise de sommet 1 et inversement
+            Arc atemp(m_vect_arcs[i].getS2(),m_vect_arcs[i].getS1(),m_vect_arcs[i].getCoef(), m_vect_arcs[i].getAffArc(), m_vect_arcs[i].getCoefTemp(), m_vect_arcs[i].getInfluence());
+            // On met cet arc dans le vecteur d'arcs
+            vect_arc.push_back(atemp);
+        }
+
+        //On crée un graphe qui va avoir les arcs inversés
+        //Il possède les mêmes propriétés que le graphe actuel sauf que ses arcs sont inversés
+        Graphe g_inv(getOrdre(),getNbArcs(),getVectSom(),vect_arc, getNbMois(), getNonTrop());
+
+        //std::cout << "arcs inverses" << std::endl;
+
+        //On l'initialise à false pour le second DFS
+        for(int i =0; i<getOrdre(); i++)
+        {
+            //On le met à faux
+            marq[i]=false;
+        }
+
+        int nb = 0;
+        //Tant que la pile n'est pas vide
+        while(pile.empty() == false)
+        {
+            //On prend le sommet au dessus de la pile
+            int s = pile.top();
+            //On le retire de la pile
+            pile.pop();
+            //On affiche la composante fortement connexe
+            if(marq[s]==false)
+            {
+                int col = makecol(rand()%256,rand()%256,rand()%256);
+                g.getVectSom()[s].setCol(col);
+                if (nb_connex==0) col_temp.push_back(col);
+                for(int i=0; i<col_temp.size(); i++)
+                {
+                    if(col == col_temp[i]) nb++;
+                }
+                if (nb==0) col_temp.push_back(col);
+                //On fait appel au deuxième DFS
+                g_inv.DFS2(s,marq,col,g, img, temp_x1, temp_y1, temp_x2, temp_y2);
+                //std::cout << "Sortie effectuée du 2eme DFS" << std::endl;
+            }
+        }
+        for(int i = 0; i<col_temp.size(); i++)
+        {
+            std::vector<int> ligne;
+            for(int j = 0; j<getOrdre(); j++)
+            {
+                if(j==0) c = g.getVectSom()[j].getCol();
+                if(g.getVectSom()[j].getCol() == c)
+                {
+                    ligne.push_back(j);
+                }
+            }
+            cpst_co.push_back(ligne);
+        }
+        std::cout<<"Il y a "<<nb<<" composantes fortement connexe dans ce graphe"<<std::endl;
+
+    }
+    //Si on lance la forte connexite avec affichage du graphe réduit
+    else
+    {
+        //Pile de int ou de sommet
+        std::stack<int> pile;
+        int nb_connex = 0;
+        std::vector<int> col_temp;
+        std::vector<vector<int>> cpst_co;
+        int c;
+        std::vector<int> v_s;
+
+        //On crée un tableau de booleens de taille ordre qui sert de tableau de marquage
+        bool marq[getOrdre()];
+        //On l'initialise à false pour le premier DFS
+        for(int i =0; i<getOrdre(); i++)
+        {
+            //On le met à faux
+            marq[i]=false;
+        }
+
+        //std::cout << "premiers false ok" << std::endl;
+
+        //Pour toutes les cases du tableau de marquage
+        for(int i = 0; i<getOrdre(); i++)
+        {
+            //S'il n'est pas marqué
+            if(marq[i]==false)
+            {
+                //std::cout << "Avant entree DFS" << std::endl;
+                // On procède à un premier DFS
+                DFS1(i, marq, pile);
+                //std::cout << "premier DFS OK" << std::endl;
+            }
+        }
+
+        //On initialise un vecteur d'arcs qui va recevoir les arcs inversés
+        std::vector<Arc> vect_arc;
+
+        //On inverse les sens de tous les arcs
+        for(int i= 0; i<m_vect_arcs.size(); i++)
+        {
+            //On crée un arc partiel qui reçoit le sommet 2 en guise de sommet 1 et inversement
+            Arc atemp(m_vect_arcs[i].getS2(),m_vect_arcs[i].getS1(),m_vect_arcs[i].getCoef(), m_vect_arcs[i].getAffArc(), m_vect_arcs[i].getCoefTemp(), m_vect_arcs[i].getInfluence());
+            // On met cet arc dans le vecteur d'arcs
+            vect_arc.push_back(atemp);
+        }
+
+        //On crée un graphe qui va avoir les arcs inversés
+        //Il possède les mêmes propriétés que le graphe actuel sauf que ses arcs sont inversés
+        Graphe g_inv(getOrdre(),getNbArcs(),getVectSom(),vect_arc, getNbMois(), getNonTrop());
+
+        //std::cout << "arcs inverses" << std::endl;
+
+        //On l'initialise à false pour le second DFS
+        for(int i =0; i<getOrdre(); i++)
+        {
+            //On le met à faux
+            marq[i]=false;
+        }
+
+        int nb = 0;
+        //Tant que la pile n'est pas vide
+        while(pile.empty() == false)
+        {
+            //On prend le sommet au dessus de la pile
+            int s = pile.top();
+            //On le retire de la pile
+            pile.pop();
+            //On affiche la composante fortement connexe
+            if(marq[s]==false)
+            {
+                int col = makecol(rand()%256,rand()%256,rand()%256);
+                //On entre dans le vecteur de sommet les composantes ayant une couleur différente des autres
+                if(col!=0) v_s.push_back(s);
+                //Si c'est la premiere fois que la couleur est utilisée on l'entre dans le vecteur de couleur
+                if (nb_connex==0)
+                {
+                    col_temp.push_back(col);
+                }
+                //Si la couleur utilisée est la même que l'une de celle du vecteur de couleur alor on compte une nouvelle
+                //composante fortement connexe
+                for(int i=0; i<col_temp.size(); i++)
+                {
+                    if(col == col_temp[i]) nb++;
+
+                }
+                //Si il n'y a encore aucune composantee qui possède cette couleur, on entre la couleur dans le vecteur de couleur
+                if (nb==0) col_temp.push_back(col);
+                g_inv.DFS2(s,marq,col,g, img, temp_x1, temp_y1, temp_x2, temp_y2);
+
+                //std::cout << "Sortie effectuée du 2eme DFS" << std::endl;
+            }
+        }
+        //On affiche le graphe réduit
+        afficher_graphe_reduit(nb, g, v_s, img);
     }
 
-    //std::cout << "Fin forte compo" << std::endl;
 }
 
+void Graphe::afficher_graphe_reduit(int nb, Graphe g,std::vector<int> cpst_co, BITMAP* img)
+{
+    //Instance d'un vecteur de int
+    std::vector<int> compteur;
 
+    //Initialisation du vecteur à 0 pour tous les arcs
+    for(int i=0; i<g.getNbArcs(); i++)
+    {
+        compteur.push_back(0);
+    }
+    //Affichage d'un rectangle blanc sur l'écran
+    rectfill(screen, 126, 5, 1019, 763, makecol(255,255,255));
 
+    //Pour tous les sommets du graphe réduit
+    for(int i=0; i<nb; i++)
+    {
+          //n prend la valeur du numéro du sommet
+            int n = cpst_co[i];
+            int x =(g.getVectSom()[cpst_co[i]]).getCoordX()+20;
+            int y = (g.getVectSom()[cpst_co[i]]).getCoordY()-20;
+            (g.getVectSom()[cpst_co[i]]).setCoordX(x);
+            (g.getVectSom()[cpst_co[i]]).setCoordY(y);
+            //On affiche le numéro du sommet au-dessus de son image
+            textprintf(screen,font, x, y, makecol(0,0,0), "Sommet n_%d", n);
+    }
+    //On affiche les arêtes reliant les sommets
+    for(int i =0; i<nb-1; i++)
+    {
+        line(screen, (g.getVectSom()[cpst_co[i]]).getCoordX()+40, (g.getVectSom()[cpst_co[i]]).getCoordY(), (g.getVectSom()[cpst_co[i+1]]).getCoordX()+30, (g.getVectSom()[cpst_co[i+1]]).getCoordY(), makecol(0,255,20));
+    }
+
+    rest(2000);
+}
 
 
 /// Source : https://www.geeksforgeeks.org/strongly-connected-components/

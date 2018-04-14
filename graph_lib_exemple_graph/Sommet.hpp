@@ -14,6 +14,7 @@ class Sommet
         int m_N_temp;
         int m_K;
         int m_K_temp;
+        int m_col;
         float m_r;
         int m_coord_x;
         int m_coord_y;
@@ -42,6 +43,7 @@ class Sommet
             int getNTemp();
             int getK();
             int getKTemp();
+            int getCol();
             float getR();
             int getCoordX();
             int getCoordY();
@@ -62,6 +64,7 @@ class Sommet
             void setK(int K);
             void setKTemp(int Kt);
             void setR(float r);
+            void setCol(int c);
             void setCoordX(int coord_x);
             void setCoordY(int coord_y);
             void setImage(BITMAP* image);

@@ -63,7 +63,8 @@ class Graphe
         //FORTE CONNEXITE
         void DFS1(int s, bool marq[], std::stack<int> &pile);
         void DFS2(int s, bool marq[], int col, Graphe g,BITMAP* img, std::vector<int>& temp_x1, std::vector<int>& temp_y1, std::vector<int>& temp_x2, std::vector<int>& temp_y2);
-        void forte_co(Graphe g,BITMAP* img, std::vector<int>& temp_x1, std::vector<int>& temp_y1, std::vector<int>& temp_x2, std::vector<int>& temp_y2);
+        void forte_co(Graphe g,BITMAP* img, std::vector<int>& temp_x1, std::vector<int>& temp_y1, std::vector<int>& temp_x2, std::vector<int>& temp_y2, bool reduit);
+        void afficher_graphe_reduit(int nb, Graphe g, std::vector<int> cpst_co, BITMAP* img);
 
         //TEMPS REEL
         void temps_reel(BITMAP* img, BITMAP* img2, int compt);

@@ -338,9 +338,23 @@ void Arc::afficher_arc(BITMAP* buffer)
 
 
         //AFFICHAGE DES FORMES
-        triangle(buffer, getArrowX1(), getArrowY1(), X2, Y2, X3, Y3, makecol(255,0,0));
-        line(buffer, (X2+X3)/2, (Y2+Y3)/2, getLine_S1_X(), getLine_S1_Y(), makecol(255,0,0));
-        textprintf(buffer,font,(getLine_S1_X()+getArrowX1())/2 -40,(getLine_S1_Y()+getArrowY1())/2, makecol(100,0,255) ,"Coef=%1.2f",getCoef());
+        if(m_influence==0)
+        {
+            if(m_Coef>=0.5)
+            {
+                line(buffer, (X2+X3)/2-1, (Y2+Y3)/2, getLine_S1_X()-1, getLine_S1_Y(), makecol(255,0,10));
+                line(buffer, (X2+X3)/2+1, (Y2+Y3)/2, getLine_S1_X()+1, getLine_S1_Y(), makecol(255,0,10));
+                line(buffer, (X2+X3)/2, (Y2+Y3)/2, getLine_S1_X(), getLine_S1_Y(), makecol(255,0,0));
+            }
+            triangle(buffer, getArrowX1(), getArrowY1(), X2, Y2, X3, Y3, makecol(255,0,0));
+            line(buffer, (X2+X3)/2, (Y2+Y3)/2, getLine_S1_X(), getLine_S1_Y(), makecol(255,0,0));
+        }
+        else
+        {
+            triangle(buffer, getArrowX1(), getArrowY1(), X2, Y2, X3, Y3, makecol(0,0,255));
+            line(buffer, (X2+X3)/2, (Y2+Y3)/2, getLine_S1_X(), getLine_S1_Y(), makecol(0,0,255));
+        }
+        textprintf(buffer,font,(getLine_S1_X()+getArrowX1())/2 -40,(getLine_S1_Y()+getArrowY1())/2, makecol(100,0,255) ,"Coef=%1.3f",getCoef());
 
     }
 }
