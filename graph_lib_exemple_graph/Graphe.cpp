@@ -550,7 +550,7 @@ void Graphe::calcul_para_post_modif(std::vector<Sommet> vec_som)
 
             }
             //si le nouveau k est à 0, on le met à 100000 pour les végétaux et à 2 pour les animaux
-            if( new_k[i] == 0) vec_som[i].setK(2);
+            if( new_k[i] <= 0) vec_som[i].setK(2);
             else
             {
                 vec_som[i].setK(new_k[i]);
@@ -1051,8 +1051,7 @@ void Graphe::effacer_sommet(BITMAP* img)
                 }
 
             }
-            if(vec_som[i].getVeget()==true && new_k[i] == 0) vec_som[i].setK(10000);
-            else if(vec_som[i].getVeget()==false && new_k[i] == 0) vec_som[i].setK(2);
+            if(new_k[i] <= 0) vec_som[i].setK(2);
             else vec_som[i].setK(new_k[i]);
         }
 

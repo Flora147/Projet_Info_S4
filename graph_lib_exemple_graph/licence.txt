@@ -2,6 +2,10 @@ PROJET THEORIE DES GRAPHES S4
 Girard Flora, Irlinger Margot, Meister Tatiana
 ING2 - TD01
 Ce fichier texte comporte tous les sources utilisées pour ce projet
+
+
+REMARQUE : Les fichiers .hpp .cpp et images du code fourni par M.Fercoq sont encore présents. 
+Cependant, comme vous pourrez le constater, nous ne l'utilisons pas du tout.
 ---------------------------------------------------------------------
 
 Sources images : 
@@ -48,3 +52,15 @@ DFS2 : https://www.geeksforgeeks.org/strongly-connected-components/
 
 
 Fonctions allegro : http://www.ece.fr/~fercoq/allegro/
+
+Sources alimentation des espèces : 
+Forets : http://www.onf.fr/gestion_durable/sommaire/milieu_vivant/patrimoine/forets_monde/20070926-112926-300942/@@index.html
+https://www.planetoscope.com/forets/274-deforestation---hectares-de-foret-detruits-dans-le-monde.html
+Grenouille :http://ecole.saint-sauveur.pagesperso-orange.fr/grenouille_verte.htm
+Faucon : http://rapaces.lpo.fr/faucon-pelerin/presentation
+Champignons : http://grimoirescarnets.canalblog.com/archives/2013/09/29/28116014.html
+
+Sources calcul Coeff, K, et R : 
+https://fr.wikipedia.org/wiki/Mod%C3%A8le_%C3%A9volutif_r/K
+https://fr.wikipedia.org/wiki/Capacit%C3%A9_porteuse
+https://fr.wikipedia.org/wiki/Dynamique_des_populations#Croissance_logistique
