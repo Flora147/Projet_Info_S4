@@ -44,6 +44,7 @@ class Graphe
         void effacer_sommet();
         void ajouter_sommet();
         void recalcul_parametres();
+        void afficher_arcs(BITMAP* buffer);
 
 };
 

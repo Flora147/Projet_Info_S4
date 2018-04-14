@@ -282,3 +282,88 @@
 	<iostream>
 	<fstream>
 
+1522834045 source:c:\users\931700683\desktop\version 1.3\graph.cpp
+	"graph.h"
+
+1522834045 c:\users\931700683\desktop\version 1.3\graph.h
+	<vector>
+	<map>
+	<string>
+	<memory>
+	"grman/grman.h"
+
+1522834049 c:\users\931700683\desktop\version 1.3\grman\grman.h
+	<allegro.h>
+	<string>
+	"grman_couleurs.h"
+	"coords.h"
+	"widget.h"
+
+1522834049 c:\users\931700683\desktop\version 1.3\grman\grman_couleurs.h
+
+1522834049 c:\users\931700683\desktop\version 1.3\grman\coords.h
+	<cmath>
+
+1522834049 c:\users\931700683\desktop\version 1.3\grman\widget.h
+	"grman.h"
+	<iostream>
+	<string>
+	<vector>
+	<algorithm>
+	<allegro.h>
+
+1522834049 source:c:\users\931700683\desktop\version 1.3\grman\coords.cpp
+	"coords.h"
+
+1522835048 source:c:\users\931700683\desktop\version 1.3\grman\grman.cpp
+	<cmath>
+	<unordered_map>
+	<unordered_set>
+	<utility>
+	<string>
+	<iostream>
+	<regex>
+	"grman.h"
+	<allegro.h>
+	<png.h>
+	<loadpng.h>
+	<jpgalleg.h>
+
+1522834049 source:c:\users\931700683\desktop\version 1.3\grman\widget.cpp
+	"widget.h"
+
+1522834459 source:c:\users\931700683\desktop\version 1.3\main.cpp
+	"grman/grman.h"
+	<iostream>
+	"graph.h"
+	"Graphe.hpp"
+
+1522839236 c:\users\931700683\desktop\version 1.3\graphe.hpp
+	"Sommet.hpp"
+	"Arc.hpp"
+	<vector>
+
+1522834046 c:\users\931700683\desktop\version 1.3\sommet.hpp
+	<string>
+	<allegro.h>
+
+1522838371 c:\users\931700683\desktop\version 1.3\arc.hpp
+	"Sommet.hpp"
+
+1522838465 source:c:\users\931700683\desktop\version 1.3\arc.cpp
+	"Arc.hpp"
+
+1522834045 source:c:\users\931700683\desktop\version 1.3\graphe.cpp
+	"Graphe.hpp"
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<iostream>
+	<fstream>
+
+1522834046 source:c:\users\931700683\desktop\version 1.3\sommet.cpp
+	"Sommet.hpp"
+	<stdio.h>
+	<stdlib.h>
+	<iostream>
+

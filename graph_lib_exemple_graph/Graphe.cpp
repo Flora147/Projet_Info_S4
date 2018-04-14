@@ -87,7 +87,7 @@ void Graphe::setVectArcs(std::vector<Arc> vect_arcs)
 
 
 
-
+/*
 void Graphe::lecture_fichier(std::string f)
 {
     ifstream fichier;
@@ -325,7 +325,7 @@ void Graphe::modifier_param()
 
 }
 
-
+*/
 
 
 
@@ -607,4 +607,121 @@ void Graphe::recalcul_parametres()
 
         }
 
+}
+
+
+
+
+
+void Graphe::afficher_arcs(BITMAP* buffer)
+{
+
+    //Variables temporaires
+    int X2, X3, Y2, Y3;
+
+    //Pour tous les arcs du vecteur d'arcs
+    for(int i=0; i<m_nb_arcs; i++)
+    {
+
+            //SI LE BOOLEEN AFFICHER DE l'ARC EST A VRAI
+            if(m_vect_arcs[i].getAffArc())
+            {
+
+                //INITIALISATION
+                m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX());
+                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY());
+
+                X2 = m_vect_arcs[i].getS2().getCoordX() - 10;
+                Y2 = m_vect_arcs[i].getS2().getCoordY() - 10;
+
+                X3 = m_vect_arcs[i].getS2().getCoordX() - 10;
+                Y3 = m_vect_arcs[i].getS2().getCoordY() + 10;
+
+
+                //AFFICHAGE DES FORMES
+                triangle(buffer, m_vect_arcs[i].getArrowX1(), m_vect_arcs[i].getArrowY1(), X2, Y2, X3, Y3, makecol(255,0,0));
+                line(buffer,m_vect_arcs[i].getArrowX1(),m_vect_arcs[i].getArrowY1(),m_vect_arcs[i].getS1().getCoordX(),m_vect_arcs[i].getS1().getCoordY(), makecol(255,0,0));
+
+
+/*
+
+            //TRACE DE LA LIGNE
+           // line(screen,x2,y2,x1,y1, makecol(255,0,0));
+
+
+            //On dessine une flèche dont le sommet 2 est la pointe de la flèche
+            //On dessine la point de la flèches
+            //On instancie des variables
+            int X1,X2,X3,Y1,Y2,Y3;
+
+            X1 = m_vect_arcs[i].getS2().getCoordX();
+            Y1 = m_vect_arcs[i].getS2().getCoordY()+(m_vect_arcs[i].getS2().getImage()->h)/2;
+
+
+
+            //TRACE DE LA FLECHE ET MODIFICATION DE LA LIGNE
+            //Si le bout de la flèche au S1 est situé dans les y inférieurs par rapport à S2
+            if(line_x2 > line_x1 && line_y2 < line_y1)
+            {
+
+
+            }
+
+
+            //Si le bout de la flèche au S1 est situé dans les y supérieurs par rapport à S2
+            if(line_x2 < line_x1 && line_y2 < line_y1)
+            {
+
+                X1 = m_vect_arcs[i].getS2().getCoordX() + m_vect_arcs[i].getS2().getImage()->w;
+                Y1 = m_vect_arcs[i].getS2().getCoordY()+(m_vect_arcs[i].getS2().getImage()->h)/2;
+
+                X2 = m_vect_arcs[i].getS2().getCoordX() - 10;
+                Y2 = m_vect_arcs[i].getS2().getCoordY() - 10;
+
+                X3 = m_vect_arcs[i].getS2().getCoordX() + 10;
+                Y3 = m_vect_arcs[i].getS2().getCoordY() + 10;
+            }
+
+
+            //Si le bout de la flèche au S1 est situé dans les x inférieurs par rapport à S2
+            if(line_x1 > line_x2 && line_y1 < line_y2)
+            {
+
+            }
+
+            //Si le bout de la flèche au S1 est situé dans les x supérieurs par rapport à S2
+            if(line_x1 < line_x2 && line_y1 < line_y2)
+            {
+
+            }
+
+
+
+            if(((((pr->x)-(pr->rayon))<0)&&((pr->depx)<0)) || ((((pr->x)+(pr->rayon))>SCREEN_W)&&((pr->depx)>0)))
+            {
+                depX=-depX;
+            }
+
+
+            if(((((pr->y)-(pr->rayon))<0)&&((pr->depy)<0)) || ((((pr->y)+(pr->rayon))>SCREEN_H)&&((pr->depy)>0)))
+            {
+                depY=-depY;
+            }
+
+            X1 = X1 + depX;
+            Y1 = Y1 + depY;
+            X2 = X2 + depX;
+            Y2 = Y2 + dep7;
+            X3 = X3 + depX;
+            Y3 = Y3 + depY;
+
+
+            //Les coordonnées du premier sommet du triangle
+
+
+
+
+            triangle(screen, x1, y1, x2, y2, x3, y3, makecol(255,0,0));*/
+            }
+    }
 }

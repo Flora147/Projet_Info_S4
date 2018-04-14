@@ -42,7 +42,7 @@ int main()
 
     //Section F : ouverture mode grapique
     set_color_depth(desktop_color_depth());
-    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0)!=0)
+    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,1024,768,0,0)!=0)
     {
         allegro_message("probleme mode graphique");
         allegro_exit();
@@ -62,7 +62,7 @@ int main()
         exit(EXIT_FAILURE);
     }
 
-    blit(fond, Buffer, 0, 0, 0,0,800,600);
+    blit(fond, Buffer, 0, 0, 0,0,1024,768);
     std::cout<<"Saisir nom fichier (faucon_et_hibiscus.txt)"<<std::endl;
     std::cin>>nom;
     graphe.lecture_fichier(nom);
