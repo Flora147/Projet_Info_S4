@@ -42,7 +42,7 @@ int main()
 
     //Section F : ouverture mode grapique
     set_color_depth(desktop_color_depth());
-    if(set_gfx_mode(GFX_AUTODETECT,1024,768,0,0)!=0)
+    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0)!=0)
     {
         allegro_message("probleme mode graphique");
         allegro_exit();
@@ -78,13 +78,13 @@ int main()
         exit(EXIT_FAILURE);
     }
     BITMAP* actuelle = menu;
-    blit(fond, Buffer, 0, 0, 0,0,1024,768);
+    blit(actuelle, Buffer, 0, 0, 0,0,1024,768);
    // nom ="faucon_et_hibiscus.txt";
     //graphe.lecture_fichier("faucon_et_hibiscus.txt");
 
-    std::cout<<"Saisir nom fichier (faucon_et_hibiscus.txt)"<<std::endl;
-    std::cin>>nom;
-    graphe.lecture_fichier(nom);
+    //std::cout<<"Saisir nom fichier (faucon_et_hibiscus.txt)"<<std::endl;
+    //std::cin>>nom;
+    //graphe.lecture_fichier(nom);
 
 
     while(!key[KEY_ESC])
@@ -93,39 +93,54 @@ int main()
         {
             x = mouse_x;
             y = mouse_y;
-            graphe.select_sommet(x, y);
+
+            if(m==false) graphe.select_sommet(x, y);
+
             c = getpixel(sous_fond, mouse_x, mouse_y);
-            if(c==makecol(237,28,36)) graphe.effacer_sommet(Buffer);
+            if(c==makecol(255,0,0)) graphe.effacer_sommet(Buffer);
             else if (c==makecol(0,0,0)) graphe.modifier_param();
-            else if(c==makecol(34,177,76)) graphe.ajouter_sommet();
-            /*else if(c==makecol(255,255,255))
+            else if(c==makecol(0,255,0)) graphe.ajouter_sommet();
+            else if(c==makecol(255,255,255))
             {
-                nom ="faucon_et_hibiscus.txt";
-                graphe.lecture_fichier("faucon_et_hibiscus.txt");
-                actuelle = fond;
+                if (m==true)
+                {
+                    nom ="faucon_et_hibiscus.txt";
+                    graphe.lecture_fichier("faucon_et_hibiscus.txt");
+                    actuelle = fond;
+                    m = false;
+                }
             }
             else if(c==makecol(0,0,255))
             {
-                //graphe.lecture_fichier(nom);
-                actuelle = fond;
-                m =false;
+               if (m==true)
+                {
+                   // nom ="faucon_et_hibiscus.txt";
+                    //graphe.lecture_fichier("faucon_et_hibiscus.txt");
+                    actuelle = fond;
+                    m = false;
+                }
             }
             else if(c==makecol(255, 255,0 ))
             {
-                //graphe.lecture_fichier(nom);
-                actuelle = fond;
-                m = false;
+                if (m==true)
+                {
+                    //nom ="faucon_et_hibiscus.txt";
+                    //graphe.lecture_fichier("faucon_et_hibiscus.txt");
+                    actuelle = fond;
+                    m = false;
+                }
             }
             else if(c==makecol(0, 255, 255))
             {
                 //quitter
             }
-            else
+            else if(c==makecol(255,0,255))
             {
                 graphe.sauvegarde_fichier(nom);
                 actuelle = menu;
                 m = true;
-            }*/
+            }
+            rest(1000);
         }
         if(mouse_b&2)
         {
@@ -136,15 +151,13 @@ int main()
                 if(graphe.getVectSom()[i].getSelect()==true)
                 {
                     graphe.bouger_sommet(Buffer, x, y, i);
-                    //graphe.afficher_arcs(Buffer);
-
                 }
             }
+            rest(1000);
         }
-        graphe.afficher_sommets(Buffer);
-        graphe.afficher_arcs(Buffer);
+        if(m==false) graphe.afficher_sommets(Buffer);
         blit(Buffer,screen,0,0,0,0,1024,768);
-        blit(fond, Buffer, 0,0,0,0,1024,768);
+        blit(actuelle, Buffer, 0,0,0,0,1024,768);
     }
     graphe.sauvegarde_fichier(nom);
     return 0;
