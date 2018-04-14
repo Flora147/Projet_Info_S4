@@ -17,6 +17,7 @@ class Sommet
         float m_r;
         int m_coord_x;
         int m_coord_y;
+        float m_nourriture;
         BITMAP* m_image;
         bool m_aff_som;
         bool m_aff_som_temp;
@@ -29,7 +30,7 @@ class Sommet
     public :
         //Constructeur surchargé et destructeur
         Sommet();
-        Sommet(std::string _name, int _numero, int _N, int _K, float _r, int _coord_x, int _coord_y, BITMAP* _image, bool _aff_som, bool _select, bool _marque,int _N_temp, int _K_temp,bool _aff_temp, bool _veget);
+        Sommet(std::string _name, int _numero, int _N, int _K, float _r, int _coord_x, int _coord_y, BITMAP* _image, bool _aff_som, bool _select, bool _marque,int _N_temp, int _K_temp,bool _aff_temp, bool _veget, float _nourr);
         ~Sommet();
 
 
@@ -50,6 +51,8 @@ class Sommet
             bool getSelect();
             bool getMarque();
             bool getVeget();
+            float getNourriture();
+
 
             //setters
             void setName(std::string name);
@@ -67,6 +70,7 @@ class Sommet
             void setSelect(bool select);
             void setMarque(bool marque);
             void setVeget(bool v);
+            void setNourriture(float nourr);
 
 
             //Méthodes

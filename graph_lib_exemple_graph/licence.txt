@@ -1,0 +1,50 @@
+PROJET THEORIE DES GRAPHES S4
+Girard Flora, Irlinger Margot, Meister Tatiana
+ING2 - TD01
+Ce fichier texte comporte tous les sources utilisées pour ce projet
+---------------------------------------------------------------------
+
+Sources images : 
+Graphe : faucon_et_hibiscus
+faucon : faucon_pelerin_055_(dessin)_small.jpg
+hibiscus : https://i.pinimg.com/236x/71/6f/44/716f442812284cf3ca93006de67b0b95--flower-images-clipart.jpg 
+ver : https://www.pinterest.es/pin/338895940695534738/
+moineau : http://www7.inra.fr/hyppz/RAVAGEUR/3pasdom.htm
+souris : https://fr.wikihow.com/dessiner-une-souris
+salade : https://www.leshoppingduchef.com/168-essoreuse-a-salade
+sauterelle : https://kor.pngtree.com/freepng/real-lifelike-mantis_299846.html
+grenouille : https://fr.vikidia.org/wiki/Grenouille 
+manchot : https://s3.pixers.pics/pixers/700/FO/60/23/01/32/700_FO60230132_a7513dae7a8afb7d43cb20ce223944cd.jpg 
+mésange : http://www.desjardins-inspirations.fr/wp-content/uploads/mesange1-673x300.jpg 
+poisson : http://tnregneanimal.tableau-noir.net/pages10/poissons.html
+tigre du Bengal : https://static.mijnwebwinkel.nl/winkel/poppaa/image/cache/full/65222ea453dcbf4462be6359e47b739ca2961722.jpg
+serpent : https://fr.sputniknews.com/insolite/201801171034771078-serpent-oiseau-bataille/
+feuille : https://www.francefleurs.com/livraison-muguet/4410-feuilles-de-muguet.html
+insecte : https://www.abatextermination.ca/insectes/
+lézard : http://faune.bourgogne-nature.fr/fr/enquete-sur-le-lezard-des-murailles_680.html
+hérisson : https://www.planeteanimal.com/le-herisson-comme-animal-de-compagnie-239.html
+buse : http://www.oisillon.net/fr/oiseau/16-buse-variable
+sanglier : https://www.julieandrieu.com/accords-de-saveurs/566-sanglier.html
+mulot : http://atlanticshop.fr/36-mulot
+renard : https://ecole.salamandre.net/publication/salamandre-junior-103-renard-as-de-debrouille/
+plancton : https://fr.wikipedia.org/wiki/Plancton
+foret :  https://thumbs.dreamstime.com/b/arbre-d-isolement-sur-le-fond-blanc-for%C3%AAt-de-m%C3%A9l%C3%A8ze-39723310.jpg 
+abeille : http://www.scienceinfo.fr/monsanto-devoile-abeille-transgenique-resistante-aux-pesticides-neonicotinoides/
+fleur : https://thumbs.dreamstime.com/b/flor-vermelha-do-cris%C3%A2ntemo-fundo-branco-igualmente-chamados-como-mums-ou-chrysanths-asteraceae-da-fam%C3%ADlia-49533659.jpg 
+vegetation : https://ae01.alicdn.com/kf/HTB1BwXwNVXXXXc4aXXXq6xXFXXXo/10.jpg_640x640.jpg 
+fourmi : http://www.toutpratique.com/5-La-maison/69-La-lutte-anti-acarien-et-la-lutte-anti-insectes-cafards-mites-punaises-etc-/4741-Les-fourmis-comment-s-en-debarrasser.php
+graine : http://vegecru.com/graine-lin
+champignon : https://farm5.static.flickr.com/4075/4831096390_1ca4a23f2d_b.jpg 
+homme : https://fr.wikipedia.org/wiki/Homme_de_Vitruve 
+
+Source pour le graphe 1 : https://arifharnantaka145.wordpress.com/materi/bab-5/rantai-makanan2/
+
+Source k-connexité : BFS : appuyé sur le BFS du CI de Monsieurs Segado
+
+Sources fortes connexités : 
+forte_co : https://www.geeksforgeeks.org/strongly-connected-components/
+DFS1 : https://www.geeksforgeeks.org/strongly-connected-components/
+DFS2 : https://www.geeksforgeeks.org/strongly-connected-components/
+
+
+Fonctions allegro : http://www.ece.fr/~fercoq/allegro/

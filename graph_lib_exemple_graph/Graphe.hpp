@@ -10,23 +10,27 @@ class Graphe
 
     private :
         //Attributs
+        bool m_non_trophique;
         int m_ordre;
         int m_nb_arcs;
         int m_nb_mois;
         int m_nb_mois_temp;
         std::vector<Sommet> m_vect_som;
         std::vector<Arc> m_vect_arcs;
+        std::vector<int> c_regen;
+        std::vector<int> c_famine;
 
 
     public :
         //Constructeur surchagé et destructeur
         Graphe();
-        Graphe(int _ordre, int _nb_arcs, std::vector<Sommet> _vect_som, std::vector<Arc> _vect_arcs, int _nb_mois);
+        Graphe(int _ordre, int _nb_arcs, std::vector<Sommet> _vect_som, std::vector<Arc> _vect_arcs, int _nb_mois, bool _non_trop);
         ~Graphe();
 
 
         //Accesseurs
         //getters
+        bool getNonTrop();
         int getOrdre();
         int getNbArcs();
         int getNbMois();
@@ -35,6 +39,7 @@ class Graphe
         std::vector<Arc> getVectArcs();
 
         //setters
+        void setNonTrop(bool _nont);
         void setOrdre(int ordre);
         void setNbArcs(int nb_arcs);
         void setNbMois(int nb_mois);
@@ -53,16 +58,16 @@ class Graphe
         void select_sommet(int mx, int my);
         void effacer_sommet(BITMAP* img);
         void ajouter_sommet();
-        void recalcul_parametres();
         //void afficher_arcs(BITMAP* buffer);
 
         //FORTE CONNEXITE
         void DFS1(int s, bool marq[], std::stack<int> &pile);
-        void DFS2(int s, bool marq[], int col, Graphe g,BITMAP* img);
-        void forte_co(Graphe g,BITMAP* img);
+        void DFS2(int s, bool marq[], int col, Graphe g,BITMAP* img, std::vector<int>& temp_x1, std::vector<int>& temp_y1, std::vector<int>& temp_x2, std::vector<int>& temp_y2);
+        void forte_co(Graphe g,BITMAP* img, std::vector<int>& temp_x1, std::vector<int>& temp_y1, std::vector<int>& temp_x2, std::vector<int>& temp_y2);
 
         //TEMPS REEL
         void temps_reel(BITMAP* img, BITMAP* img2, int compt);
+        void temps_reel_nont(BITMAP* img, BITMAP* img2, int compt);
         void conservation_para();
 
         //K_CONNEXITE

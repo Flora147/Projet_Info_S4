@@ -45,7 +45,6 @@
 		<Unit filename="Menu.bmp" />
 		<Unit filename="Sommet.cpp" />
 		<Unit filename="Sommet.hpp" />
-		<Unit filename="bin/Debug/graph_lib.exe" />
 		<Unit filename="graph.cpp" />
 		<Unit filename="graph.h" />
 		<Unit filename="grman/coords.cpp" />

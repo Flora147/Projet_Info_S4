@@ -4,15 +4,15 @@
 
 //Construteur par défaut
 Arc::Arc()
-    :m_s1(" ",0,0,0,0,0,0,NULL,false,false,false,0,0,false, false), m_s2(" ",0,0,0,0,0,0,NULL,false,false,false,0,0,false,false), m_Coef(0),m_Coef_temp(0), m_aff_arc(false),m_arrow_x1(0), m_arrow_y1(0), m_line_s1_x(0), m_line_s1_y(0)
+    :m_s1(" ",0,0,0,0,0,0,NULL,false,false,false,0,0,false, false,0), m_s2(" ",0,0,0,0,0,0,NULL,false,false,false,0,0,false,false, 0), m_Coef(0),m_Coef_temp(0), m_aff_arc(false),m_arrow_x1(0), m_arrow_y1(0), m_line_s1_x(0), m_line_s1_y(0)
 {
 
 }
 
 
 //Constructeur surchargé
-Arc::Arc(Sommet _s1, Sommet _s2, float _Coef, bool _aff_arc, float _coef_temp)
-    :m_s1(_s1), m_s2(_s2), m_Coef(_Coef), m_Coef_temp(_coef_temp),m_aff_arc(_aff_arc),m_arrow_x1(0), m_arrow_y1(0), m_line_s1_x(0), m_line_s1_y(0)
+Arc::Arc(Sommet _s1, Sommet _s2, float _Coef, bool _aff_arc, float _coef_temp, bool _influ)
+    :m_s1(_s1), m_s2(_s2), m_Coef(_Coef), m_Coef_temp(_coef_temp),m_aff_arc(_aff_arc),m_arrow_x1(0), m_arrow_y1(0), m_line_s1_x(0), m_line_s1_y(0), m_influence(_influ)
 {
 
 }
@@ -59,7 +59,11 @@ bool Arc::getAffArc()
 {
     return m_aff_arc;
 }
-
+//getter qui retourne l'attribut "m_influ"
+bool Arc::getInfluence()
+{
+    return m_influence;
+}
 //getter qui retourne l'attribut "m_arrow_x1"
 int Arc::getArrowX1()
 {
@@ -139,7 +143,10 @@ void Arc::setLine_S1_Y(int line_s1_y)
 {
     m_line_s1_y=line_s1_y;
 }
-
+void Arc::setInflu(bool influ)
+{
+    m_influence = influ;
+}
 
 
 

@@ -6,7 +6,7 @@
 
 //Constructeur par défaut
 Sommet::Sommet()
-    :m_name("zero"), m_numero(-1), m_N(0),m_N_temp(0), m_K(0),m_K_temp(0), m_r(0), m_coord_x(0), m_coord_y(0), m_image(NULL), m_aff_som(false), m_select(false), m_veget(false),m_aff_som_temp(false), m_marque(false)
+    :m_name("zero"), m_numero(-1), m_N(0),m_N_temp(0), m_K(0),m_K_temp(0), m_r(0), m_coord_x(0), m_coord_y(0), m_image(NULL), m_aff_som(false), m_select(false), m_veget(false),m_aff_som_temp(false), m_marque(false), m_nourriture(0)
 {
 
 }
@@ -15,8 +15,8 @@ Sommet::Sommet()
 
 
 //Constructeur surchargé
-Sommet::Sommet(std::string _name, int _numero, int _N, int _K, float _r, int _coord_x, int _coord_y, BITMAP* _image, bool _aff_som, bool _select, bool _marque, int _N_temp, int _K_temp,bool _aff_temp, bool _veget)
-    :m_name(_name), m_numero(_numero), m_N(_N), m_K(_K), m_r(_r), m_coord_x(_coord_x), m_coord_y(_coord_y), m_image(_image), m_aff_som(_aff_som), m_select(_select), m_marque(_marque), m_N_temp(_N_temp), m_K_temp(_K_temp),m_aff_som_temp(_aff_temp), m_veget(_veget)
+Sommet::Sommet(std::string _name, int _numero, int _N, int _K, float _r, int _coord_x, int _coord_y, BITMAP* _image, bool _aff_som, bool _select, bool _marque, int _N_temp, int _K_temp,bool _aff_temp, bool _veget, float _nourr)
+    :m_name(_name), m_numero(_numero), m_N(_N), m_K(_K), m_r(_r), m_coord_x(_coord_x), m_coord_y(_coord_y), m_image(_image), m_aff_som(_aff_som), m_select(_select), m_marque(_marque), m_N_temp(_N_temp), m_K_temp(_K_temp),m_aff_som_temp(_aff_temp), m_veget(_veget),m_nourriture(_nourr)
 {
 
 }
@@ -123,6 +123,11 @@ bool Sommet::getVeget()
 {
     return m_veget;
 }
+//getter qui retourne l'attribut "m_nourriture"
+float Sommet::getNourriture()
+{
+    return m_nourriture;
+}
 
 
 //setters
@@ -131,7 +136,11 @@ void Sommet::setName(std::string name)
 {
     m_name=name;
 }
-
+//Setter qui modifie l'attribut "m_nourriture"
+void Sommet::setNourriture(float nourr)
+{
+    m_nourriture = nourr;
+}
 //setter qui modifie l'attribut "m_numero"
 void Sommet::setNumero(int numero)
 {
