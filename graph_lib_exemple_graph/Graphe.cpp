@@ -88,24 +88,33 @@ void Graphe::setVectArcs(std::vector<Arc> vect_arcs)
 
 
 
+/* lecture_fichier : sous-programme permettant de lire le fichier et d'instancier les attributs des classes
+ENTREE :
+    f : de type std::string
+SORTIE
+    aucune
+*/
 void Graphe::lecture_fichier(std::string f)
 {
+
+    //Fichier
     ifstream fichier;
     fichier.open(f);
 
-    //Initialisation des variables nécessaires à la lecture du fichier
+    //Instance des variables nécessaires à la lecture du fichier
     BITMAP* image;
     int ordre, nb_arcs;
-    int num, n, k, x, y;
+    int num, n, x, y;
     int s1, s2;
-    bool b1,b2;
+    bool b1, b2;
     float coeff;
     float r;
     std::string nom, nom_img;
     std::vector<Sommet> vec_som;
     std::vector<Arc> vec_arc;
-    k = 0;
 
+
+    //Si le fichier est ouvert
     if(fichier)
     {
 
@@ -113,9 +122,12 @@ void Graphe::lecture_fichier(std::string f)
         fichier >> ordre;
         setOrdre(ordre);
 
+        //Pour i allant de 0 au nombre de sommets du graphe
         for(int i = 0; i<getOrdre(); i++)
         {
-            //Sur une même ligne on lit le nom, le numéro, le N, le r et les coordonnées d'un sommet
+
+            //Sur une même ligne on lit le nom, le numéro, le N, le r, les coordonnées d'un sommet
+            // et 2 booléens indiquant la sélection et l'affichage
             fichier>>nom;
             fichier>>num;
             fichier>>n;
@@ -125,10 +137,14 @@ void Graphe::lecture_fichier(std::string f)
             fichier>>b1;
             fichier>>b2;
 
+            //Instance du nom de l'image
             nom_img = nom + ".bmp";
             image = load_bitmap(nom_img.c_str(),NULL);
+
+            //Si l'image ne se charge pas
             if (!image)
             {
+                //Message d'erreur
                 allegro_message("prb allocation BITMAP ");
                 allegro_exit();
                 exit(EXIT_FAILURE);
@@ -138,12 +154,16 @@ void Graphe::lecture_fichier(std::string f)
             Sommet s(nom, num, n, 0, r, x, y, image, b1, b2);
             vec_som.push_back(s);
         }
+
+
         //On lit le nombre d'arcs
         fichier>>nb_arcs;
         setNbArcs(nb_arcs);
 
+        //Pour i allant de 0 au nombre d'arcs du graphe
         for(int j=0; j<getNbArcs(); j++)
         {
+
             //on lit le numéro des deux sommets de l'arc
             fichier >> s1;
             fichier >> s2;
@@ -151,39 +171,61 @@ void Graphe::lecture_fichier(std::string f)
             //On calcule le coefficient de l'arc que l'on crée ensuite
             coeff = (float)(vec_som[s1].getN())/(vec_som[s2].getN());
             Arc a(vec_som[s1], vec_som[s2], coeff, true);
+
             //On peut à présent calculer le K des sommets du graphe
             vec_som[s2].setK(vec_som[s2].getK() + vec_som[s1].getN()*coeff);
+
             //on entre tous les arcs dans un vecteur d'arcs
             vec_arc.push_back(a);
 
         }
-        //On remplit les vecteurs du graphe
+
+
+        //On remplit les vecteurs du graphe avec ceux créés juste au-dessus
         setVectSom(vec_som);
         setVectArcs(vec_arc);
 
+
         //On affiche en console le graphe
-        std::cout<<"\n\nGraphe :"<<std::endl;
-        std::cout<<"\nOrdre : "<<getOrdre()<<std::endl;
-        std::cout<<"NB Arcs : "<<getNbArcs()<<"\n"<<std::endl;
+        std::cout<<std::endl<<std::endl<<"*** GRAPHE ***"<<std::endl;
+        std::cout<<std::endl<<"Ordre : "<<getOrdre()<<std::endl;
+        std::cout<<"NB Arcs : "<<getNbArcs()<<std::endl<<std::endl;
+
+
+        //Pour tous les sommets du graphe
         for(int i =0; i < getOrdre(); i++)
         {
+
+            //Si le K du sommet est inférieur ou égale à 0
             if(vec_som[i].getK()<=0)
             {
+
+                //Il vaut désormais 1000
                 vec_som[i].setK(1000);
                 setVectSom(vec_som);
             }
+
+            //Affichage des informations de chaque sommet pour vérifier si la lecture du fichier est bonne
             std::cout<<((getVectSom())[i]).getName()<<" "<<((getVectSom())[i]).getN()<<" "<<((getVectSom())[i]).getK()<<" "<<((getVectSom())[i]).getR()<<" "<<((getVectSom())[i]).getCoordX()<<" "<<((getVectSom())[i]).getCoordY()<<std::endl;
         }
-        std::cout<<"\n\n";
+
+        std::cout<<std::endl<<std::endl;
+
+
+        //Pour tous les arcs du graphe
         for(int i=0; i<getNbArcs(); i++)
         {
 
-            std::cout<<"Arc "<<(i+1)<<" : "<<((getVectArcs())[i]).getS1().getNumero()<< " et "<<((getVectArcs())[i]).getS2().getNumero()<<" coeff "<<((getVectArcs())[i]).getCoef()<<std::endl;
+            //Affichage des informations de l'arc pour vérifier la bonne lecture du fichier
+            std::cout<<"Arc "<<(i+1)<<" : "<<((getVectArcs())[i]).getS1().getNumero()<< " et "<<((getVectArcs())[i]).getS2().getNumero()<<" ; coeff "<<((getVectArcs())[i]).getCoef()<<std::endl;
         }
 
+        //Fermeture du fichier
         fichier.close();
 
     }
+
+    //Sinon, message d'erreur d'ouverture du fichier
     else std::cout << "Erreur ouverture fichier chargement graphe " << std::endl;
 
 }
@@ -192,28 +234,48 @@ void Graphe::lecture_fichier(std::string f)
 
 
 
-
+/* sauvegarde_ficher : sous-programme permettant de sauvegarder le graphe actuel dans un fichier
+ENTREE :
+    f : de type std::string
+SORTIE
+    aucune
+*/
 void Graphe::sauvegarde_fichier(std::string f)
 {
+
+    //On affiche les infos du graphe sur la console pour vérifier si la sauvegarde fonctionne
     afficher_console();
+
+    //Fichier
     ofstream fichier;
     fichier.open(f);
+
+    //Instance de 2 booléens
     bool b1, b2;
+
+
+    //Si le fichier est ouvert
     if(fichier)
     {
-        //On sauvegarde l'ordre
+
+        //On écrit l'ordre du graphe dans le fichier
         fichier << getOrdre() << std::endl;
 
+        //Pour tous les sommets du graphe
         for(int i =0; i<getOrdre(); i++)
         {
 
-            if((getVectSom()[i]).getAffSom() == 1) b1 =1;
-            else b1 = 0;
+            //Si le sommet est affiché, b1 vaut 1
+            if((getVectSom()[i]).getAffSom() == 1) b1=1;
+            //Sinon 0
+            else b1=0;
 
-            if((getVectSom()[i]).getSelect() == 1) b2 =1;
-            else b2 = 0;
+            //Si le sommet est sélectionné, b2 vaut 1
+            if((getVectSom()[i]).getSelect() == 1) b2=1;
+            //Sinon 0
+            else b2=0;
 
-            //On sauvegarde dans le fichier les 2 sommets de l'arete et le poids de celle-ci
+            //On écrit dans le fichier les informations du sommet
             fichier << ((getVectSom())[i]).getName();
             fichier << " ";
             fichier << (getVectSom()[i]).getNumero();
@@ -231,17 +293,29 @@ void Graphe::sauvegarde_fichier(std::string f)
             fichier << b2;
             fichier << std::endl;
         }
+
+
+        //On écrit le nombre d'arcs du graphe dans le fichier
         fichier<<getNbArcs()<<std::endl;
+
+        //Pour tous les arcs du graphes
         for(int i = 0; i<getNbArcs(); i++)
         {
+
+            //On écrit dans le fichier son sommet 1 et son sommet 2
             fichier << (getVectArcs()[i]).getS1().getNumero();
             fichier << " ";
             fichier << (getVectArcs()[i]).getS2().getNumero();
             fichier << std::endl;
         }
 
+        //On ferme le fichier
         fichier.close();
-    }else std::cout << "Erreur fichier sauvegarde..." << std::endl << std::endl;
+
+    }
+
+    ////Sinon, message d'erreur d'ouverture du fichier
+    else std::cout << "Erreur fichier sauvegarde..." << std::endl << std::endl;
 
 }
 
@@ -249,84 +323,126 @@ void Graphe::sauvegarde_fichier(std::string f)
 
 
 
-/*modifier_param : sous-programme permettant de choisir un sommet et d'en modifier un paramètre
+/* modifier_param : sous-programme permettant de choisir un sommet et d'en modifier un paramètre
 ENTREE :
     aucune
 SORTIE :
     aucune
 */
-///Modification d'un paramètre d'un sommet
 void Graphe::modifier_param()
 {
+
+    //Instance de données
     std::string choix, nouv_nom;
     int som, nouv;
     std::vector<Sommet> vec_som;
 
+
     //Saisie du sommet à modifier
-    std::cout<<"Quel Sommet souhaitez vous modifier ? (numero) "<<std::endl;
+    std::cout<<"Quel sommet souhaitez-vous modifier ? (numero) "<<std::endl;
     std::cin>>som;
+
     //Blindage
+    //Tant que le numéro saisi n'existe pas
     while(som<0 || som>getVectSom().size())
     {
+
+        //Message d'erreur et demande de re-saisie
         std::cout<<"Mauvaise saisie du sommet a modifier. Veuillez recommencer. (numero)"<<std::endl;
         std::cin>>som;
     }
 
+
     //Saisie du paramètre à changer
-    std::cout<<"Lequel de ces parametres souhaitez vous modifier ?(K, R, N)"<<std::endl;
+    std::cout<<"Lequel de ces parametres souhaitez-vous modifier ?(K, R ou N)"<<std::endl;
     std::cin>>choix;
+
     //Blindage
-    while(choix!="nom" && choix!= "K" && choix!="R" && choix!="N")
+    //Tant que le choix saisi est différent de K, R ou N
+    while(choix!= "K" && choix!="R" && choix!="N")
     {
-        std::cout<<"Mauvaise saisie du choix. Veuillez recommencer. (K, R, N)"<<std::endl;
+        //Message d'erreur et demande de re-saisie
+        std::cout<<"Mauvaise saisie du choix. Veuillez recommencer. (K, R ou N)"<<std::endl;
         std::cin>>choix;
     }
 
+
     //Si on choisit de modifier K
-    //On crée un sommet avec les mêmes propriétés que celui à modier sauf K qui a été actualisé
-    //On l'intègre au vecteur de sommet
-    //De même si le choix est N, R ou nom
     if(choix=="K")
     {
+
+        //Choix du nouveau K
         std::cout<<"K actuel pour "<<(getVectSom()[som]).getName()<<" : "<<(getVectSom()[som]).getK()<<std::endl;
-        std::cout<<"Saisir nouveau K"<<std::endl;
+        std::cout<<"Saisir nouveau K : ";
         std::cin>>nouv;
+
+        //On crée un sommet avec les mêmes propriétés que celui à modifier sauf K qui a été actualisé
         Sommet s((getVectSom()[som]).getName(), (getVectSom()[som]).getNumero(), (getVectSom()[som]).getN(), nouv, (getVectSom()[som]).getR(), (getVectSom()[som]).getCoordX(), (getVectSom()[som]).getCoordY(), (getVectSom()[som]).getImage(), (getVectSom()[som]).getAffSom(), (getVectSom()[som]).getSelect());
+
+        //Pour tous les sommets du graphe
         for(int i=0; i<getOrdre(); i++)
         {
+            //On modifie le vecteur de sommets
             if (i==som) vec_som.push_back(s);
             else vec_som.push_back(getVectSom()[i]);
         }
     }
+
+
+    //Si on choisit de modifier N
     if(choix=="N")
     {
+
+        //Choix du nouveau N
         std::cout<<"N actuel pour "<<(getVectSom()[som]).getName()<<" : "<<(getVectSom()[som]).getN()<<std::endl;
-        std::cout<<"Saisir nouveau N"<<std::endl;
+        std::cout<<"Saisir nouveau N";
         std::cin>>nouv;
+
+        //On crée un sommet avec les mêmes propriétés que celui à modifier sauf N qui a été actualisé
         Sommet s((getVectSom()[som]).getName(), (getVectSom()[som]).getNumero(), nouv, (getVectSom()[som]).getK(), (getVectSom()[som]).getR(), (getVectSom()[som]).getCoordX(), (getVectSom()[som]).getCoordY(), (getVectSom()[som]).getImage(), (getVectSom()[som]).getAffSom(), (getVectSom()[som]).getSelect());
+
+        //Pour tous les sommets du graphe
         for(int i=0; i<getOrdre(); i++)
         {
+            //On modifie le vecteur de sommets
             if (i==som) vec_som.push_back(s);
             else vec_som.push_back(getVectSom()[i]);
         }
+
+        //Appel du sous-programme suivant pour modifier K et R dépendants de N
         calcul_para_post_modif(vec_som);
 
     }
+
+    //Si on choisit de modifier R
     if(choix=="R")
     {
+
+        //Choix du nouveau R
         std::cout<<"R actuel pour "<<(getVectSom()[som]).getName()<<" : "<<(getVectSom()[som]).getR()<<std::endl;
-        std::cout<<"Saisir nouveau R"<<std::endl;
+        std::cout<<"Saisir nouveau R";
         std::cin>>nouv;
+
+        //On crée un sommet avec les mêmes propriétés que celui à modifier sauf R qui a été actualisé
         Sommet s((getVectSom()[som]).getName(), (getVectSom()[som]).getNumero(), (getVectSom()[som]).getN(), (getVectSom()[som]).getK(), nouv, (getVectSom()[som]).getCoordX(), (getVectSom()[som]).getCoordY(), (getVectSom()[som]).getImage(), (getVectSom()[som]).getAffSom(), (getVectSom()[som]).getSelect());
+
+        //Pour tous les sommets du graphe
         for(int i=0; i<getOrdre(); i++)
         {
+            //On modifie le vecteur de sommets
             if (i==som) vec_som.push_back(s);
             else vec_som.push_back(getVectSom()[i]);
         }
 
     }
+
+
+    //On modifie le vecteur de sommets du graphe avec les changements apportés
     setVectSom(vec_som);
+
+    //On affiche les infos du graphe sur la console pour voir les modifications
     afficher_console();
+
 }
 
 
@@ -334,7 +450,7 @@ void Graphe::modifier_param()
 
 
 
-/*calcul_para_post_modif : sous programme permettant de modifier le coefficient et le K des sommets après avoir modifié leur N
+/* calcul_para_post_modif : sous-programme permettant de modifier le coefficient et le K des sommets après avoir modifié leur N
 ENTREE :
     vec_som : de type vecteur de sommets
 SORTIE :
@@ -342,20 +458,32 @@ SORTIE :
 */
 void Graphe::calcul_para_post_modif(std::vector<Sommet> vec_som)
 {
+
+    //Instance de données
     float coeff;
     std::vector<Arc> vec_arc;
     vec_arc = getVectArcs();
     int s1, s2;
+
+
+    //Pour tous les arcs du graphe
     for(int i =0; i<getNbArcs(); i++)
     {
+
+        //Instance des 2 sommets formant l'arc
         s1 = getVectArcs()[i].getS1().getNumero();
         s2 = getVectArcs()[i].getS2().getNumero();
-        //On calcule le nouveau coefficient
+
+        //On calcule le nouveau coefficient de l'arc
         coeff = (float)(vec_som[s1].getN())/(vec_som[s2].getN());
-        //On peut à présent calculer le K des sommets du graphe
+
+        //On peut à présent calculer le K du 2ème sommet de l'arc
         vec_som[s2].setK(vec_som[s2].getK() + vec_som[s1].getN()*coeff);
         vec_arc[i].setCoef(coeff);
     }
+
+
+    //On modifie les vecteurs de sommets et d'arcs du graphe avec les changements apportés
     setVectArcs(vec_arc);
     setVectSom(vec_som);
 }
@@ -364,7 +492,7 @@ void Graphe::calcul_para_post_modif(std::vector<Sommet> vec_som)
 
 
 
-/*afficher console : sous programme permettant d'afficher le graphe en console
+/* afficher console : sous-programme permettant d'afficher les infos du graphe en console
 ENTREE :
     aucune
 SORTIE :
@@ -372,18 +500,29 @@ SORTIE :
 */
 void Graphe::afficher_console()
 {
-    ///Affichage Console des paramètre de tous les sommets
-    std::cout<<"\n\nGraphe :"<<std::endl;
-    std::cout<<"\nOrdre : "<<getOrdre()<<std::endl;
-    std::cout<<"NB Arcs : \n"<<getNbArcs()<<std::endl;
+
+    //Affichage des infos principales du graphe
+    std::cout<<std::endl<<std::endl<<"*** GRAPHE ***"<<std::endl;
+    std::cout<<std::endl<<"Ordre : "<<getOrdre()<<std::endl;
+    std::cout<<"NB Arcs : "<<getNbArcs()<<std::endl<<std::endl;
+
+
+    //Pour tous les sommets du graphe
     for(int i =0; i < getOrdre(); i++)
     {
+        //Affichage des informations du sommet
         std::cout<<((getVectSom())[i]).getName()<<" "<<((getVectSom())[i]).getN()<<" "<<((getVectSom())[i]).getK()<<" "<<((getVectSom())[i]).getR()<<" "<<((getVectSom())[i]).getCoordX()<<" "<<((getVectSom())[i]).getCoordY()<<std::endl;
     }
-    std::cout<<"\n\n";
+
+
+    std::cout<<std::endl<<std::endl;
+
+
+    //Pour tous les arcs du graphe
     for(int i=0; i<getNbArcs(); i++)
     {
-        std::cout<<"Arc "<<(i+1)<<" : "<<((getVectArcs())[i]).getS1().getNumero()<< " et "<<((getVectArcs())[i]).getS2().getNumero()<<" coeff "<<((getVectArcs())[i]).getCoef()<<std::endl;
+        //Affichage des informations de l'arc
+        std::cout<<"Arc "<<(i+1)<<" : "<<((getVectArcs())[i]).getS1().getNumero()<< " et "<<((getVectArcs())[i]).getS2().getNumero()<<" ; coeff "<<((getVectArcs())[i]).getCoef()<<std::endl;
     }
 
 }
@@ -392,7 +531,7 @@ void Graphe::afficher_console()
 
 
 
-/*afficher_sommets : sous programme permettant d'afficher à l'écran les sommets du graphe
+/* afficher_sommets : sous-programme permettant d'afficher à l'écran les sommets du graphe
 ENTREE :
     img : de type BITMAP*
 SORTIE :
@@ -400,27 +539,85 @@ SORTIE :
 */
 void Graphe::afficher_sommets(BITMAP* img)
 {
+
+    //Instance d'un int
     int n;
+
+    //Instance d'un vecteur de int
+    std::vector<int>compteur;
+
+    //Initialisation du vecteur à 0
+    for(int i=0; i<m_nb_arcs; i++)
+    {
+        compteur.push_back(0);
+    }
+
+
+    //Pour tous les sommets du graphe
     for(int i=0; i<getOrdre(); i++)
     {
-        if(getVectSom()[i].getAffSom() == true)
-        {
-            afficher_arcs(img);
-            draw_sprite(img, (getVectSom()[i]).getImage(),(getVectSom()[i]).getCoordX(),(getVectSom()[i]).getCoordY() );
-            n = (getVectSom()[i]).getNumero();
-            textprintf(img,font, (getVectSom()[i]).getCoordX()+20, (getVectSom()[i]).getCoordY()-20, makecol(0,0,0) ,"Sommet n_%d",n );
 
-            if(getVectSom()[i].getSelect()) rect(screen, getVectSom()[i].getCoordX(), getVectSom()[i].getCoordY(), getVectSom()[i].getCoordX()+ getVectSom()[i].getImage()->w,getVectSom()[i].getCoordY()+getVectSom()[i].getImage()->h, makecol(0,255,0));
-            else rect(screen, getVectSom()[i].getCoordX(), getVectSom()[i].getCoordY(), getVectSom()[i].getCoordX()+ getVectSom()[i].getImage()->w,getVectSom()[i].getCoordY()+getVectSom()[i].getImage()->h, makecol(0,0,0));
+        //Si le sommet est affiché
+        if(getVectSom()[i].getAffSom())
+        {
+
+            //Pour tous les arcs
+            for(int j=0; j<m_nb_arcs; j++)
+            {
+
+                //Si le sommet i est égale au sommet 1 de l'arc
+                if(i == m_vect_arcs[j].getS1().getNumero())
+                {
+                    compteur[j] = compteur[j] + 1;
+                }
+
+                //Si le sommet i est égale au sommet 2 de l'arc
+                else if(i == m_vect_arcs[j].getS2().getNumero())
+                {
+                    compteur[j] = compteur[j] + 1;
+                }
+            }
+
+            //Pour tous les arcs
+            for(int j=0; j<m_nb_arcs; j++)
+            {
+
+                //Si le compteur de cet arc vaut 2
+                if(compteur[j] == 2)
+                {
+                    //Alors il est affiché
+                    m_vect_arcs[j].setAffArc(true);
+                }
+
+            }
+
+
+            //On affiche sa BITMAP
+            draw_sprite(img, (getVectSom()[i]).getImage(), (getVectSom()[i]).getCoordX(), (getVectSom()[i]).getCoordY());
+
+            //n prend la valeur du numéro du sommet
+            n = (getVectSom()[i]).getNumero();
+
+            //On affiche le numéro du sommet au-dessus de son image
+            textprintf(img,font, (getVectSom()[i]).getCoordX()+20, (getVectSom()[i]).getCoordY()-20, makecol(0,0,0), "Sommet n_%d", n);
+
+            //Affichage d'un rectangle autour de l'image du sommet
+            //Si le sommet est sélectionné
+            if(getVectSom()[i].getSelect()) rect(screen, getVectSom()[i].getCoordX(), getVectSom()[i].getCoordY(), getVectSom()[i].getCoordX()+ getVectSom()[i].getImage()->w, getVectSom()[i].getCoordY()+getVectSom()[i].getImage()->h, makecol(0,255,0));
+            //Sinon
+            else rect(screen, getVectSom()[i].getCoordX(), getVectSom()[i].getCoordY(), getVectSom()[i].getCoordX()+ getVectSom()[i].getImage()->w, getVectSom()[i].getCoordY()+getVectSom()[i].getImage()->h, makecol(0,0,0));
+
         }
+
     }
+
 }
 
 
 
 
 
-/*bouger_sommet : sous programme permettant de bouger un sommet de place
+/* bouger_sommet : sous-programme permettant de bouger un sommet de place
 ENTREE :
     img : de type BITMAP*
     x : de type int
@@ -429,33 +626,50 @@ ENTREE :
 SORTIE :
     aucune
 */
-void Graphe::bouger_sommet(BITMAP *img, int x, int y, int n )
+void Graphe::bouger_sommet(BITMAP *img, int x, int y, int n)
 {
+
+    //Instance de 2 booléens
     bool test = false;
     bool multiple = false;
+
+
     //On crée un sommet correspondant au sommet que l'on souhaite bouger mais avec les nouvelles coordonnées
     Sommet s = (getVectSom()[n]);
     s.setCoordX(x);
     s.setCoordY(y);
-    // On crée un vecteur de sommet
-    std::vector<Sommet> vec_som;
-    //Si plusieurs sommet alors le premier dans l'ordre des numéro est sélectionné, les autres sont déselectionner
-    if(getVectSom()[n].getSelect() == true) multiple = true;
-    for(int i =0; i<getOrdre(); i++)
-    {
-        if(multiple==true) m_vect_som[i].setSelect(0);
 
-        afficher_sommets(img);
-    }
-    //On regarde pour tous les sommets (sauf celui que l'on veut bouger) que la nouvelle position du sommet n'empiètera pas sur leur image
-    //Si cela empiète sur une des images ( ou sur la barre d'outils), on ne change rien
+    // On crée un vecteur de sommets
+    std::vector<Sommet> vec_som;
+
+
+    //Si plusieurs sommets sont sélectionnés
+    if(getVectSom()[n].getSelect() == true) multiple = true;
+
+    //Pour tous les sommets du graphe
     for(int i=0; i<getOrdre(); i++)
     {
+        //Si plusieurs sommets sont sélectionnés alors le premier dans l'ordre des numéros est sélectionné et les autres sont désélectionnés
+        if(multiple==true) m_vect_som[i].setSelect(0);
+
+        //On affiche les sommets
+        afficher_sommets(img);
+    }
+
+
+
+    //On regarde pour tous les sommets que la nouvelle position du sommet n'empiètera pas sur leur image
+    //Pour tous les sommets
+    for(int i=0; i<getOrdre(); i++)
+    {
+
+        //Si le sommet est différent de celui sélectionné
         if(i!=n)
         {
 
             if((x>getVectSom()[i].getCoordX()-getVectSom()[i].getImage()->w) && (x<getVectSom()[i].getCoordX()+ getVectSom()[i].getImage()->w))
             {
+
                 if((y>getVectSom()[i].getCoordY() -getVectSom()[i].getImage()->h)&& (y<getVectSom()[i].getCoordY() + getVectSom()[i].getImage()->h))
                 {
                     test = true;
@@ -464,6 +678,7 @@ void Graphe::bouger_sommet(BITMAP *img, int x, int y, int n )
                     i =getOrdre();
                 }
             }
+
             else if (x<125)
             {
                 test ==true;
@@ -473,17 +688,20 @@ void Graphe::bouger_sommet(BITMAP *img, int x, int y, int n )
             }
         }
     }
-    //On remplit le vecteur de sommet avec les sommets du graphe
+
+
+    //On remplit le vecteur de sommets de la fonction avec les sommets du graphe selon les modifications faites
     for(int i=0; i<getOrdre(); i++)
     {
         if (i==n) vec_som.push_back(s);
         else vec_som.push_back(getVectSom()[i]);
     }
-    // on donne au vecteur de sommet du graphe les valeurs du vecteur de sommet de la fonction
+
+    //On donne au vecteur de sommets du graphe les valeurs du vecteur de sommets de la fonction
     setVectSom(vec_som);
-    //On affiche les sommets et les arcs
+
+    //On affiche les sommets
     afficher_sommets(img);
-    afficher_arcs(img);
 }
 
 
@@ -514,10 +732,10 @@ void Graphe::select_sommet(int mx, int my)
                 //Le sommet est sélectionné
                 m_vect_som[i].setSelect(true);
 
-                //Il est entouré d'un carré vert
+                //Il est encadré d'un carré vert
                 rect(screen, m_vect_som[i].getCoordX(), m_vect_som[i].getCoordY(), m_vect_som[i].getCoordX()+m_vect_som[i].getImage()->w, m_vect_som[i].getCoordY()+m_vect_som[i].getImage()->h, makecol(0,255,0));
 
-                //On affiche le sommet
+                //On affiche les informations du sommet
                 std::cout<<"*** INFORMATIONS DU SOMMET SELECTIONNE ***"<<std::endl;
                 m_vect_som[i].afficher_infos();
 
@@ -532,7 +750,7 @@ void Graphe::select_sommet(int mx, int my)
                 //Le sommet est désélectionné
                 m_vect_som[i].setSelect(false);
 
-                //On efface le carré (on le met en blanc)
+                //Il est encadré d'un carré noir
                 rect(screen, m_vect_som[i].getCoordX(), m_vect_som[i].getCoordY(), m_vect_som[i].getCoordX()+m_vect_som[i].getImage()->w, m_vect_som[i].getCoordY()+m_vect_som[i].getImage()->h, makecol(0,0,0));
             }
 
@@ -546,7 +764,7 @@ void Graphe::select_sommet(int mx, int my)
 
 
 
-/* effacer_sommet : sous-programme permettant d'effacer des sommets
+/* effacer_sommet : sous-programme permettant d'effacer un ou plusieurs sommets
 ENTREE :
     aucune
 SORTIE :
@@ -587,12 +805,13 @@ void Graphe::effacer_sommet(BITMAP* img)
             if(vec_som[i].getSelect())
             {
 
-                //On met son affichage à nul
+                //On met son affichage et sa sélection à faux
                 vec_som[i].setAffSom(false);
                 vec_som[i].setSelect(false);
             }
         }
     }
+
 
     //Instance d'un vecteur d'Arcs
     std::vector<Arc> vec_arc = getVectArcs();
@@ -600,14 +819,19 @@ void Graphe::effacer_sommet(BITMAP* img)
     //Pour tous les arcs
     for(int i=0; i<getNbArcs(); i++)
     {
-        if(!vec_som[vec_arc[i].getS1().getNumero()].getAffSom()) vec_arc[i].setAffArc(false);
-        else if(!vec_som[vec_arc[i].getS2().getNumero()].getAffSom()) vec_arc[i].setAffArc(false);
-        else vec_arc[i].setAffArc(true);
+        //Si le sommet 1 et /ou le sommet 2 de l'arc n'est pas affiché alors l'arc n'est pas affiché
+        if(!(vec_som[vec_arc[i].getS1().getNumero()].getAffSom()) || !(vec_som[vec_arc[i].getS2().getNumero()].getAffSom())) vec_arc[i].setAffArc(false);
+
+        //Si le sommet 2 de l'arc n'est pas affiché alors l'arc n'est pas affiché
+        //if() vec_arc[i].setAffArc(false);
     }
 
 
+    //Modifications des vecteurs de sommets et d'arcs du graphe
     setVectSom(vec_som);
     setVectArcs(vec_arc);
+
+    //Affichage des sommets
     afficher_sommets(img);
 
 }
@@ -658,10 +882,10 @@ void Graphe::ajouter_sommet()
         {
 
             //On demande à l'utilisateur quel sommet il souhaite ajouter
-            std::cout<<"Quel sommet voulez-vous ajouter parmis ceux affiches ci dessous ? (entrez le numero)"<<std::endl;
+            std::cout<<"Quel sommet voulez-vous ajouter parmis ceux affiches ci dessous ? (numero)"<<std::endl;
             for(int i=0; i<getOrdre(); i++)
             {
-                if(m_vect_som[i].getAffSom()==false) std::cout<<m_vect_som[i].getName()<<" num : "<<m_vect_som[i].getNumero()<<std::endl;
+                if(m_vect_som[i].getAffSom()==false) std::cout<<m_vect_som[i].getName()<<" : numero "<<m_vect_som[i].getNumero()<<std::endl;
             }
             std::cin>>som;
 
@@ -815,6 +1039,7 @@ ENTREE :
 SORTIE :
     aucune
 */
+/*
 void Graphe::afficher_arcs(BITMAP* buffer)
 {
     //Variables temporaires
@@ -1003,7 +1228,6 @@ void Graphe::afficher_arcs(BITMAP* buffer)
 
 
             //AFFICHAGE DES FORMES
-            text_mode(-1);
             triangle(buffer, m_vect_arcs[i].getArrowX1(), m_vect_arcs[i].getArrowY1(), X2, Y2, X3, Y3, makecol(255,0,0));
             line(buffer, (X2+X3)/2, (Y2+Y3)/2, m_vect_arcs[i].getLine_S1_X(), m_vect_arcs[i].getLine_S1_Y(), makecol(255,0,0));
             textprintf(buffer,font,(m_vect_arcs[i].getLine_S1_X()+m_vect_arcs[i].getArrowX1())/2 -40,(m_vect_arcs[i].getLine_S1_Y()+m_vect_arcs[i].getArrowY1())/2, makecol(100,0,255) ,"Coef=%1.2f",coeff);
@@ -1011,3 +1235,183 @@ void Graphe::afficher_arcs(BITMAP* buffer)
         }
     }
 }
+*/
+
+
+/// Source : https://www.geeksforgeeks.org/strongly-connected-components/
+//A appliquer à chaque graphe pour voir les composantes connexes
+/* forte_co : sous-programme permettant de trouver les composantes connexes
+ENTREE :
+    g = le graphe dont on souhaite connaître les composantes fortement connexes
+    img = BITMAP*
+SORTIE :
+    aucune
+*/
+void Graphe::forte_co(Graphe g, BITMAP* img)
+{
+    //Pile de int ou de sommet
+    std::stack<int> pile;
+
+    //On crée un tableau de booleens de taille ordre qui sert de tableau de marquage
+    bool marq[getOrdre()];
+    //On l'initialise à false pour le premier DFS
+    for(int i =0; i<getOrdre(); i++)
+    {
+        //On le met à faux
+        marq[i]=false;
+    }
+
+    //Pour toutes les cases du tableau de marquage
+    for(int i = 0; i<getOrdre(); i++)
+    {
+        //S'il n'est pas marqué
+        if(marq[i]==false)
+        {
+            // On procède à un premier DFS
+            DFS1(i, marq, pile);
+        }
+    }
+
+    //On initialise un vecteur d'arcs qui va recevoir les arcs inversés
+    std::vector<Arc> vect_arc;
+
+    //On inverse les sens de tous les arcs
+    for(int i= 0; i<m_vect_arcs.size(); i++)
+    {
+        //On crée un arc partiel qui reçoit le sommet 2 en guise de sommet 1 et inversement
+        Arc atemp(m_vect_arcs[i].getS2(),m_vect_arcs[i].getS1(),m_vect_arcs[i].getCoef(), m_vect_arcs[i].getAffArc());
+        // On met cet arc dans le vecteur d'arcs
+        vect_arc.push_back(atemp);
+    }
+
+    //On crée un graphe qui va avoir les arcs inversés
+    //Il possède les mêmes propriétés que le graphe actuel sauf que ces arcs sont inversés
+    Graphe g_inv(getOrdre(),getNbArcs(),getVectSom(),vect_arc);
+
+    //Le graphe prend les arcs inversés
+    m_vect_arcs=vect_arc;
+
+    //On l'initialise à false pour le second DFS
+    for(int i =0; i<getOrdre(); i++)
+    {
+        //On le met à faux
+        marq[i]=false;
+    }
+
+    //Tant que la pile n'est pas vide
+    while(pile.empty() == false)
+    {
+        //On prend le sommet au dessus de la pile
+        int s = pile.top();
+        //On le retire de la pile
+        pile.pop();
+
+        //On affiche la composante fortement connexe
+        if(marq[s]==false)
+        {
+            int col = makecol(rand()%256,rand()%256,rand()%256);
+            //On fait appel au deuxième DFS
+            g_inv.DFS2(s,marq,col,g, img);
+        }
+    }
+}
+
+
+/// Source : https://www.geeksforgeeks.org/strongly-connected-components/
+/* DFS1 : sous-programme permettant d'effectuer le premier DFS
+ENTREE :
+    s : de type int, numero du sommet actuel
+    marq[] : tableau de booleen qui contient les marquages
+    pile : std::stack<int> pile de int, contenant les numéros de sommet
+SORTIE :
+    aucune
+*/
+void Graphe::DFS1(int s, bool marq[], std::stack<int> &pile)
+{
+    //On marque le sommet reçu en paramètres
+    marq[s] = true;
+
+    //Vecteur contenant les int contenant les numéros des sommets adjacent au sommet actuel
+    std::vector<int> adj;
+
+    //Parmi tous les arcs
+    for(int i = 0; i< getVectArcs().size(); i++)
+    {
+        //Si le premier sommet est égal à s
+        if(m_vect_arcs[i].getS1().getNumero() == s)
+        {
+            //On ajoute le deuxième sommet au vecteur d'adjacence
+            adj.push_back(m_vect_arcs[i].getS2().getNumero());
+        }
+    }
+
+    //Pour tous les sommets adjacents
+    for(int i = 0; i = adj.size(); i++)
+    {
+        //S'il n'est pas marqué
+        if(!marq[adj[i]])
+        {
+            //On procède à un DFS récursif avec le premier DFS
+            DFS1(adj[i], marq, pile);
+        }
+    }
+
+    //On met s dans la pile
+    pile.push(s);
+}
+
+
+/// Source : https://www.geeksforgeeks.org/strongly-connected-components/
+/* DFS2 : sous-programme permettant d'effectuer le second DFS
+ENTREE :
+    s : de type int, numero du sommet actuel
+    marq[] : tableau de booleen qui contient les marquages
+    col : int qui contient la couleur random
+    img : BITMAP*
+   SORTIE :
+    aucune
+*/
+void Graphe::DFS2(int s, bool marq[], int col, Graphe g,BITMAP* img)
+{
+    //On marque le sommet à true
+    marq[s] = true;
+
+    //On met le sommet de la couleur
+    //Parmi tous les sommets
+    for(int i =0; i<getOrdre(); i++)
+    {
+        //Si le numéro de sommet correspond
+        if(m_vect_som[i].getNumero()==s)
+        {
+            //On fait un affichage spécial du sommet concerné avec col
+            rect(img, m_vect_som[i].getCoordX()-70, m_vect_som[i].getCoordY()-70,m_vect_som[i].getCoordX()+70,m_vect_som[i].getCoordY()+70,col);
+        }
+    }
+
+    //Vecteur contenant les int contenant les numéros des sommets adjacent au sommet actuel
+    std::vector<int> adj;
+
+    //Parmi tous les arcs
+    for(int i = 0; i< getVectArcs().size(); i++)
+    {
+        //Si le premier sommet est égal à s
+        if(m_vect_arcs[i].getS1().getNumero() == s)
+        {
+            //On ajoute le deuxième sommet au vecteur d'adjacence
+            adj.push_back(m_vect_arcs[i].getS2().getNumero());
+        }
+    }
+
+    //Pour tous les sommets adjacents
+    for(int i = 0; i = adj.size(); i++)
+    {
+        //S'il n'est pas marqué
+        if(!marq[adj[i]])
+        {
+            //On procède à un DFS récursif avec le second DFS
+            DFS2(adj[i], marq, col, g, img);
+        }
+    }
+}
+
+

@@ -56,6 +56,7 @@ int main()
     std::string nom;
     Graphe graphe;
     BITMAP* Buffer= create_bitmap(1024,768);
+
     BITMAP* menu = load_bitmap("Menu.bmp", NULL);
     if(!menu)
     {
@@ -63,6 +64,7 @@ int main()
         allegro_exit();
         exit(EXIT_FAILURE);
     }
+
     BITMAP* fond = load_bitmap("fond.bmp", NULL);
     if(!fond)
     {
@@ -70,6 +72,7 @@ int main()
         allegro_exit();
         exit(EXIT_FAILURE);
     }
+
     BITMAP* sous_fond = load_bitmap("sous_menu.bmp", NULL);
     if(!sous_fond)
     {
@@ -77,8 +80,10 @@ int main()
         allegro_exit();
         exit(EXIT_FAILURE);
     }
+
     BITMAP* actuelle = menu;
     blit(actuelle, Buffer, 0, 0, 0,0,1024,768);
+
    // nom ="faucon_et_hibiscus.txt";
     //graphe.lecture_fichier("faucon_et_hibiscus.txt");
 
@@ -86,6 +91,7 @@ int main()
     //std::cin>>nom;
     //graphe.lecture_fichier(nom);
 
+    text_mode(-1);
 
     while(!key[KEY_ESC])
     {
@@ -140,8 +146,23 @@ int main()
                 actuelle = menu;
                 m = true;
             }
+            else if(c==makecol(255,174,201))
+            {
+                //K-connexité
+            }
+            else if(c==makecol(255,128,0))
+            {
+                //Forte connexite
+                graphe.forte_co(graphe, buffer);
+            }
+            else if(c==makecol(34,177,76))
+            {
+                //Temps réel
+            }
+
             rest(1000);
         }
+
         if(mouse_b&2)
         {
             x = mouse_x;
@@ -155,10 +176,12 @@ int main()
             }
             rest(1000);
         }
+
         if(m==false) graphe.afficher_sommets(Buffer);
         blit(Buffer,screen,0,0,0,0,1024,768);
         blit(actuelle, Buffer, 0,0,0,0,1024,768);
     }
+
     graphe.sauvegarde_fichier(nom);
     return 0;
 }

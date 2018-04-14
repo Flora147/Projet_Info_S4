@@ -38,26 +38,28 @@
 			<Add library="jpgalleg" />
 			<Add library="alleg44.dll" />
 		</Linker>
-		<Unit filename="Arc.cpp">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="Arc.hpp">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="Graphe.cpp">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="Graphe.hpp">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="Sommet.cpp">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="Sommet.hpp">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
+		<Unit filename="" />
+		<Unit filename="Arc.cpp" />
+		<Unit filename="Arc.hpp" />
+		<Unit filename="Faucon.bmp" />
+		<Unit filename="Graphe.cpp" />
+		<Unit filename="Graphe.hpp" />
+		<Unit filename="Grenouille.bmp" />
+		<Unit filename="Hibiscus.bmp" />
+		<Unit filename="Menu.bmp" />
+		<Unit filename="Moineau.bmp" />
+		<Unit filename="Salade.bmp" />
+		<Unit filename="Sauterelle.bmp" />
+		<Unit filename="Sommet.cpp" />
+		<Unit filename="Sommet.hpp" />
+		<Unit filename="Souris.bmp" />
+		<Unit filename="Ver.bmp" />
+		<Unit filename="faucon_et_hibiscus.txt" />
+		<Unit filename="fond.bmp" />
 		<Unit filename="graph.cpp" />
 		<Unit filename="graph.h" />
+		<Unit filename="graph_lib.depend" />
+		<Unit filename="graph_lib.layout" />
 		<Unit filename="grman/coords.cpp" />
 		<Unit filename="grman/coords.h" />
 		<Unit filename="grman/grman.cpp" />
@@ -66,6 +68,24 @@
 		<Unit filename="grman/widget.cpp" />
 		<Unit filename="grman/widget.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="obj/Debug/Arc.o" />
+		<Unit filename="obj/Debug/Graphe.o" />
+		<Unit filename="obj/Debug/Sommet.o" />
+		<Unit filename="obj/Debug/graph.o" />
+		<Unit filename="obj/Debug/grman/coords.o" />
+		<Unit filename="obj/Debug/grman/grman.o" />
+		<Unit filename="obj/Debug/grman/widget.o" />
+		<Unit filename="obj/Debug/main.o" />
+		<Unit filename="pics/bad_clowns_xx3xx.jpg" />
+		<Unit filename="pics/clown1.jpg" />
+		<Unit filename="pics/clown2.jpg" />
+		<Unit filename="pics/clown3.jpg" />
+		<Unit filename="pics/clown4.jpg" />
+		<Unit filename="pics/clown5.jpg" />
+		<Unit filename="pics/clown_button.png" />
+		<Unit filename="pics/crusty_xx4xx.png" />
+		<Unit filename="pics/tree0.bmp" />
+		<Unit filename="sous_menu.bmp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

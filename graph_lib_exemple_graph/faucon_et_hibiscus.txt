@@ -4,8 +4,8 @@ Salade 1 500 10 490 70 1 0
 Ver 2 300 3 845 345 1 0
 Sauterelle 3 400 0.1 550 305 1 0
 Souris 4 200 3 170 70 1 0
-Grenouille 5 150 0.25 290 305 1 0
-Faucon 6 80 36 175 575 1 0
+Grenouille 5 150 0.25 290 305 0 0
+Faucon 6 80 36 240 598 1 0
 Moineau 7 200 3 845 575 1 0
 10
 0 2

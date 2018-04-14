@@ -128,3 +128,192 @@ void Arc::setLine_S1_Y(int line_s1_y)
     m_line_s1_y=line_s1_y;
 }
 
+
+
+/*
+void Arc::afficher_arc(BITMAP* buffer)
+{
+
+    //Variables temporaires
+    int X2, X3, Y2, Y3;
+
+
+    //INITIALISATION
+    setArrowX1(getS2().getCoordX());
+    setArrowY1(getS2().getCoordY());
+
+    X2 = getArrowX1() - 10;
+    Y2 = getArrowY1() - 10;
+
+    X3 = getArrowX1() - 10;
+    Y3 = getArrowY1() + 10;
+
+
+    //AJUSTEMENT
+    //TRACE DE LA FLECHE ET MODIFICATION DE LA LIGNE
+    //CAS 1
+    if(getArrowX1() > m_vect_arcs[i].getS1().getCoordX() && m_vect_arcs[i].getArrowY1() > m_vect_arcs[i].getS1().getCoordY())
+    {
+
+        setArrowX1(m_vect_arcs[i].getS2().getCoordX() + (m_vect_arcs[i].getS2().getImage()->w)/2);
+        setArrowY1(m_vect_arcs[i].getS2().getCoordY() - 25);
+
+        setLine_S1_X(m_vect_arcs[i].getS1().getCoordX() + (m_vect_arcs[i].getS1().getImage()->w)/2);
+        setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() + (m_vect_arcs[i].getS1().getImage()->h));
+
+        X2 = getArrowX1() - 10;
+        Y2 = getArrowY1() - 20;
+
+        X3 = getArrowX1() - 20;
+        Y3 = getArrowY1() - 10;
+
+    }
+
+
+
+            //CAS 2
+            else if(m_vect_arcs[i].getArrowX1() < m_vect_arcs[i].getS1().getCoordX() && m_vect_arcs[i].getArrowY1() < m_vect_arcs[i].getS1().getCoordY())
+            {
+
+                m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX() + (m_vect_arcs[i].getS2().getImage()->w)/2);
+                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY() + (m_vect_arcs[i].getS2().getImage()->h));
+
+                X2 = m_vect_arcs[i].getArrowX1() + 10;
+                Y2 = m_vect_arcs[i].getArrowY1() + 20;
+
+                X3 = m_vect_arcs[i].getArrowX1() + 20;
+                Y3 = m_vect_arcs[i].getArrowY1() + 10;
+
+                m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX() + (m_vect_arcs[i].getS1().getImage()->w)/2);
+                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() - 25);
+
+            }
+
+
+
+            //CAS 3
+            else if(m_vect_arcs[i].getArrowX1() < m_vect_arcs[i].getS1().getCoordX() && m_vect_arcs[i].getArrowY1() > m_vect_arcs[i].getS1().getCoordY())
+            {
+
+                m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX() + (m_vect_arcs[i].getS2().getImage()->w)/2);
+                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY() - 25);
+
+                X2 = m_vect_arcs[i].getArrowX1() + 20;
+                Y2 = m_vect_arcs[i].getArrowY1() - 10;
+
+                X3 = m_vect_arcs[i].getArrowX1() + 10;
+                Y3 = m_vect_arcs[i].getArrowY1() - 20;
+
+                m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX() + (m_vect_arcs[i].getS1().getImage()->w)/2);
+                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() + (m_vect_arcs[i].getS1().getImage()->h));
+
+            }
+
+
+            //CAS 4
+            else if(m_vect_arcs[i].getArrowX1() > m_vect_arcs[i].getS1().getCoordX() && m_vect_arcs[i].getArrowY1() < m_vect_arcs[i].getS1().getCoordY())
+            {
+
+                m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX() + (m_vect_arcs[i].getS2().getImage()->w)/2);
+                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY() + (m_vect_arcs[i].getS2().getImage()->h));
+
+                X2 = m_vect_arcs[i].getArrowX1() - 20;
+                Y2 = m_vect_arcs[i].getArrowY1() + 10;
+
+                X3 = m_vect_arcs[i].getArrowX1() - 10;
+                Y3 = m_vect_arcs[i].getArrowY1() + 20;
+
+                m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX() + (m_vect_arcs[i].getS1().getImage()->w)/2);
+                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() - 25);
+
+            }
+
+
+
+            //CAS 5
+            else if(m_vect_arcs[i].getArrowX1() == m_vect_arcs[i].getS1().getCoordX() && m_vect_arcs[i].getArrowY1() > m_vect_arcs[i].getS1().getCoordY())
+            {
+
+                m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX() + (m_vect_arcs[i].getS2().getImage()->w)/2);
+                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY() - 25);
+
+                X2 = m_vect_arcs[i].getArrowX1() + 10;
+                Y2 = m_vect_arcs[i].getArrowY1() - 10;
+
+                X3 = m_vect_arcs[i].getArrowX1() - 10;
+                Y3 = m_vect_arcs[i].getArrowY1() - 10;
+
+                m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX() + (m_vect_arcs[i].getS1().getImage()->w)/2);
+                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() + (m_vect_arcs[i].getS1().getImage()->h));
+
+            }
+
+
+            //CAS 6
+            else if(m_vect_arcs[i].getArrowX1() > m_vect_arcs[i].getS1().getCoordX() && m_vect_arcs[i].getArrowY1() == m_vect_arcs[i].getS1().getCoordY())
+            {
+
+                m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX());
+                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY() + (m_vect_arcs[i].getS2().getImage()->h)/2);
+
+                X2 = m_vect_arcs[i].getArrowX1() - 10;
+                Y2 = m_vect_arcs[i].getArrowY1() - 10;
+
+                X3 = m_vect_arcs[i].getArrowX1() - 10;
+                Y3 = m_vect_arcs[i].getArrowY1() + 10;
+
+                m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX() + (m_vect_arcs[i].getS1().getImage()->w));
+                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() + (m_vect_arcs[i].getS1().getImage()->h)/2);
+
+            }
+
+
+            //CAS 7
+            else if(m_vect_arcs[i].getArrowX1() == m_vect_arcs[i].getS1().getCoordX() && m_vect_arcs[i].getArrowY1() < m_vect_arcs[i].getS1().getCoordY())
+            {
+
+                m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX() + (m_vect_arcs[i].getS2().getImage()->w)/2);
+                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY() + (m_vect_arcs[i].getS2().getImage()->h));
+
+                X2 = m_vect_arcs[i].getArrowX1() - 10;
+                Y2 = m_vect_arcs[i].getArrowY1() + 10;
+
+                X3 = m_vect_arcs[i].getArrowX1() + 10;
+                Y3 = m_vect_arcs[i].getArrowY1() + 10;
+
+                m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX() + (m_vect_arcs[i].getS1().getImage()->w)/2);
+                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() - 25);
+
+            }
+
+
+            //CAS 8
+            else if(m_vect_arcs[i].getArrowX1() < m_vect_arcs[i].getS1().getCoordX() && m_vect_arcs[i].getArrowY1() == m_vect_arcs[i].getS1().getCoordY())
+            {
+
+                m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX() + (m_vect_arcs[i].getS2().getImage()->w));
+                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY() + (m_vect_arcs[i].getS2().getImage()->h)/2);
+
+                X2 = m_vect_arcs[i].getArrowX1() + 10;
+                Y2 = m_vect_arcs[i].getArrowY1() - 10;
+
+                X3 = m_vect_arcs[i].getArrowX1() + 10;
+                Y3 = m_vect_arcs[i].getArrowY1() + 10;
+
+                m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX());
+                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() + (m_vect_arcs[i].getS1().getImage()->h)/2);
+
+
+
+            }
+
+
+            //AFFICHAGE DES FORMES
+            triangle(buffer, m_vect_arcs[i].getArrowX1(), m_vect_arcs[i].getArrowY1(), X2, Y2, X3, Y3, makecol(255,0,0));
+            line(buffer, (X2+X3)/2, (Y2+Y3)/2, m_vect_arcs[i].getLine_S1_X(), m_vect_arcs[i].getLine_S1_Y(), makecol(255,0,0));
+            textprintf(buffer,font,(m_vect_arcs[i].getLine_S1_X()+m_vect_arcs[i].getArrowX1())/2 -40,(m_vect_arcs[i].getLine_S1_Y()+m_vect_arcs[i].getArrowY1())/2, makecol(100,0,255) ,"Coef=%1.2f",coeff);
+
+        }
+    }
+}
+*/

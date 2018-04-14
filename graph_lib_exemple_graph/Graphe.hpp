@@ -3,6 +3,7 @@
 #include "Sommet.hpp"
 #include "Arc.hpp"
 #include <vector>
+#include <stack>
 
 
 class Graphe
@@ -49,6 +50,10 @@ class Graphe
         void ajouter_sommet();
         void recalcul_parametres();
         void afficher_arcs(BITMAP* buffer);
+        void DFS1(int s, bool marq[], std::stack<int> &pile);
+        void DFS2(int s, bool marq[], int col, Graphe g,BITMAP* img);
+        void forte_co(Graphe g,BITMAP* img);
+        Graphe inverserGraphe();
 
 };
 
