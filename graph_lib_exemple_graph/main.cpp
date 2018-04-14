@@ -42,7 +42,7 @@ int main()
 
     //Section F : ouverture mode grapique
     set_color_depth(desktop_color_depth());
-    if(set_gfx_mode(GFX_AUTODETECT,1024,768,0,0)!=0)
+    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,1024,768,0,0)!=0)
     {
         allegro_message("probleme mode graphique");
         allegro_exit();
@@ -52,18 +52,12 @@ int main()
 
     int x,y, x1, y1;
     int c;
-    int f = 0;
     int compt = 0;
     int compt2 = 0;
-    std::vector<int> temp_x1;
-    std::vector<int> temp_x2;
-    std::vector<int> temp_y1;
-    std::vector<int> temp_y2;
     bool m = true;
     bool tps_reel = false;
     std::string nom;
     Graphe graphe;
-    Graphe graphe_temp;
     BITMAP* Buffer= create_bitmap(1024,768);
 
     BITMAP* menu = load_bitmap("Menu.bmp", NULL);
@@ -175,41 +169,7 @@ int main()
             else if(c==makecol(255,128,0))
             {
                 //Forte connexite
-                std::vector<Sommet> non_d;
-                std::vector<Arc> non_vis;
-                int nouv_o = 0;
-                int nou_arc = 0;
-                for(int i=0; i<graphe.getOrdre(); i++)
-                {
-                    if(graphe.getVectSom()[i].getAffSom() == true)
-                    {
-                        non_d.push_back(graphe.getVectSom()[i]);
-                        nouv_o++;
-                    }
-                }
-                for(int j = 0; j<graphe.getNbArcs();j++)
-                {
-                    if((graphe.getVectArcs()[j].getS1().getAffSom()==true) && (graphe.getVectArcs()[j].getS1().getAffSom()==true))
-                    {
-                        non_vis.push_back(graphe.getVectArcs()[j]);
-                        nou_arc++;
-                    }
-                }
-                if(nouv_o != graphe.getOrdre())
-                {
-                    for(int i = 0; i<nouv_o; i++)
-                    {
-                        non_d[i].setNumero(i);
-                    }
-                }
-                graphe_temp.setOrdre(nouv_o);
-                graphe_temp.setNbMois(graphe.getNbMois());
-                graphe_temp.setNbMoisTemp(graphe.getNbMoisTemp());
-                graphe_temp.setNbArcs(nou_arc);
-                graphe_temp.setVectArcs(non_vis);
-                graphe_temp.setVectSom(non_d);
-                graphe_temp.forte_co(graphe_temp, actuelle, temp_x1, temp_y1, temp_x2, temp_y2);
-                f = 1;
+                graphe.forte_co(graphe, actuelle);
             }
 
             else if(c==makecol(34,177,76))
@@ -270,27 +230,20 @@ int main()
 
         if(m==false)
         {
-            graphe.afficher_sommets(Buffer);
-
-            if(f==1)
+            //Si on avait appyé sur forte connexité et qu'on appuie sur F, affiche la forte connexité
+            if(key[KEY_F])
             {
-               rest(2000);
-
-                blit(Buffer,screen,0,0,0,0,1024,768);
-                blit(actuelle, Buffer, 0,0,0,0,1024,768);
                 graphe.afficher_sommets(Buffer);
-                //On retire les rectangles
-                for(int i = 0; i<temp_x1.size(); i++)
+            }
+            //Sinon affiche "normalement" les sommets
+            else
+            {
+                for(int i = 0; i<graphe.getOrdre(); i++)
                 {
-                    rest(500);
-                    rectfill(actuelle, temp_x1[i], temp_y1[i],temp_x1[i]+temp_x2[i],temp_y1[i]+temp_y2[i],makecol(255,255,255));
-                    //clear(actuelle);
-                    blit(Buffer,screen,0,0,0,0,1024,768);
-                    blit(actuelle, Buffer, 0,0,0,0,1024,768);
-                    graphe.afficher_sommets(Buffer);
+                rectfill(Buffer, graphe.getVectSom()[i].getCoordX(), graphe.getVectSom()[i].getCoordY(),graphe.getVectSom()[i].getCoordX()+ graphe.getVectSom()[i].getImage()->w,graphe.getVectSom()[i].getCoordY()+ graphe.getVectSom()[i].getImage()->h,makecol(255,255,255));
+
                 }
-                //graphe.afficher_sommets(Buffer);
-                f=0;
+                graphe.afficher_sommets(Buffer);
             }
 
         }

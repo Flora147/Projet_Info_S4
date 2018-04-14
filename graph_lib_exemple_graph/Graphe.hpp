@@ -16,8 +16,6 @@ class Graphe
         int m_nb_mois_temp;
         std::vector<Sommet> m_vect_som;
         std::vector<Arc> m_vect_arcs;
-        std::vector<int> c_regen;
-        std::vector<int> c_famine;
 
 
     public :
@@ -60,8 +58,8 @@ class Graphe
 
         //FORTE CONNEXITE
         void DFS1(int s, bool marq[], std::stack<int> &pile);
-        void DFS2(int s, bool marq[], int col, Graphe g,BITMAP* img, std::vector<int>& temp_x1, std::vector<int>& temp_y1, std::vector<int>& temp_x2, std::vector<int>& temp_y2);
-        void forte_co(Graphe g,BITMAP* img, std::vector<int>& temp_x1, std::vector<int>& temp_y1, std::vector<int>& temp_x2, std::vector<int>& temp_y2);
+        void DFS2(int s, bool marq[], int col, Graphe g,BITMAP* img);
+        void forte_co(Graphe g,BITMAP* img);
 
         //TEMPS REEL
         void temps_reel(BITMAP* img, BITMAP* img2, int compt);
@@ -70,6 +68,7 @@ class Graphe
         //K_CONNEXITE
         void k_connexite(BITMAP* buffer);
         void BFS(int sommet_initial);
+        void affichage_k_connexite();
 
 };
 

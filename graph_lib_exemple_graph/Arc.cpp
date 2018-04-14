@@ -166,11 +166,11 @@ void Arc::afficher_arc(BITMAP* buffer)
         setLine_S1_X(getS1().getCoordX());
         setLine_S1_Y(getS1().getCoordY());
 
-        X2 = getArrowX1() - 10;
-        Y2 = getArrowY1() - 10;
+        X2 = getArrowX1() - 8;
+        Y2 = getArrowY1() - 8;
 
-        X3 = getArrowX1() - 10;
-        Y3 = getArrowY1() + 10;
+        X3 = getArrowX1() - 8;
+        Y3 = getArrowY1() + 8;
 
 
         //AJUSTEMENT
@@ -179,17 +179,17 @@ void Arc::afficher_arc(BITMAP* buffer)
         if(getArrowX1() > getS1().getCoordX() && getArrowY1() > getS1().getCoordY())
         {
 
-            setArrowX1(getS2().getCoordX() + (getS2().getImage()->w)/2 +5);
-            setArrowY1(getS2().getCoordY() - 25);
+            setArrowX1(getS2().getCoordX() + (getS2().getImage()->w)/2);
+            setArrowY1(getS2().getCoordY() - 22);
 
-            X2 = getArrowX1() - 10;
-            Y2 = getArrowY1() - 20;
+            X2 = getArrowX1() - 8;
+            Y2 = getArrowY1() - 16;
 
-            X3 = getArrowX1() - 20;
-            Y3 = getArrowY1() - 10;
+            X3 = getArrowX1() - 16;
+            Y3 = getArrowY1() - 8;
 
-            setLine_S1_X(getS1().getCoordX() + ((getS1().getImage()->w)/2) +5);
-            setLine_S1_Y(getS1().getCoordY() + getS1().getImage()->h);
+            setLine_S1_X(getS1().getCoordX() + (getS1().getImage()->w));
+            setLine_S1_Y(getS1().getCoordY() + (getS1().getImage()->h)/2 +5);
 
         }
 
@@ -199,17 +199,17 @@ void Arc::afficher_arc(BITMAP* buffer)
         else if(getArrowX1() < getS1().getCoordX() && getArrowY1() < getS1().getCoordY())
         {
 
-            setArrowX1(getS2().getCoordX() + (getS2().getImage()->w)/2 +5);
-            setArrowY1(getS2().getCoordY() + (getS2().getImage()->h));
+            setArrowX1(getS2().getCoordX() + (getS2().getImage()->w));
+            setArrowY1(getS2().getCoordY() + (getS2().getImage()->h)/2 -5);
 
-            X2 = getArrowX1() + 10;
-            Y2 = getArrowY1() + 20;
+            X2 = getArrowX1() + 8;
+            Y2 = getArrowY1() + 16;
 
-            X3 = getArrowX1() + 20;
-            Y3 = getArrowY1() + 10;
+            X3 = getArrowX1() + 16;
+            Y3 = getArrowY1() + 8;
 
-            setLine_S1_X(getS1().getCoordX() + (getS1().getImage()->w)/2 +5);
-            setLine_S1_Y(getS1().getCoordY() - 25);
+            setLine_S1_X(getS1().getCoordX() + (getS1().getImage()->w)/2);
+            setLine_S1_Y(getS1().getCoordY() - 22);
 
         }
 
@@ -219,17 +219,17 @@ void Arc::afficher_arc(BITMAP* buffer)
         else if(getArrowX1() < getS1().getCoordX() && getArrowY1() > getS1().getCoordY())
         {
 
-            setArrowX1(getS2().getCoordX() + (getS2().getImage()->w)/2 -5);
-            setArrowY1(getS2().getCoordY() - 25);
+            setArrowX1(getS2().getCoordX() + (getS2().getImage()->w)/2 +5);
+            setArrowY1(getS2().getCoordY() - 22);
 
-            X2 = getArrowX1() + 20;
-            Y2 = getArrowY1() - 10;
+            X2 = getArrowX1() + 16;
+            Y2 = getArrowY1() - 8;
 
-            X3 = getArrowX1() + 10;
-            Y3 = getArrowY1() - 20;
+            X3 = getArrowX1() + 8;
+            Y3 = getArrowY1() - 16;
 
-            setLine_S1_X(getS1().getCoordX() + (getS1().getImage()->w)/2 -5);
-            setLine_S1_Y(getS1().getCoordY() + (getS1().getImage()->h));
+            setLine_S1_X(getS1().getCoordX());
+            setLine_S1_Y(getS1().getCoordY() + (getS1().getImage()->h)/2);
 
         }
 
@@ -238,17 +238,17 @@ void Arc::afficher_arc(BITMAP* buffer)
         else if(getArrowX1() > getS1().getCoordX() && getArrowY1() < getS1().getCoordY())
         {
 
-            setArrowX1(getS2().getCoordX() + (getS2().getImage()->w)/2 -5);
-            setArrowY1(getS2().getCoordY() + (getS2().getImage()->h));
+            setArrowX1(getS2().getCoordX());
+            setArrowY1(getS2().getCoordY() + (getS2().getImage()->h)/2);
 
-            X2 = getArrowX1() - 20;
-            Y2 = getArrowY1() + 10;
+            X2 = getArrowX1() - 16;
+            Y2 = getArrowY1() + 8;
 
-            X3 = getArrowX1() - 10;
-            Y3 = getArrowY1() + 20;
+            X3 = getArrowX1() - 8;
+            Y3 = getArrowY1() + 16;
 
-            setLine_S1_X(getS1().getCoordX() + (getS1().getImage()->w/2) -5);
-            setLine_S1_Y(getS1().getCoordY() - 25);
+            setLine_S1_X(getS1().getCoordX() + (getS1().getImage()->w/2));
+            setLine_S1_Y(getS1().getCoordY() - 22);
 
         }
 
@@ -259,13 +259,13 @@ void Arc::afficher_arc(BITMAP* buffer)
         {
 
             setArrowX1(getS2().getCoordX() + (getS2().getImage()->w)/2);
-            setArrowY1(getS2().getCoordY() - 25);
+            setArrowY1(getS2().getCoordY() - 22);
 
-            X2 = getArrowX1() + 10;
-            Y2 = getArrowY1() - 10;
+            X2 = getArrowX1() + 8;
+            Y2 = getArrowY1() - 8;
 
-            X3 = getArrowX1() - 10;
-            Y3 = getArrowY1() - 10;
+            X3 = getArrowX1() - 8;
+            Y3 = getArrowY1() - 8;
 
             setLine_S1_X(getS1().getCoordX() + (getS1().getImage()->w)/2);
             setLine_S1_Y(getS1().getCoordY() + (getS1().getImage()->h));
@@ -280,11 +280,11 @@ void Arc::afficher_arc(BITMAP* buffer)
             setArrowX1(getS2().getCoordX());
             setArrowY1(getS2().getCoordY() + (getS2().getImage()->h)/2);
 
-            X2 = getArrowX1() - 10;
-            Y2 = getArrowY1() - 10;
+            X2 = getArrowX1() - 8;
+            Y2 = getArrowY1() - 8;
 
-            X3 = getArrowX1() - 10;
-            Y3 = getArrowY1() + 10;
+            X3 = getArrowX1() - 8;
+            Y3 = getArrowY1() + 8;
 
             setLine_S1_X(getS1().getCoordX() + (getS1().getImage()->w));
             setLine_S1_Y(getS1().getCoordY() + (getS1().getImage()->h)/2);
@@ -299,14 +299,14 @@ void Arc::afficher_arc(BITMAP* buffer)
             setArrowX1(getS2().getCoordX() + (getS2().getImage()->w)/2);
             setArrowY1(getS2().getCoordY() + (getS2().getImage()->h));
 
-            X2 = getArrowX1() - 10;
-            Y2 = getArrowY1() + 10;
+            X2 = getArrowX1() - 8;
+            Y2 = getArrowY1() + 8;
 
-            X3 = getArrowX1() + 10;
-            Y3 = getArrowY1() + 10;
+            X3 = getArrowX1() + 8;
+            Y3 = getArrowY1() + 8;
 
             setLine_S1_X(getS1().getCoordX() + (getS1().getImage()->w)/2);
-            setLine_S1_Y(getS1().getCoordY() - 25);
+            setLine_S1_Y(getS1().getCoordY() - 22);
 
         }
 
@@ -318,11 +318,11 @@ void Arc::afficher_arc(BITMAP* buffer)
             setArrowX1(getS2().getCoordX() + (getS2().getImage()->w));
             setArrowY1(getS2().getCoordY() + (getS2().getImage()->h)/2);
 
-            X2 = getArrowX1() + 10;
-            Y2 = getArrowY1() - 10;
+            X2 = getArrowX1() + 8;
+            Y2 = getArrowY1() - 8;
 
-            X3 = getArrowX1() + 10;
-            Y3 = getArrowY1() + 10;
+            X3 = getArrowX1() + 8;
+            Y3 = getArrowY1() + 8;
 
             setLine_S1_X(getS1().getCoordX());
             setLine_S1_Y(getS1().getCoordY() + (getS1().getImage()->h)/2);
