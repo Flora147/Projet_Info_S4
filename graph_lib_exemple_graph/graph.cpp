@@ -38,7 +38,7 @@ VertexInterface::VertexInterface(int idx, int x, int y, std::string pic_name, in
     m_box_label_idx.set_bg_color(BLANC);
 
     m_box_label_idx.add_child( m_label_idx );
-    m_label_idx.set_message( std::to_string(idx) );
+  //  m_label_idx.set_message( std::to_string(idx) );
 }
 
 
@@ -52,7 +52,7 @@ void Vertex::pre_update()
     m_interface->m_slider_value.set_value(m_value);
 
     /// Copier la valeur locale de la donnée m_value vers le label sous le slider
-    m_interface->m_label_value.set_message( std::to_string( (int)m_value) );
+//    m_interface->m_label_value.set_message( std::to_string( (int)m_value) );
 }
 
 
@@ -113,7 +113,7 @@ void Edge::pre_update()
     m_interface->m_slider_weight.set_value(m_weight);
 
     /// Copier la valeur locale de la donnée m_weight vers le label sous le slider
-    m_interface->m_label_weight.set_message( std::to_string( (int)m_weight ) );
+//    m_interface->m_label_weight.set_message( std::to_string( (int)m_weight ) );
 }
 
 /// Gestion du Edge après l'appel à l'interface

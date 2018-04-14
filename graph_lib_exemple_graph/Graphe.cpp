@@ -1259,6 +1259,7 @@ SORTIE :
 */
 void Graphe::forte_co(Graphe g, BITMAP* img)
 {
+    std::cout << "Debut forte co" << std::endl;
     //Pile de int ou de sommet
     std::stack<int> pile;
 
@@ -1271,14 +1272,19 @@ void Graphe::forte_co(Graphe g, BITMAP* img)
         marq[i]=false;
     }
 
+    std::cout << "premiers false ok" << std::endl;
+
+    ///DFS prob
     //Pour toutes les cases du tableau de marquage
     for(int i = 0; i<getOrdre(); i++)
     {
         //S'il n'est pas marqué
         if(marq[i]==false)
         {
+            std::cout << "Avant entree DFS" << std::endl;
             // On procède à un premier DFS
             DFS1(i, marq, pile);
+            std::cout << "premier DFS OK" << std::endl;
         }
     }
 
@@ -1301,6 +1307,8 @@ void Graphe::forte_co(Graphe g, BITMAP* img)
     //Le graphe prend les arcs inversés
     m_vect_arcs=vect_arc;
 
+    std::cout << "arcs inverses" << std::endl;
+
     //On l'initialise à false pour le second DFS
     for(int i =0; i<getOrdre(); i++)
     {
@@ -1322,8 +1330,11 @@ void Graphe::forte_co(Graphe g, BITMAP* img)
             int col = makecol(rand()%256,rand()%256,rand()%256);
             //On fait appel au deuxième DFS
             g_inv.DFS2(s,marq,col,g, img);
+            std::cout << "Sortie effectuée du 2eme DFS" << std::endl;
         }
     }
+
+    std::cout << "Fin forte compo" << std::endl;
 }
 
 
@@ -1341,6 +1352,7 @@ SORTIE :
 */
 void Graphe::DFS1(int s, bool marq[], std::stack<int> &pile)
 {
+    std::cout << "Entree dans DFS réussie" <<std::endl;
     //On marque le sommet reçu en paramètres
     marq[s] = true;
 
@@ -1350,27 +1362,34 @@ void Graphe::DFS1(int s, bool marq[], std::stack<int> &pile)
     //Parmi tous les arcs
     for(int i = 0; i< getVectArcs().size(); i++)
     {
+        std::cout << "Arc : " << i << std::endl;
         //Si le premier sommet est égal à s
         if(m_vect_arcs[i].getS1().getNumero() == s)
         {
             //On ajoute le deuxième sommet au vecteur d'adjacence
             adj.push_back(m_vect_arcs[i].getS2().getNumero());
+            std::cout << "Sommet " << m_vect_arcs[i].getS2().getNumero() << std::endl;
         }
     }
 
+
     //Pour tous les sommets adjacents
-    for(int i = 0; i = adj.size(); i++)
+    for(int i = 0; i < adj.size(); i++)
     {
+        std::cout << "Sommet adjacent numéro " << adj[i] <<std::endl;
         //S'il n'est pas marqué
         if(!marq[adj[i]])
         {
             //On procède à un DFS récursif avec le premier DFS
+            std::cout << "Avant d'entrer dans recursive " << std::endl;
             DFS1(adj[i], marq, pile);
         }
     }
 
     //On met s dans la pile
     pile.push(s);
+
+    std::cout <<"Sur le point de sortir du DFS" << std::endl;
 }
 
 
@@ -1401,8 +1420,9 @@ void Graphe::DFS2(int s, bool marq[], int col, Graphe g,BITMAP* img)
         //Si le numéro de sommet correspond
         if(m_vect_som[i].getNumero()==s)
         {
+            std::cout << "Le sommet " << m_vect_som[i].getNumero() << std::endl;
             //On fait un affichage spécial du sommet concerné avec col
-            rect(img, m_vect_som[i].getCoordX()-70, m_vect_som[i].getCoordY()-70,m_vect_som[i].getCoordX()+70,m_vect_som[i].getCoordY()+70,col);
+            rectfill(img, m_vect_som[i].getCoordX(), m_vect_som[i].getCoordY(),m_vect_som[i].getCoordX()+130,m_vect_som[i].getCoordY()+130,col);
             std::cout << "OOK" << std::endl;
         }
     }
@@ -1422,13 +1442,16 @@ void Graphe::DFS2(int s, bool marq[], int col, Graphe g,BITMAP* img)
     }
 
     //Pour tous les sommets adjacents
-    for(int i = 0; i = adj.size(); i++)
+    for(int i = 0; i < adj.size(); i++)
     {
         //S'il n'est pas marqué
         if(!marq[adj[i]])
         {
+            std::cout << "Avant d'entrer dans recursif" << std::endl;
             //On procède à un DFS récursif avec le second DFS
             DFS2(adj[i], marq, col, g, img);
         }
     }
+
+    std::cout << "Sortie du deuxième DFS" << std::endl;
 }

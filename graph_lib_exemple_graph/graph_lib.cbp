@@ -38,24 +38,13 @@
 			<Add library="jpgalleg" />
 			<Add library="alleg44.dll" />
 		</Linker>
-		<Unit filename="Arc.cpp">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="Arc.hpp">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="Graphe.cpp">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="Graphe.hpp">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="Sommet.cpp">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="Sommet.hpp">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
+		<Unit filename="Arc.cpp" />
+		<Unit filename="Arc.hpp" />
+		<Unit filename="Graphe.cpp" />
+		<Unit filename="Graphe.hpp" />
+		<Unit filename="Menu.bmp" />
+		<Unit filename="Sommet.cpp" />
+		<Unit filename="Sommet.hpp" />
 		<Unit filename="graph.cpp" />
 		<Unit filename="graph.h" />
 		<Unit filename="grman/coords.cpp" />

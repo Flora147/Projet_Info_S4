@@ -42,7 +42,7 @@ int main()
 
     //Section F : ouverture mode grapique
     set_color_depth(desktop_color_depth());
-    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,1024,768,0,0)!=0)
+    if(set_gfx_mode(GFX_AUTODETECT,1024,768,0,0)!=0)
     {
         allegro_message("probleme mode graphique");
         allegro_exit();
@@ -170,7 +170,7 @@ int main()
             else if(c==makecol(255,128,0))
             {
                 //Forte connexite
-                graphe.forte_co(graphe, Buffer);
+                graphe.forte_co(graphe, actuelle);
             }
 
             else if(c==makecol(34,177,76))

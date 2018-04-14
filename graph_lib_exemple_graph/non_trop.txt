@@ -1,0 +1,15 @@
+7
+Abeille 0 120 0 0.80 282 40 abeille.bmp 1 0
+Fleur 1 80 0 1.2 214 266 fleur.bmp 1 0
+Végétation 2 200 0 2.5 311 491 vegetation.bmp 1 0
+Forêt 3 300 1000 1.2 651 545 foret.bmp 1 0
+Fourmi 4 700 0 10 656 39 fourmi.bmp 1 0
+Graine 5 200 0 5 455 266 graine.bmp 1 0
+Champignon 6 150 0 4 733 267 champignon.bmp 1 0
+6
+0 1
+1 2
+2 3
+4 5
+5 2
+4 6
