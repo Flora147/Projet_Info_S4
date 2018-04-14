@@ -254,9 +254,9 @@ void Sommet::afficher_infos()
     std::cout<<"Numero du sommet : "<<m_numero<<std::endl;
     std::cout<<"Taille de la population : "<<m_N<<std::endl;
     std::cout<<"Capacite de portage de l'environnement : "<<m_K<<std::endl;
-    std::cout<<"Rythme de croissance : "<<m_r<<std::endl<<std::endl;
-    if(m_veget==false)std::cout<<"Quantite de nourriture nécessaire : "<<m_nourriture<<std::endl<<std::endl;
-    else std::cout<<"Quantite d'individus des autres espèces nécessaire : "<<m_nourriture<<std::endl<<std::endl;
+    std::cout<<"Rythme de croissance : "<<m_r<<std::endl;
+    if(m_veget==false)std::cout<<"Quantite de nourriture necessaire : "<<m_nourriture<<std::endl;
+    else std::cout<<"Quantite d'individus des autres especes necessaire : "<<m_nourriture<<std::endl<<std::endl;
 
 }
 

@@ -123,7 +123,12 @@ void Graphe::setVectArcs(std::vector<Arc> vect_arcs)
 
 
 
-
+/* lecture_ficher : sous-programme permettant de lire le graphe actuel dans un fichier
+ENTREE :
+    f : de type std::string
+SORTIE
+    aucune
+*/
 void Graphe::lecture_fichier(std::string f)
 {
     ifstream fichier;
@@ -205,9 +210,9 @@ void Graphe::lecture_fichier(std::string f)
 
 
         //On affiche en console le graphe
-        std::cout<<"\n\nGraphe :"<<std::endl;
-        std::cout<<"\nOrdre : "<<getOrdre()<<std::endl;
-        std::cout<<"NB Arcs : "<<getNbArcs()<<"\n"<<std::endl;
+        std::cout<<"*** GRAPHE ***"<<std::endl;
+        std::cout<<"Ordre : "<<getOrdre()<<std::endl;
+        std::cout<<"NB Arcs : "<<getNbArcs()<<std::endl<<std::endl;
         for(int i =0; i < getOrdre(); i++)
         {
             if(getVectSom()[i].getK()<=0)
@@ -218,12 +223,14 @@ void Graphe::lecture_fichier(std::string f)
             }
             std::cout<<((getVectSom())[i]).getName()<<" "<<((getVectSom())[i]).getN()<<" "<<((getVectSom())[i]).getK()<<" "<<((getVectSom())[i]).getR()<<" "<<((getVectSom())[i]).getCoordX()<<" "<<((getVectSom())[i]).getCoordY()<<std::endl;
         }
-        std::cout<<"\n\n";
+        std::cout<<std::endl;
         for(int i=0; i<getNbArcs(); i++)
         {
 
-            std::cout<<"Arc "<<(i+1)<<" : "<<((getVectArcs())[i]).getS1().getNumero()<< " et "<<((getVectArcs())[i]).getS2().getNumero()<<" coeff "<<((getVectArcs())[i]).getCoef()<<std::endl;
+            std::cout<<"Arc "<<(i+1)<<" : "<<((getVectArcs())[i]).getS1().getNumero()<< " et "<<((getVectArcs())[i]).getS2().getNumero()<<" ; coeff "<<((getVectArcs())[i]).getCoef()<<std::endl;
         }
+
+        std::cout << "-------------------------------------" << std::endl;
 
         fichier.close();
 
@@ -231,6 +238,7 @@ void Graphe::lecture_fichier(std::string f)
     else std::cout << "Erreur ouverture fichier chargement graphe " << std::endl;
 
 }
+
 
 
 
@@ -318,6 +326,8 @@ void Graphe::sauvegarde_fichier(std::string f)
     else std::cout << "Erreur fichier sauvegarde..." << std::endl << std::endl;
 
 }
+
+
 
 
 /* modifier_param : sous-programme permettant de choisir un sommet et d'en modifier un paramètre
@@ -469,7 +479,6 @@ void Graphe::modifier_param()
 
 
 
-
 /* calcul_para_post_modif : sous-programme permettant de modifier le coefficient et le K des sommets après avoir modifié leur N
 ENTREE :
     vec_som : de type vecteur de sommets
@@ -554,6 +563,8 @@ void Graphe::calcul_para_post_modif(std::vector<Sommet> vec_som)
 }
 
 
+
+
 /*conservation_para : sous programme permettant de demander si on souhaite garder les paramètres tels qu'ils sont après simulation en temps réel
 ENTREE : Aucune
 SORTIE : Aucune
@@ -620,6 +631,8 @@ void Graphe::conservation_para()
 }
 
 
+
+
 /* afficher console : sous-programme permettant d'afficher les infos du graphe en console
 ENTREE :
     aucune
@@ -631,10 +644,10 @@ void Graphe::afficher_console()
 
     //Affichage des infos principales du graphe
     std::cout<<std::endl<<std::endl<<"*** GRAPHE ***"<<std::endl;
-    if(m_non_trophique==true) std::cout<<"Le graphe est non-trophique"<<std::endl;
-    else std::cout<<"Le graphe est trophique"<<std::endl;
+    if(m_non_trophique==true) std::cout<<"Le graphe est non-trophique."<<std::endl;
+    else std::cout<<"Le graphe est trophique."<<std::endl;
     std::cout<<std::endl<<"Ordre : "<<getOrdre()<<std::endl;
-    std::cout<<"NB Arcs : "<<getNbArcs()<<std::endl<<std::endl;
+    std::cout<<"NB Arcs : "<<getNbArcs()<<std::endl;
 
 
     //Pour tous les sommets du graphe
@@ -647,8 +660,7 @@ void Graphe::afficher_console()
         std::cout<<" "<<((getVectSom())[i]).getCoordX()<<" "<<((getVectSom())[i]).getCoordY()<<std::endl;
     }
 
-
-    std::cout<<std::endl<<std::endl;
+    std::cout<<std::endl;
 
 
     //Pour tous les arcs du graphe
@@ -657,6 +669,8 @@ void Graphe::afficher_console()
         //Affichage des informations de l'arc
         std::cout<<"Arc "<<(i+1)<<" : "<<((getVectArcs())[i]).getS1().getNumero()<< " et "<<((getVectArcs())[i]).getS2().getNumero()<<" ; coeff "<<((getVectArcs())[i]).getCoef()<<std::endl;
     }
+
+    std::cout << "-------------------------------------" << std::endl;
 
 }
 
@@ -700,8 +714,8 @@ void Graphe::afficher_sommets(BITMAP* img)
                 r = int(getVectSom()[i].getR());
 
                 //On affiche ses paramètres  N et nourriture
-                textprintf(img,font, (getVectSom()[i]).getCoordX()+20, (getVectSom()[i]).getCoordY()+ getVectSom()[i].getImage()->h, makecol(0,0,0) ,"Population %d",getVectSom()[i].getN() );
-                (textprintf(img,font, (getVectSom()[i]).getCoordX()+20, (getVectSom()[i]).getCoordY()+ getVectSom()[i].getImage()->h + 20, makecol(0,0,0) ,"Consommation : %1.2f",getVectSom()[i].getNourriture() ));
+                textprintf(img,font, (getVectSom()[i]).getCoordX()+4, (getVectSom()[i]).getCoordY()+ getVectSom()[i].getImage()->h+4, makecol(0,0,0) ,"Population: %d",getVectSom()[i].getN() );
+                (textprintf(img,font, (getVectSom()[i]).getCoordX()+4, (getVectSom()[i]).getCoordY()+ getVectSom()[i].getImage()->h + 16, makecol(0,0,0) ,"Consommation: %1.2f",getVectSom()[i].getNourriture() ));
 
                 //On affiche le numéro du sommet au-dessus de son image
                 textprintf(img,font, (getVectSom()[i]).getCoordX()+20, (getVectSom()[i]).getCoordY()-20, makecol(0,0,0), "Sommet n_%d", n);
@@ -715,7 +729,7 @@ void Graphe::afficher_sommets(BITMAP* img)
 
            }
             //On affiche l'année auquel on est en haut à droite de l'écran
-            textprintf(img,font, SCREEN_W - 100, 20 , makecol(0,255,100) ,"Mois n_%d",getNbMois() );
+            textprintf(img,font, SCREEN_W - 100, 20 , makecol(0,200,100) ,"Mois n_%d",getNbMois() );
 
             //Si le sommet est affiché
             if(getVectSom()[i].getAffSom())
@@ -1000,6 +1014,7 @@ void Graphe::effacer_sommet(BITMAP* img)
             }
         }
     }
+
     //On calcule le coefficient de l'arc que l'on crée ensuite
         int comp = 0;
         float coeff = (float)(1);
@@ -1020,6 +1035,7 @@ void Graphe::effacer_sommet(BITMAP* img)
             }
             comp = 0;
         }
+
         //On calcule le paramètre K des sommets
         std::vector<int> new_k;
 
@@ -1208,6 +1224,9 @@ void Graphe::ajouter_sommet()
 }
 
 
+
+
+
 /*temps reel : sous-programme permettant d'afficher en temps reel l'evolution du réseau écologique
 ENTREE : deux images (le fond et le buffer) et un compteur (un entier)
 SORTIE : Aucune
@@ -1384,6 +1403,10 @@ void Graphe::temps_reel(BITMAP* img, BITMAP* img2, int compt)
   //  return s;
 }
 
+
+
+
+
 /*temps reel nont : sous-programme permettant d'afficher en temps reel l'evolution du réseau écologique si ils sont non trophique
 ENTREE : deux images (le fond et le buffer) et un compteur (un entier)
 SORTIE : Aucune
@@ -1518,6 +1541,9 @@ void Graphe::temps_reel_nont(BITMAP* img, BITMAP* img2, int compt)
 }
 
 
+
+
+
 /// Source : https://www.geeksforgeeks.org/strongly-connected-components/
 //A appliquer à chaque graphe pour voir les composantes connexes
 /* forte_co : sous-programme permettant de trouver les composantes connexes
@@ -1529,6 +1555,9 @@ SORTIE :
 */
 void Graphe::forte_co(Graphe g, BITMAP* img, std::vector<int>& temp_x1, std::vector<int>& temp_y1, std::vector<int>& temp_x2, std::vector<int>& temp_y2, bool reduit)
 {
+
+    std::cout<<std::endl<<std::endl<<"*** FORTE CONNEXITE ***"<<std::endl;
+
     //Si on lance la forte connexité avec affichage des couleurs
     if(reduit==false)
     {
@@ -1626,7 +1655,7 @@ void Graphe::forte_co(Graphe g, BITMAP* img, std::vector<int>& temp_x1, std::vec
             }
             cpst_co.push_back(ligne);
         }
-        std::cout<<"Il y a "<<nb<<" composantes fortement connexe dans ce graphe"<<std::endl;
+        std::cout<<"Il y a "<<nb<<" composante(s) fortement connexe dans ce graphe."<<std::endl;
 
     }
     //Si on lance la forte connexite avec affichage du graphe réduit
@@ -1728,6 +1757,19 @@ void Graphe::forte_co(Graphe g, BITMAP* img, std::vector<int>& temp_x1, std::vec
 
 }
 
+
+
+
+
+/* afficher_graphe_reduit : sous-programme permettant d'afficher le graphe réduit
+ENTREE :
+    g  : de type Graphe, le graphe dont on souhaite connaître les composantes fortement connexes
+    img : de type BITMAP*
+    nb : de type int
+    cpst_co : de type std::vector<int>
+SORTIE :
+    aucune
+*/
 void Graphe::afficher_graphe_reduit(int nb, Graphe g,std::vector<int> cpst_co, BITMAP* img)
 {
     //Instance d'un vecteur de int
@@ -1738,6 +1780,7 @@ void Graphe::afficher_graphe_reduit(int nb, Graphe g,std::vector<int> cpst_co, B
     {
         compteur.push_back(0);
     }
+
     //Affichage d'un rectangle blanc sur l'écran
     rectfill(screen, 126, 5, 1019, 763, makecol(255,255,255));
 
@@ -1753,6 +1796,7 @@ void Graphe::afficher_graphe_reduit(int nb, Graphe g,std::vector<int> cpst_co, B
             //On affiche le numéro du sommet au-dessus de son image
             textprintf(screen,font, x, y, makecol(0,0,0), "Sommet n_%d", n);
     }
+
     //On affiche les arêtes reliant les sommets
     for(int i =0; i<nb-1; i++)
     {
@@ -1761,6 +1805,11 @@ void Graphe::afficher_graphe_reduit(int nb, Graphe g,std::vector<int> cpst_co, B
 
     rest(2000);
 }
+
+
+
+
+
 
 
 /// Source : https://www.geeksforgeeks.org/strongly-connected-components/
@@ -1814,7 +1863,6 @@ void Graphe::DFS1(int s, bool marq[], std::stack<int> &pile)
 
     //std::cout <<"Sur le point de sortir du DFS" << std::endl;
 }
-
 
 
 
@@ -1884,6 +1932,9 @@ void Graphe::DFS2(int s, bool marq[], int col, Graphe g,BITMAP* img, std::vector
 
 
 }
+
+
+
 
 
 /* k_connexite : sous-programme permettant de trouver la k-connexite du graphe
@@ -1994,10 +2045,6 @@ void Graphe::k_connexite(BITMAP* buffer)
                     }
                 }
             }
-
-            //Pour tous les sommets, on affiche son nom et son degré
-            for(int i=0; i<m_ordre; i++)
-                if(tab[i]==0) std::cout<<"S"<<i<<" de degre "<<tab_degre[i]<<std::endl;
 
 
             /** TRI DECROISSANT DES SOMMETS EN FONCTION DE LEUR DEGRE **/
@@ -2177,6 +2224,7 @@ void Graphe::k_connexite(BITMAP* buffer)
         std::cout<<"On ne peut pas effectuer l'algorithme de k-connexite."<<std::endl<<std::endl;
     }
 }
+
 
 
 
