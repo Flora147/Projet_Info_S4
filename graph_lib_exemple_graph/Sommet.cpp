@@ -175,7 +175,7 @@ void Sommet::afficher_infos()
     std::cout<<"Nom : "<<m_name<<std::endl;
     std::cout<<"Numero du sommet : "<<m_numero<<std::endl;
     std::cout<<"Taille de la population : "<<m_N<<std::endl;
-    std::cout<<"Capacité de portage de l'environnement : "<<m_K<<std::endl;
+    std::cout<<"Capacite de portage de l'environnement : "<<m_K<<std::endl;
     std::cout<<"Rythme de croissance : "<<m_r<<std::endl<<std::endl;
 
 }

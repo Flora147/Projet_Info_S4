@@ -188,6 +188,11 @@ void Graphe::lecture_fichier(std::string f)
 
 }
 
+
+
+
+
+
 void Graphe::sauvegarde_fichier(std::string f)
 {
     afficher_console();
@@ -239,9 +244,16 @@ void Graphe::sauvegarde_fichier(std::string f)
     }else std::cout << "Erreur fichier sauvegarde..." << std::endl << std::endl;
 
 }
+
+
+
+
+
 /*modifier_param : sous-programme permettant de choisir un sommet et d'en modifier un paramètre
-ENTREE : Aucune
-SORTIE : Aucune
+ENTREE :
+    aucune
+SORTIE :
+    aucune
 */
 ///Modification d'un paramètre d'un sommet
 void Graphe::modifier_param()
@@ -317,9 +329,16 @@ void Graphe::modifier_param()
     afficher_console();
 }
 
-/*calcul_para_post_modif : sous programme permettant de modifier le coefficient et le K des sommets après avoir modifier leur N
-ENTREE : un vecteur de sommet vec_som
-SORTIE : Aucune
+
+
+
+
+
+/*calcul_para_post_modif : sous programme permettant de modifier le coefficient et le K des sommets après avoir modifié leur N
+ENTREE :
+    vec_som : de type vecteur de sommets
+SORTIE :
+    aucune
 */
 void Graphe::calcul_para_post_modif(std::vector<Sommet> vec_som)
 {
@@ -341,9 +360,15 @@ void Graphe::calcul_para_post_modif(std::vector<Sommet> vec_som)
     setVectSom(vec_som);
 }
 
+
+
+
+
 /*afficher console : sous programme permettant d'afficher le graphe en console
-ENTREE : Aucune
-SORTIE : Aucune
+ENTREE :
+    aucune
+SORTIE :
+    aucune
 */
 void Graphe::afficher_console()
 {
@@ -362,9 +387,16 @@ void Graphe::afficher_console()
     }
 
 }
+
+
+
+
+
 /*afficher_sommets : sous programme permettant d'afficher à l'écran les sommets du graphe
-ENTREE : l'image de fond
-SORTIE : Aucune
+ENTREE :
+    img : de type BITMAP*
+SORTIE :
+    aucune
 */
 void Graphe::afficher_sommets(BITMAP* img)
 {
@@ -376,16 +408,26 @@ void Graphe::afficher_sommets(BITMAP* img)
             afficher_arcs(img);
             draw_sprite(img, (getVectSom()[i]).getImage(),(getVectSom()[i]).getCoordX(),(getVectSom()[i]).getCoordY() );
             n = (getVectSom()[i]).getNumero();
-            textprintf(img,font, (getVectSom()[i]).getCoordX()+20, (getVectSom()[i]).getCoordY()-20, makecol(0,0,0) ,"Sommet n° %d",n );
+            textprintf(img,font, (getVectSom()[i]).getCoordX()+20, (getVectSom()[i]).getCoordY()-20, makecol(0,0,0) ,"Sommet n_%d",n );
 
             if(getVectSom()[i].getSelect()) rect(screen, getVectSom()[i].getCoordX(), getVectSom()[i].getCoordY(), getVectSom()[i].getCoordX()+ getVectSom()[i].getImage()->w,getVectSom()[i].getCoordY()+getVectSom()[i].getImage()->h, makecol(0,255,0));
             else rect(screen, getVectSom()[i].getCoordX(), getVectSom()[i].getCoordY(), getVectSom()[i].getCoordX()+ getVectSom()[i].getImage()->w,getVectSom()[i].getCoordY()+getVectSom()[i].getImage()->h, makecol(0,0,0));
         }
     }
 }
+
+
+
+
+
 /*bouger_sommet : sous programme permettant de bouger un sommet de place
-ENTREE : image, les coordonnées d'arrivée (deux entiers)
-SORTIE : Aucune
+ENTREE :
+    img : de type BITMAP*
+    x : de type int
+    y : de type int
+    n : de type int
+SORTIE :
+    aucune
 */
 void Graphe::bouger_sommet(BITMAP *img, int x, int y, int n )
 {
@@ -443,6 +485,11 @@ void Graphe::bouger_sommet(BITMAP *img, int x, int y, int n )
     afficher_sommets(img);
     afficher_arcs(img);
 }
+
+
+
+
+
 
 /* select_sommet : sous-programme permettant de sélectionner les sommets (le prgm est précédé d'un mouse_b&1)
 ENTREE :
@@ -508,12 +555,17 @@ SORTIE :
 void Graphe::effacer_sommet(BITMAP* img)
 {
 
+    //Instance d'un vecteur de sommets
     std::vector<Sommet> vec_som = getVectSom();
+
     //Instance d'un compteur
     int compteur=0;
+
+
     //Pour tous les sommets
     for(int i=0; i<m_ordre; i++)
     {
+
         //Si le sommet est sélectionné
         if(vec_som[i].getSelect())
         {
@@ -521,9 +573,12 @@ void Graphe::effacer_sommet(BITMAP* img)
             compteur++;
         }
     }
+
+
     //Si le compteur est différent de 0
     if(compteur != 0)
     {
+
         //Pour tous les sommets
         for(int i=0; i<getOrdre(); i++)
         {
@@ -531,23 +586,35 @@ void Graphe::effacer_sommet(BITMAP* img)
             //Si le sommet est sélectionné
             if(vec_som[i].getSelect())
             {
+
                 //On met son affichage à nul
                 vec_som[i].setAffSom(false);
                 vec_som[i].setSelect(false);
             }
         }
     }
+
+    //Instance d'un vecteur d'Arcs
     std::vector<Arc> vec_arc = getVectArcs();
+
+    //Pour tous les arcs
     for(int i=0; i<getNbArcs(); i++)
     {
-        if(vec_som[vec_arc[i].getS1().getNumero()].getAffSom() == false) vec_arc[i].setAffArc(false);
-        else if(vec_som[vec_arc[i].getS2().getNumero()].getAffSom() == false) vec_arc[i].setAffArc(false);
+        if(!vec_som[vec_arc[i].getS1().getNumero()].getAffSom()) vec_arc[i].setAffArc(false);
+        else if(!vec_som[vec_arc[i].getS2().getNumero()].getAffSom()) vec_arc[i].setAffArc(false);
         else vec_arc[i].setAffArc(true);
     }
+
+
     setVectSom(vec_som);
     setVectArcs(vec_arc);
     afficher_sommets(img);
+
 }
+
+
+
+
 
 /* ajouter_sommet : sous-programme permettant d'ajouter un sommet au graphe
 ENTREE :
@@ -634,6 +701,12 @@ void Graphe::ajouter_sommet()
     setVectArcs(vec_arc);
 
 }
+
+
+
+
+
+
 
 /* recalcul_paramètres : sous-programme permettant le changement des paramètres N et K en temps réel
 ENTREE :
@@ -732,7 +805,11 @@ void Graphe::recalcul_parametres()
 }
 
 
-/* afficher_arcs : sous-prgramme permettant d'afficher les arcs à afficher entre 2 sommets
+
+
+
+
+/* afficher_arcs : sous-programme permettant d'afficher les arcs à afficher entre 2 sommets
 ENTREE :
     buffer : de type BITMAP*
 SORTIE :
@@ -742,6 +819,8 @@ void Graphe::afficher_arcs(BITMAP* buffer)
 {
     //Variables temporaires
     int X2, X3, Y2, Y3;
+
+
     //Pour tous les arcs du vecteur d'arcs
     for(int i=0; i<m_nb_arcs; i++)
     {
@@ -749,6 +828,9 @@ void Graphe::afficher_arcs(BITMAP* buffer)
         //SI LE BOOLEEN AFFICHER DE l'ARC EST A VRAI
         if(m_vect_arcs[i].getAffArc())
         {
+
+            //Instance d'une variable coeff
+            float coeff = m_vect_arcs[i].getCoef();
 
             //INITIALISATION
             m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX());
@@ -768,7 +850,7 @@ void Graphe::afficher_arcs(BITMAP* buffer)
             {
 
                 m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX() + (m_vect_arcs[i].getS2().getImage()->w)/2);
-                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY());
+                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY() - 25);
 
                 m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX() + (m_vect_arcs[i].getS1().getImage()->w)/2);
                 m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() + (m_vect_arcs[i].getS1().getImage()->h));
@@ -797,7 +879,7 @@ void Graphe::afficher_arcs(BITMAP* buffer)
                 Y3 = m_vect_arcs[i].getArrowY1() + 10;
 
                 m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX() + (m_vect_arcs[i].getS1().getImage()->w)/2);
-                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY());
+                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() - 25);
 
             }
 
@@ -808,7 +890,7 @@ void Graphe::afficher_arcs(BITMAP* buffer)
             {
 
                 m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX() + (m_vect_arcs[i].getS2().getImage()->w)/2);
-                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY());
+                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY() - 25);
 
                 X2 = m_vect_arcs[i].getArrowX1() + 20;
                 Y2 = m_vect_arcs[i].getArrowY1() - 10;
@@ -836,7 +918,7 @@ void Graphe::afficher_arcs(BITMAP* buffer)
                 Y3 = m_vect_arcs[i].getArrowY1() + 20;
 
                 m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX() + (m_vect_arcs[i].getS1().getImage()->w)/2);
-                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY());
+                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() - 25);
 
             }
 
@@ -847,7 +929,7 @@ void Graphe::afficher_arcs(BITMAP* buffer)
             {
 
                 m_vect_arcs[i].setArrowX1(m_vect_arcs[i].getS2().getCoordX() + (m_vect_arcs[i].getS2().getImage()->w)/2);
-                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY());
+                m_vect_arcs[i].setArrowY1(m_vect_arcs[i].getS2().getCoordY() - 25);
 
                 X2 = m_vect_arcs[i].getArrowX1() + 10;
                 Y2 = m_vect_arcs[i].getArrowY1() - 10;
@@ -894,7 +976,7 @@ void Graphe::afficher_arcs(BITMAP* buffer)
                 Y3 = m_vect_arcs[i].getArrowY1() + 10;
 
                 m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX() + (m_vect_arcs[i].getS1().getImage()->w)/2);
-                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY());
+                m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() - 25);
 
             }
 
@@ -915,34 +997,16 @@ void Graphe::afficher_arcs(BITMAP* buffer)
                 m_vect_arcs[i].setLine_S1_X(m_vect_arcs[i].getS1().getCoordX());
                 m_vect_arcs[i].setLine_S1_Y(m_vect_arcs[i].getS1().getCoordY() + (m_vect_arcs[i].getS1().getImage()->h)/2);
 
-            }
 
-            /*
 
-            if(((((pr->x)-(pr->rayon))<0)&&((pr->depx)<0)) || ((((pr->x)+(pr->rayon))>SCREEN_W)&&((pr->depx)>0)))
-            {
-                depX=-depX;
             }
 
 
-            if(((((pr->y)-(pr->rayon))<0)&&((pr->depy)<0)) || ((((pr->y)+(pr->rayon))>SCREEN_H)&&((pr->depy)>0)))
-            {
-                depY=-depY;
-            }
-
-            X1 = X1 + depX;
-            Y1 = Y1 + depY;
-            X2 = X2 + depX;
-            Y2 = Y2 + dep7;
-            X3 = X3 + depX;
-            Y3 = Y3 + depY;
-
-
-*/
-            //AFFICHAGE DES FORMES FAIRE UN RECTANGLE AU LIEU DE LIGNE
+            //AFFICHAGE DES FORMES
             text_mode(-1);
             triangle(buffer, m_vect_arcs[i].getArrowX1(), m_vect_arcs[i].getArrowY1(), X2, Y2, X3, Y3, makecol(255,0,0));
-            line(buffer, m_vect_arcs[i].getArrowX1(), m_vect_arcs[i].getArrowY1(), m_vect_arcs[i].getLine_S1_X(), m_vect_arcs[i].getLine_S1_Y(), makecol(255,0,0));
+            line(buffer, (X2+X3)/2, (Y2+Y3)/2, m_vect_arcs[i].getLine_S1_X(), m_vect_arcs[i].getLine_S1_Y(), makecol(255,0,0));
+            textprintf(buffer,font,(m_vect_arcs[i].getLine_S1_X()+m_vect_arcs[i].getArrowX1())/2 -40,(m_vect_arcs[i].getLine_S1_Y()+m_vect_arcs[i].getArrowY1())/2, makecol(100,0,255) ,"Coef=%1.2f",coeff);
 
         }
     }

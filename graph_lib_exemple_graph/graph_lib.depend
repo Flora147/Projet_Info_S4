@@ -1,27 +1,27 @@
 # depslib dependency file v1.0
-1522744595 source:c:\users\931700683\desktop\graph_lib_exemple_graph\graph.cpp
+1522879473 source:c:\users\931700683\desktop\graph_lib_exemple_graph\graph.cpp
 	"graph.h"
 
-1522744595 c:\users\931700683\desktop\graph_lib_exemple_graph\graph.h
+1522879473 c:\users\931700683\desktop\graph_lib_exemple_graph\graph.h
 	<vector>
 	<map>
 	<string>
 	<memory>
 	"grman/grman.h"
 
-1522744596 c:\users\931700683\desktop\graph_lib_exemple_graph\grman\grman.h
+1522879475 c:\users\931700683\desktop\graph_lib_exemple_graph\grman\grman.h
 	<allegro.h>
 	<string>
 	"grman_couleurs.h"
 	"coords.h"
 	"widget.h"
 
-1522744596 c:\users\931700683\desktop\graph_lib_exemple_graph\grman\grman_couleurs.h
+1522879475 c:\users\931700683\desktop\graph_lib_exemple_graph\grman\grman_couleurs.h
 
-1522744596 c:\users\931700683\desktop\graph_lib_exemple_graph\grman\coords.h
+1522879475 c:\users\931700683\desktop\graph_lib_exemple_graph\grman\coords.h
 	<cmath>
 
-1522744597 c:\users\931700683\desktop\graph_lib_exemple_graph\grman\widget.h
+1522879475 c:\users\931700683\desktop\graph_lib_exemple_graph\grman\widget.h
 	"grman.h"
 	<iostream>
 	<string>
@@ -29,10 +29,10 @@
 	<algorithm>
 	<allegro.h>
 
-1522744596 source:c:\users\931700683\desktop\graph_lib_exemple_graph\grman\coords.cpp
+1522879475 source:c:\users\931700683\desktop\graph_lib_exemple_graph\grman\coords.cpp
 	"coords.h"
 
-1522744596 source:c:\users\931700683\desktop\graph_lib_exemple_graph\grman\grman.cpp
+1522879475 source:c:\users\931700683\desktop\graph_lib_exemple_graph\grman\grman.cpp
 	<cmath>
 	<unordered_map>
 	<unordered_set>
@@ -46,13 +46,14 @@
 	<loadpng.h>
 	<jpgalleg.h>
 
-1522744596 source:c:\users\931700683\desktop\graph_lib_exemple_graph\grman\widget.cpp
+1522879475 source:c:\users\931700683\desktop\graph_lib_exemple_graph\grman\widget.cpp
 	"widget.h"
 
-1522744596 source:c:\users\931700683\desktop\graph_lib_exemple_graph\main.cpp
+1522879661 source:c:\users\931700683\desktop\graph_lib_exemple_graph\main.cpp
 	"grman/grman.h"
 	<iostream>
 	"graph.h"
+	"Graphe.hpp"
 
 1522760663 source:c:\users\tatiana meister\desktop\ing2 informatique\projet théorie des graphes\jungle 1.1\graph_lib_exemple_graph\graph.cpp
 	"graph.h"
@@ -366,4 +367,33 @@
 	<math.h>
 	<iostream>
 	<fstream>
+
+1522879473 c:\users\931700683\desktop\graph_lib_exemple_graph\graphe.hpp
+	"Sommet.hpp"
+	"Arc.hpp"
+	<vector>
+
+1522879474 c:\users\931700683\desktop\graph_lib_exemple_graph\sommet.hpp
+	<string>
+	<allegro.h>
+
+1522879473 c:\users\931700683\desktop\graph_lib_exemple_graph\arc.hpp
+	"Sommet.hpp"
+
+1522879473 source:c:\users\931700683\desktop\graph_lib_exemple_graph\arc.cpp
+	"Arc.hpp"
+
+1522880482 source:c:\users\931700683\desktop\graph_lib_exemple_graph\graphe.cpp
+	"Graphe.hpp"
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<iostream>
+	<fstream>
+
+1522880531 source:c:\users\931700683\desktop\graph_lib_exemple_graph\sommet.cpp
+	"Sommet.hpp"
+	<stdio.h>
+	<stdlib.h>
+	<iostream>
 
