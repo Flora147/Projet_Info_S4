@@ -1516,9 +1516,11 @@ ENTREE :
 SORTIE :
     aucune
 */
-void Graphe::forte_co(Graphe g, BITMAP* img)
+void Graphe::forte_co(Graphe g, BITMAP* img, std::vector<int>& temp_x1, std::vector<int>& temp_y1, std::vector<int>& temp_x2, std::vector<int>& temp_y2)
 {
-    std::cout << "Debut forte co" << std::endl;
+
+
+    //std::cout << "Debut forte co" << std::endl;
     //Pile de int ou de sommet
     std::stack<int> pile;
 
@@ -1531,19 +1533,18 @@ void Graphe::forte_co(Graphe g, BITMAP* img)
         marq[i]=false;
     }
 
-    std::cout << "premiers false ok" << std::endl;
+    //std::cout << "premiers false ok" << std::endl;
 
-    ///DFS prob
     //Pour toutes les cases du tableau de marquage
     for(int i = 0; i<getOrdre(); i++)
     {
         //S'il n'est pas marqué
         if(marq[i]==false)
         {
-            std::cout << "Avant entree DFS" << std::endl;
+            //std::cout << "Avant entree DFS" << std::endl;
             // On procède à un premier DFS
             DFS1(i, marq, pile);
-            std::cout << "premier DFS OK" << std::endl;
+            //std::cout << "premier DFS OK" << std::endl;
         }
     }
 
@@ -1563,10 +1564,7 @@ void Graphe::forte_co(Graphe g, BITMAP* img)
     //Il possède les mêmes propriétés que le graphe actuel sauf que ses arcs sont inversés
     Graphe g_inv(getOrdre(),getNbArcs(),getVectSom(),vect_arc, getNbMois());
 
-    //Le graphe prend les arcs inversés
-    m_vect_arcs=vect_arc;
-
-    std::cout << "arcs inverses" << std::endl;
+    //std::cout << "arcs inverses" << std::endl;
 
     //On l'initialise à false pour le second DFS
     for(int i =0; i<getOrdre(); i++)
@@ -1588,13 +1586,12 @@ void Graphe::forte_co(Graphe g, BITMAP* img)
         {
             int col = makecol(rand()%256,rand()%256,rand()%256);
             //On fait appel au deuxième DFS
-            g_inv.DFS2(s,marq,col,g, img);
-            std::cout << "Sortie effectuée du 2eme DFS" << std::endl;
+            g_inv.DFS2(s,marq,col,g, img, temp_x1, temp_y1, temp_x2, temp_y2);
+            //std::cout << "Sortie effectuée du 2eme DFS" << std::endl;
         }
     }
 
-
-    std::cout << "Fin forte compo" << std::endl;
+    //std::cout << "Fin forte compo" << std::endl;
 }
 
 
@@ -1612,7 +1609,7 @@ SORTIE :
 */
 void Graphe::DFS1(int s, bool marq[], std::stack<int> &pile)
 {
-    std::cout << "Entree dans DFS réussie" <<std::endl;
+    //std::cout << "Entree dans DFS réussie" <<std::endl;
     //On marque le sommet reçu en paramètres
     marq[s] = true;
 
@@ -1622,14 +1619,14 @@ void Graphe::DFS1(int s, bool marq[], std::stack<int> &pile)
     //Parmi tous les arcs
     for(int i = 0; i< getVectArcs().size(); i++)
     {
-        std::cout << "Arc : " << i << std::endl;
+        //std::cout << "Arc : " << i << std::endl;
 
         //Si le premier sommet est égal à s
         if(m_vect_arcs[i].getS1().getNumero() == s)
         {
             //On ajoute le deuxième sommet au vecteur d'adjacence
             adj.push_back(m_vect_arcs[i].getS2().getNumero());
-            std::cout << "Sommet " << m_vect_arcs[i].getS2().getNumero() << std::endl;
+            //std::cout << "Sommet " << m_vect_arcs[i].getS2().getNumero() << std::endl;
         }
     }
 
@@ -1637,12 +1634,12 @@ void Graphe::DFS1(int s, bool marq[], std::stack<int> &pile)
     //Pour tous les sommets adjacents
     for(int i = 0; i < adj.size(); i++)
     {
-        std::cout << "Sommet adjacent numéro " << adj[i] <<std::endl;
+        //std::cout << "Sommet adjacent numéro " << adj[i] <<std::endl;
         //S'il n'est pas marqué
         if(!marq[adj[i]])
         {
             //On procède à un DFS récursif avec le premier DFS
-            std::cout << "Avant d'entrer dans recursive " << std::endl;
+            //std::cout << "Avant d'entrer dans recursive " << std::endl;
             DFS1(adj[i], marq, pile);
         }
     }
@@ -1650,7 +1647,7 @@ void Graphe::DFS1(int s, bool marq[], std::stack<int> &pile)
     //On met s dans la pile
     pile.push(s);
 
-    std::cout <<"Sur le point de sortir du DFS" << std::endl;
+    //std::cout <<"Sur le point de sortir du DFS" << std::endl;
 }
 
 
@@ -1669,7 +1666,7 @@ ENTREE :
 SORTIE :
     aucune
 */
-void Graphe::DFS2(int s, bool marq[], int col, Graphe g,BITMAP* img)
+void Graphe::DFS2(int s, bool marq[], int col, Graphe g,BITMAP* img, std::vector<int>& temp_x1, std::vector<int>& temp_y1, std::vector<int>& temp_x2, std::vector<int>& temp_y2)
 {
     //On marque le sommet à true
     marq[s] = true;
@@ -1681,10 +1678,14 @@ void Graphe::DFS2(int s, bool marq[], int col, Graphe g,BITMAP* img)
         //Si le numéro de sommet correspond
         if(m_vect_som[i].getNumero()==s)
         {
-            std::cout << "Le sommet " << m_vect_som[i].getNumero() << std::endl;
+            //std::cout << "Le sommet " << m_vect_som[i].getNumero() << std::endl;
             //On fait un affichage spécial du sommet concerné avec col
-            rectfill(img, m_vect_som[i].getCoordX(), m_vect_som[i].getCoordY(),m_vect_som[i].getCoordX()+130,m_vect_som[i].getCoordY()+130,col);
-            std::cout << "OOK" << std::endl;
+            rectfill(img, m_vect_som[i].getCoordX(), m_vect_som[i].getCoordY(),m_vect_som[i].getCoordX()+m_vect_som[i].getImage()->w,m_vect_som[i].getCoordY()+m_vect_som[i].getImage()->h,col);
+            temp_x1.push_back(m_vect_som[i].getCoordX());
+            temp_x2.push_back(m_vect_som[i].getImage()->w);
+            temp_y1.push_back(m_vect_som[i].getCoordY());
+            temp_y2.push_back(m_vect_som[i].getImage()->h);
+            //std::cout << "OOK" << std::endl;
         }
     }
 
@@ -1708,13 +1709,15 @@ void Graphe::DFS2(int s, bool marq[], int col, Graphe g,BITMAP* img)
         //S'il n'est pas marqué
         if(!marq[adj[i]])
         {
-            std::cout << "Avant d'entrer dans recursif" << std::endl;
+            //std::cout << "Avant d'entrer dans recursif" << std::endl;
             //On procède à un DFS récursif avec le second DFS
-            DFS2(adj[i], marq, col, g, img);
+            DFS2(adj[i], marq, col, g, img, temp_x1, temp_y1, temp_x2, temp_y2);
         }
     }
 
-    std::cout << "Sortie du deuxième DFS" << std::endl;
+    //std::cout << "Sortie du deuxième DFS" << std::endl;
+
+
 }
 
 

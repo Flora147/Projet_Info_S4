@@ -42,7 +42,7 @@ int main()
 
     //Section F : ouverture mode grapique
     set_color_depth(desktop_color_depth());
-    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0)!=0)
+    if(set_gfx_mode(GFX_AUTODETECT,1024,768,0,0)!=0)
     {
         allegro_message("probleme mode graphique");
         allegro_exit();
@@ -88,6 +88,13 @@ int main()
     blit(actuelle, Buffer, 0, 0, 0,0,1024,768);
 
     text_mode(-1);
+
+    int f = 0;
+
+    std::vector<int> temp_x1;
+    std::vector<int> temp_x2;
+    std::vector<int> temp_y1;
+    std::vector<int> temp_y2;
 
     while(!key[KEY_ESC])
     {
@@ -169,7 +176,8 @@ int main()
             else if(c==makecol(255,128,0))
             {
                 //Forte connexite
-                graphe.forte_co(graphe, actuelle);
+                graphe.forte_co(graphe, actuelle, temp_x1, temp_y1, temp_x2, temp_y2);
+                f=1;
             }
 
             else if(c==makecol(34,177,76))
@@ -230,13 +238,13 @@ int main()
 
         if(m==false)
         {
-            //Si on avait appyé sur forte connexité et qu'on appuie sur F, affiche la forte connexité
+           /*//Si on avait appyé sur forte connexité et qu'on appuie sur F, affiche la forte connexité
             if(key[KEY_F])
             {
                 graphe.afficher_sommets(Buffer);
-            }
+            }*/
             //Sinon affiche "normalement" les sommets
-            else
+            /*else
             {
                 for(int i = 0; i<graphe.getOrdre(); i++)
                 {
@@ -244,7 +252,30 @@ int main()
 
                 }
                 graphe.afficher_sommets(Buffer);
+            }*/
+            graphe.afficher_sommets(Buffer);
+
+            if(f==1)
+            {
+               rest(2000);
+
+                blit(Buffer,screen,0,0,0,0,1024,768);
+                blit(actuelle, Buffer, 0,0,0,0,1024,768);
+                graphe.afficher_sommets(Buffer);
+                //On retire les rectangles
+                for(int i = 0; i<temp_x1.size(); i++)
+                {
+                    rest(500);
+                    rectfill(actuelle, temp_x1[i], temp_y1[i],temp_x1[i]+temp_x2[i],temp_y1[i]+temp_y2[i],makecol(255,255,255));
+                    //clear(actuelle);
+                    blit(Buffer,screen,0,0,0,0,1024,768);
+                    blit(actuelle, Buffer, 0,0,0,0,1024,768);
+                    graphe.afficher_sommets(Buffer);
+                }
+                //graphe.afficher_sommets(Buffer);
+                f=0;
             }
+
 
         }
 
